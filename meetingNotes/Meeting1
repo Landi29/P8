@@ -1,0 +1,26 @@
+Finding similarities between items based on graphs.
+Integrate this into recommender system. 
+Add baselines to compare. 
+There is a lot of graph data.
+Graph embeddings (map nodes to vectors).
+
+Apply machine learning algorithms to these vectors.
+Similarity of nodes (connections and place in vector space).
+
+Similarity based on structural context (and thus not distance between points).
+Apply this in recommender systems.
+
+
+Relevant lectures:
+Construct graph from recommender data. Running pagerank on it.
+Fast personilized pagerank.
+SimRank. 
+
+
+Messaure structural distance.
+Use simple structural similarity methods.
+
+Analysis section.
+
+Proof reliability, explain with empirical and statistical data. 
+Reliability will go to the appendix if we write a paper. 
