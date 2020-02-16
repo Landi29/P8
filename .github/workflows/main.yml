@@ -11,3 +11,6 @@ jobs:
         with:
           working_directory: paper
           root_file: main.tex
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+
