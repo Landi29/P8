@@ -12,11 +12,9 @@ jobs:
           working_directory: paper
           root_file: main.tex
       - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
-      - run: mkdir -p path/to/artifact
-      - uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v1
         with:
-          name: my-artifact
-          path: path/to/artifact
+          name: P8Paper
+          path: paper
         
 
