@@ -1,0 +1,17 @@
+\begin{tikzpicture}[scale=0.90]
+
+\begin{axis}[
+	title={Matrix factorization accuracy},
+	width=0.5\linewidth,
+	xlabel = Iterations,
+    ylabel = Accuracy,
+	no marks,
+	legend pos=south east]
+\addplot[line width=1pt,solid,color=blue] %
+	table[x,y,col sep=comma]{figures/Data/mf-threshold-accuracy.csv};
+	\addlegendentry{Threshold}
+\addplot[line width=1pt,solid,color=red] %
+	table[x,y,col sep=comma]{figures/Data/mf-normal-accuracy.csv};
+	\addlegendentry{Normalized}
+\end{axis}
+\end{tikzpicture}

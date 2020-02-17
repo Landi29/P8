@@ -1,0 +1,35 @@
+\begin{tikzpicture}[scale=0.90]
+
+\begin{axis}[
+	title={K Nearest Neighbor},
+	width=0.5\linewidth,
+	xlabel = Matches,
+    ylabel = Win rate,
+	no marks, 
+	legend style={at={(0.5,-0.3)},anchor=north}
+	]
+\addplot[line width=1pt,solid,color=blue] %
+	table[x,y,col sep=comma]{figures/Data/p0 knn_5_manhatten vs. p1 random.csv};
+	\addlegendentry{KNN vs. Random}
+\addplot[line width=1pt,solid,color=magenta] %
+	table[x,y,col sep=comma]{figures/Data/results_knnmanhatten_mfw.csv};
+	\addlegendentry{KNN vs. MFW}
+%\addplot[line width=1pt,solid,color=cyan] %
+%	table[x,y,col sep=comma]{figures/Data/results_knnmanhatten_mfth.csv};
+%	\addlegendentry{KNN vs. MFth}
+\addplot[line width=1pt,solid,color=red] %
+	table[x,y,col sep=comma]{figures/Data/results_knn_hwr.csv};
+	\addlegendentry{KNN vs. HWR}
+\addplot[line width=1pt,solid,color=purple] %
+	table[x,y,col sep=comma]{figures/Data/results_knn_mcts.csv};
+	\addlegendentry{KNN vs. MCTS 300}
+\addplot[line width=1pt,solid,color=black] %
+	table[x,y,col sep=comma]{figures/Data/results_knnmanhatten_mcts600.csv};
+	\addlegendentry{KNN vs. MCTS 600}
+\addplot[line width=1pt,solid,color=teal] %
+	table[x,y,col sep=comma]{figures/Data/results_knnmanhatten_mcts1200.csv};
+	\addlegendentry{KNN vs. MCTS 1200}
+
+
+\end{axis}
+\end{tikzpicture}

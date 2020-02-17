@@ -1,0 +1,35 @@
+\begin{tikzpicture}[
+circlenode/.style={circle, draw=black!60, fill=black!5, thick, minimum size=5mm},
+squarenode/.style={square, draw=}
+]
+\node[circlenode] (rootnode){};
+\node[circlenode] (layer1) [below=of rootnode]{4};
+\node[circlenode] (layer11) [left=of layer1] {3};
+\node[circlenode] (layer12) [left=of layer11]{2};
+\node[circlenode] (layer13) [left=of layer12]{1};
+\node[circlenode] (layer14) [right=of layer1]{5};
+\node[circlenode, draw=none] (layer15) [right=of layer14] {...};
+\node[circlenode] (layer16) [right=of layer15]{113};
+
+\node[circlenode] (layer2) [below=of layer13, distance=2in]{4};
+\node[circlenode] (layer21)[left=of layer2]{3};
+\node[circlenode] (layer22)[left=of layer21]{2};
+\node[circlenode] (layer23)[left=of layer22]{1};
+\node[circlenode] (layer24)[right=of layer2]{5};
+\node[circlenode, draw=none] (layer25)[right=of layer24]{...};
+\node[circlenode] (layer26)[right=of layer25]{113};
+
+%Lines
+\draw[->] (rootnode) -- (layer1);
+\draw[->] (rootnode) -- (layer11);
+\draw[->] (rootnode) -- (layer12);
+\draw[->] (rootnode) -- (layer13);
+\draw[->] (rootnode) -- (layer14);
+\draw[->] (rootnode) -- (layer16);
+\draw[->] (layer13) -- (layer2);
+\draw[->] (layer13) -- (layer21);
+\draw[->] (layer13) -- (layer22);
+\draw[->] (layer13) -- (layer23);
+\draw[->] (layer13) -- (layer24);
+\draw[->] (layer13) -- (layer26);
+\end{tikzpicture}

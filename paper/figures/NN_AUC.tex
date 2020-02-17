@@ -1,0 +1,31 @@
+\begin{tikzpicture}[scale=0.45]
+
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+
+    \begin{axis}[
+        width  = 1.0*\textwidth,
+        major x tick style = transparent,
+        ybar=2*\pgflinewidth,
+        bar width=0.5cm,
+        ymajorgrids = true,
+        ylabel = {AUC},
+        symbolic x coords={Fold 1, Fold 2, Fold 3, Fold 4, Fold 5, Fold 6, Fold 7, Fold 8, Fold 9, Fold 10},
+        xtick = data,
+        legend cell align=left,
+        legend style={
+                at={(1,1.05)},
+                anchor=south east,
+                column sep=1ex
+        },
+        x tick label style={font=\normalsize, rotate=45, anchor=east}
+    ]
+        \addplot[style={bblue,fill=bblue,mark=none}]
+            coordinates {(Fold 1, 0.68572) (Fold 2, 0.67484) (Fold 3,0.68656) (Fold 4, 0.68737) (Fold 5, 0.69914) (Fold 6, 0.7785) (Fold 7, 0.71455) (Fold 8, 0.79357) (Fold 9, 0.68692) (Fold 10, 0.69405)};
+
+        \addplot[style={rred,fill=rred,mark=none}]
+             coordinates {(Fold 1, 0.67418) (Fold 2, 0.64706) (Fold 3, 0.67911) (Fold 4, 0.67096) (Fold 5, 0.68271) (Fold 6, 0.76541) (Fold 7, 0.70189) (Fold 8, 0.70874) (Fold 9, 0.66969) (Fold 10, 0.6848)};
+
+        \legend{NN 1 Layer, NN 2 Layer}
+    \end{axis}
+\end{tikzpicture}

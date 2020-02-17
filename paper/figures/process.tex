@@ -1,0 +1,16 @@
+\begin{tikzpicture}[
+squarednode/.style={rectangle, draw=black!60, fill=black!5, very thick, minimum size=5mm},
+]
+
+
+        
+\node[squarednode, rectangle split, rectangle split parts=2, text centered, text width=3.5cm] (data_collection) {Data Collection \nodepart{second} Hero win rate\\ Line-up win rate};  
+\node[squarednode, rectangle split, rectangle split parts=2, text centered, text width=5cm]  (win_rate_predictor)    [below=of data_collection]    {Win Rate Predictor Training \nodepart{second} Monte Carlo Tree Search\\ Highest win rate\\ Random};
+\node[squarednode, rectangle split, rectangle split parts=2, text centered, text width=3cm]  (simulation_setup)  [below=of win_rate_predictor]   {Simulation Setup \nodepart{second} Neural Network};
+\node[squarednode]   (display_result)    [below=of simulation_setup] {Display Results};
+
+%Lines
+\draw[->] (data_collection.south) -- (win_rate_predictor.north);
+\draw[->] (win_rate_predictor.south) -- (simulation_setup.north);
+\draw[->] (simulation_setup.south) -- (display_result.north);
+\end{tikzpicture}

@@ -1,0 +1,38 @@
+\begin{tikzpicture}[scale=0.90]
+
+\begin{axis}[
+	title={Monte Carlo Tree Search 1200},
+	width=0.5\linewidth,
+	xlabel = Matches,
+    ylabel = Win rate,
+	no marks, 
+	legend style={at={(0.5,-0.3)},anchor=north}
+	]
+\addplot[line width=1pt,solid,color=orange] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_random.csv};
+	\addlegendentry{SkillMCTS 1200 vs. Random}
+	
+\addplot[line width=1pt,solid,color=blue] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_hwr.csv};
+	\addlegendentry{SkillMCTS 1200 vs. HWR}
+
+\addplot[line width=1pt,solid,color=orange] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_knn.csv};
+	    \addlegendentry{SkillMCTS 1200 vs. KNN}
+	
+\addplot[line width=1pt,solid,color=purple] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_mfw.csv};
+	\addlegendentry{SkillMCTS 1200 vs. MFW}
+
+\addplot[line width=1pt,solid,color=teal] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_mcts300.csv};
+		\addlegendentry{SkillMCTS 1200 vs. MCTS 300}
+\addplot[line width=1pt,solid,color=black] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_mcts600.csv};
+		\addlegendentry{SkillMCTS 1200 vs. MCTS 600}
+\addplot[line width=1pt,solid,color=red] %
+	table[x,y,col sep=comma]{figures/Data/results_skillmcts1200_mcts1200.csv};
+		\addlegendentry{SkillMCTS 1200 vs. MCTS 1200}
+		
+\end{axis}
+\end{tikzpicture}

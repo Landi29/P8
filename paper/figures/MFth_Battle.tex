@@ -1,0 +1,29 @@
+\begin{tikzpicture}[scale=0.90]
+
+\begin{axis}[
+	title={Matrix Factorization with Threshold Battle stats},
+	width=0.5\linewidth,
+	xlabel = Matches,
+    ylabel = Win rate,
+	no marks, 
+	legend style={at={(0.5,-0.3)},anchor=north}
+	]
+\addplot[line width=1pt,solid,color=blue] %
+	table[x,y,col sep=comma]{figures/Data/results_mfth_hwr.csv};https://www.overleaf.com/project/5d702c3ee17d6b0001be51fd
+	\addlegendentry{MFth vs. HWR}
+\addplot[line width=1pt,solid,color=red] %
+	table[x,y,col sep=comma]{figures/Data/results_mfth_random.csv};
+	\addlegendentry{MFth vs. Random}
+\addplot[line width=1pt,solid,color=cyan] %
+	table[x,y,col sep=comma]{figures/Data/results_mfth_mcts300.csv};
+	\addlegendentry{MFth vs. MCTS 300}
+\addplot[line width=1pt,solid,color=teal] %
+	table[x,y,col sep=comma]{figures/Data/results_mfth_mcts600.csv};
+	\addlegendentry{MFth vs. MCTS 600}
+\addplot[line width=1pt,solid,color=orange] %
+	table[x,y,col sep=comma]{figures/Data/results_mfth_mcts1200.csv};
+	\addlegendentry{MFth vs. MCTS 1200}
+
+
+\end{axis}
+\end{tikzpicture}

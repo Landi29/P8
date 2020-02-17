@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=0.75]
+    \begin{axis}[
+      symbolic x coords={euclid, manhattan, cosd, scd, sed, kdd, VWHD},
+      xtick=data,
+      xlabel={Distance Metric},
+      ylabel={Error Value},
+      xlabel style={yshift=-1cm},
+      ybar,
+      x tick label style={font=\normalsize, rotate=45, anchor=east}]
+      \addplot[ybar,fill=blue] coordinates {
+           (euclid, 0.162130978106135)
+           (manhattan, 0.160199946216189)
+           (cosd, 0.188123571733088)
+           (scd, 0.160076702008647)
+           (sed, 0.162305877686493)
+           (kdd, 0.159235444358421)
+           (VWHD, 0.170605369568576)
+        };
+    \end{axis}
+\end{tikzpicture}

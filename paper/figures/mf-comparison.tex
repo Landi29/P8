@@ -1,0 +1,20 @@
+\begin{tikzpicture}[scale=0.9]
+
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+
+    \begin{axis}[
+        width  = 1.0*\textwidth,
+        ybar,
+        bar width=1.0cm,
+        ylabel = {Error},
+        symbolic x coords={Win rate, Threshold},
+        xtick = data,
+        ymin=2,
+        x=2.0cm,
+        y=2cm
+    ]
+        \addplot[style={bblue,fill=bblue,mark=none}]
+            coordinates {(Win rate, 3.8831) (Threshold, 4.0289)};
+    \end{axis}
+\end{tikzpicture}

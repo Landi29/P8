@@ -1,0 +1,19 @@
+\begin{tikzpicture}[scale=0.7]
+
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+
+    \begin{axis}[
+        width  = 1.0*\textwidth,
+        ybar,
+        bar width=1cm,
+        symbolic x coords={With matrix, Without matrix - 10 extra},
+        xtick = data,
+        ymin=0,
+        x=4.0cm,
+        y,
+    ]
+        \addplot[style={bblue,fill=bblue,mark=none}]
+            coordinates {(With matrix, 264) (Without matrix - 10 extra, 1101)};
+    \end{axis}
+\end{tikzpicture}
