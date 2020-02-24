@@ -1,0 +1,38 @@
+Count of counts can be used for all graph types.
+Manfreds example of count of counts for nodes with different colors. 
+The TET trees are local and look at local neighborhood for nodes.
+It can be evaluated for every graph in every graph.
+
+
+Difference between knowledge graph and TET:
+TET can be used on knowledge graphs. The TET is a tool and can be used to search knowledge graphs.
+
+The TET defines, what is important to look at. 
+
+Embedding with TET: See it as a different paradigm that can solve similar problems. 
+
+We construct features for nodes in a graph. They are based on count of count structures. 
+We can try to build models based on the count of count features (TET trees).
+Take a count of count structure and return a number for classification.
+For this project: Define metrics. Define a distance between count of counts tree values. 
+With this metric, we can then use Machine Learning algorithms. 
+
+The more stucturaly similar nodes are, the less the distance is between them (even though
+they are far from eachother). 
+
+Node2Vec:
+One of the earliest and first node embedding techniques based on Deep NN. This is also
+connectivity based. Also mentioned in the servey paper. 
+
+How can structure based similarity help in reccomendation based tasks. 
+
+We should think of the TET trees as expert provided. They can be learned, but it is out of the scope
+of this project and is also computationally intensive. 
+We will want to look at what is important features to know, in order to give good recomendations. 
+
+
+Given users and items and interaction links between them. Items also has some metadata that can be 
+part of the graph. We can define the metadata by having attributes on the nodes or create new nodes
+for the attributes and add relations to them. 
+
+Find similarity between users even though they are far apart in the graph. 
