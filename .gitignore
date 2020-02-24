@@ -12,6 +12,8 @@
 *.cb2
 .*.lb
 
+## Ignore the master.pdf file.
+/paper/master.pdf
 ## Intermediate documents:
 *.dvi
 *.xdv
