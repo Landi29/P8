@@ -1,0 +1,47 @@
+#!/bin/bash
+
+FILE=paper
+IMAGE=danteev/texlive
+
+clean() {
+    arg=${1:-.}
+    exts="aux log toc out xml acn acr alg glg glo gls ist tdo thm upa upb dvi fls fdb_latexmk"
+
+    if [ -d $arg ]; then
+        for ext in $exts; do
+            rm -f $arg/*.$ext
+        done
+    else
+        for ext in $exts; do
+            rm -f $arg.$ext
+        done
+    fi
+    exit 0
+}
+
+build() {
+    docker run --rm -it -v $(pwd):/home danteev/texlive latexmk -pdf master.tex
+}
+
+install_springer() {
+    wget ftp://ftp.springernature.com/cs-proceeding/llncs/llncs2e.zip
+    unzip -o llncs2e.zip
+    rm llncs2e.zip readme.txt history.txt llncsdoc.pdf samplepaper.tex fig1.eps
+}
+
+if [ "$1" == "clean" ]; then
+    clean
+elif [ "$1" == "build" ]; then
+    build
+elif [ "$1" == "install" ]; then
+    if [ ! -f llncs.cls ]; then
+        install_springer
+    fi
+else
+    echo "Available options are \"clean\", \"build\", and \"install\""
+    echo "    clean: Removes the temporary files generated on build"
+    echo "    build: Builds the paper into pdf"
+    echo "    install: Downloads the necessary files from springer and pulls docker images"
+fi
+
+
