@@ -1,10 +1,2 @@
 # P8
-
-      \_/
-     (* *)
-    __)#(__
-   ( )...( )(_)
-   || |_| ||//
->==() | | ()/
-    _(___)_
-   [-]   [-]MJP
+## Graph-based Methods for Recommendation
