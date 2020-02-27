@@ -4,4 +4,10 @@
    * What methods for transforming data to graphs are available?
    * What is the cost of this method?
 
-1. 
+2. Can we achieve better recommendations by creating features for graph nodes with counts of counts and TET's?
+   * Can we improve the recommendations by using structural similarity metrics?
+   * Will this method improve explainability of recommendations?
+   * Can counts of counts similarity improve recommendation predictions?
+   * What are the differences between the distance metrics used on TET's?
+   * What is the different results we can achieve by using these metrics on real world relational data. 
+
