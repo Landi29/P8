@@ -1,5 +1,5 @@
 # Page Ranking Algorithms: A Survey
-PageRank is an algorithm used by Google that ranks web pages. The algorithm counts the number and strength of links to a page to estimate the importance of a it. 
+PageRank is an algorithm used by Google that ranks web pages. The algorithm counts the number and strength of links to a page in order to estimate the importance of it. 
 
 The simplest way of calculating is given by the formular:
 
