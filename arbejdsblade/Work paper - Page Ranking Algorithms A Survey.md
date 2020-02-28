@@ -7,7 +7,7 @@ In later research it was observed that just because there is a link, it does not
 
 $PR(u) = (1 - d) + d* \sum_{v \in B(u)} \frac {PR (v)}{L(v)}$
 
-This approach of the PageRank is meant to be done over several iterations, all PageRank can be assigned statically or randomly and will normalize over the iterations. Having a high PageRank is a good.
+This approach to PageRank is meant to be done over several iterations, where all PageRanks can be assigned statically or randomly and will normalize over the iterations. Having a high PageRank is good.
 
 This is mostly used for web structure mining or mining other graph structures for importance. Implemented correctly, this algorithm can have a complexity of $O(log(N))$.
 
