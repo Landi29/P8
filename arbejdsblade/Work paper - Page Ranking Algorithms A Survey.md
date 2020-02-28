@@ -30,7 +30,7 @@ $W_{(v,u)}^{out} = \frac{O_u}{\sum_{p \in R(v)}O_p}$
 
 O represents the number of outgoing links of u and p. 
 
-The two formulas above are formulas for calculating the weight of incoming links $W_{(v,u)}^{in}$, and weight of outgoing links $W_{(v,u)}^{out}$ for every refence page v to for from page u.
+The two formulas above are formulas for calculating the weight of incoming links $W_{(v,u)}^{in}$, and weight of outgoing links $W_{(v,u)}^{out}$ for every refence page v to or from page u.
 
 $WPR(u) = (1 - d) + d* \sum_{v \in B(u)}WPR(v)*W_{(v,u)}^{in}*W_{(v,u)}^{out}$
 
