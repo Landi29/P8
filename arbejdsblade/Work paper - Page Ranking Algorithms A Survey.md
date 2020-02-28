@@ -1,5 +1,5 @@
 # Page Ranking Algorithms: A Survey
-PageRank is an algorithm used by google that ranks web pages. the algorithm counts the number of and strength of links to a page to estimate the importance of a page.
+PageRank is an algorithm used by Google that ranks web pages. The algorithm counts the number and strength of links to a page to estimate the importance of a it. 
 
 The simplest way of calculating is $PR(A)={\frac {PR(B)}{L(B)}}+{\frac {PR(C)}{L(C)}}+{\frac {PR(D)}{L(D)}}$ where PR(x) is the PageRank of a given page an L(x) is the number of outbound links from a page. More specifically $PR(u)=\sum_{v \in B(u)}^{10} \frac {PR (v)}{L(v)}$ where B(u) is the set of pages pointing to u.
 
