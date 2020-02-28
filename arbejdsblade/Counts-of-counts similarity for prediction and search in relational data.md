@@ -2,6 +2,8 @@
 
 In the paper Jaeger et. Al presents a new metric that can be utilized to compare the similarity between graph entities which in turn can be utilize for searching and prediction on relational data.
 
+#### Type Extension Trees
+
 The metric is called counts-of-counts and works by taking a Type Extension Tree (TET) which is used to describe the counts-of-counts features which describe the overall graph structure. An example of a TET can be seen below:
 
 ![TET](pictures/Counts-of-counts_Similarity/TET.png)
@@ -10,5 +12,7 @@ The definition of a TET can be seen below:
 
 *A type extension tree (TET) is a rooted tree whose nodes are labeled with atoms, and whose edges can be labeled with variables.*
 
-The idea behind it is that  A TET feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider.
+The idea behind it is that  A TET feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider. This means that the nodes in a graph can fall into one of the features specified in the TET and can only connect to other features specified in the TET. An example of a graph using TET (a) seen above would be that we have an `author(A)` node those surrounding connected nodes would be `author_of(A,P)` node. Any nodes connected to the `author_of()`
+
+#### Logistic evaluation
 
