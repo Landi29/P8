@@ -1,7 +1,7 @@
 # Page Ranking Algorithms: A Survey
 PageRank is an algorithm used by Google that ranks web pages. The algorithm counts the number and strength of links to a page in order to estimate the importance of it. 
 
-The simplest way of calculating is given by the formular:
+The simplest way of calculating the PageRank of a page is given by the formular:
 
  $PR(A)={\frac {PR(B)}{L(B)}}+{\frac {PR(C)}{L(C)}}+{\frac {PR(D)}{L(D)}}$ 
  
