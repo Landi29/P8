@@ -24,7 +24,7 @@ The weight link(u,v) with incoming links of page u and the incoming links of all
 
 $W_{(v,u)}^{in} = \frac{I_u}{\sum_{p \in R(v)}I_p}$
 
-I is the number of incoming links of page u and v, R(v) is the list of reference pages from v. In lay man’s terms it is a list of every reference to or from v, but in the terms of the calculation for ingoing weight then R(v) is ingoing links and for outgoing weight it the outgoing links.
+I is the number of incoming links of page u and v, R(v) is the list of reference pages from v. In lay man’s terms it is a list of every reference to or from v, but in the terms of the calculation for ingoing weight then R(v) is ingoing links and for outgoing weight it is the outgoing links.
 
 $W_{(v,u)}^{out} = \frac{O_u}{\sum_{p \in R(v)}O_p}$
 
