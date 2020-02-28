@@ -11,7 +11,7 @@ This approach of the PageRank is meant to be done over several iterations, all P
 
 This is mostly used for web structure mining or mining other graph structures for importance. Implemented correctly, this algorithm can have a complexity of $O(log(N))$.
 
-The algorithm has been further enhanced by incorporating weights of ingoing and outgoing links, and where rebranded as weighted PageRank.
+The algorithm has been further enhanced by incorporating weights of ingoing and outgoing links, and was rebranded as weighted PageRank.
 The weight link(u,v) with incoming links of page u and the incoming links of all reference pages of page v
 
 $W_{(v,u)}^{in} = \frac{I_u}{\sum_{p \in R(v)}I_p}$
