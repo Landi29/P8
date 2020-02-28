@@ -9,7 +9,7 @@ $PR(u) = (1 - d) + d* \sum_{v \in B(u)} \frac {PR (v)}{L(v)}$
 
 This approach of the PageRank is meant to be done over several iterations, all PageRank can be assigned statically or randomly and will normalize over the iterations. Having a high PageRank is a good.
 
-This is mostly used for web structure mining or mining other graph structures for importance. Implemented right this algorithm can have a $O(log(N))$.
+This is mostly used for web structure mining or mining other graph structures for importance. Implemented correctly, this algorithm can have a complexity of $O(log(N))$.
 
 The algorithm has been further enhanced by incorporating weights of ingoing and outgoing links, and where rebranded as weighted PageRank.
 The weight link(u,v) with incoming links of page u and the incoming links of all reference pages of page v
