@@ -12,11 +12,11 @@ The definition of a TET can be seen below:
 
 *A type extension tree (TET) is a rooted tree whose nodes are labeled with atoms, and whose edges can be labeled with variables.*
 
-The idea behind it is that  A TET feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider. This means that the nodes in a graph can fall into one of the features specified in the TET and can only connect to other features specified in the TET. An example of a graph using TET (a) seen above would be that we have an `author(A)` node those surrounding connected nodes would be `author_of(A,P)` node. Any nodes connected to the `author_of()` would then be of the type `cites(P',P)`.
+The idea behind it is that  a counts-of-counts feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider. This means that the nodes in a graph can fall into one of the features specified in the TET and can only connect to other features specified in the TET. An example of a graph using TET (a) seen above would be that we have an `author(A)` node those surrounding connected nodes would be `author_of(A,P)` node. Any nodes connected to the `author_of()` would then be of the type `cites(P',P)`.
 
 ![TET2](pictures\Counts-of-counts_Similarity\TET2.png)
 
-If we want to find the value of a TET feature T(X) (where X is a set of free variables), for a k-tuple of graph entities $e$, denoted as $V(T(e))$, we do so via via the following example:
+If we want to find the value of a counts-of-counts feature T(X) (where X is a set of free variables), for a k-tuple of graph entities $e$, denoted as $V(T(e))$, we do so via via the following example:
 
 If we want to evaluate movie TET $T(M)$ for an entity we first check if the entity is a movie at all. If it is not then we return false as a value. If the entity is a movie then we return $(\{ f \}\{ f \}), (\{t\}\{ f \}), \{ f \}\{t\})$,or $(\{t\}\{t\})$ depending on whether that movies is a romance, a comedy, both or none of them. 
 
