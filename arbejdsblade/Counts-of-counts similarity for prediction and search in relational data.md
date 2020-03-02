@@ -12,7 +12,7 @@ The definition of a TET can be seen below:
 
 *A type extension tree (TET) is a rooted tree whose nodes are labeled with atoms, and whose edges can be labeled with variables.*
 
-The idea behind it is that  a counts-of-counts feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider. This means that the nodes in a graph can fall into one of the features specified in the TET and can only connect to other features specified in the TET. An example of a graph using TET (a) seen above would be that we have an `author(A)` node those surrounding connected nodes would be `author_of(A,P)` node. Any nodes connected to the `author_of()` would then be of the type `cites(P',P)`.
+The idea behind it is that  a counts-of-counts feature defines which relations to follow for assembling the relevant neighborhood, and what attributes of neighboring nodes to consider. This means that the nodes in a graph can fall into one of the features specified in the TET and can only connect to other features specified in the TET. An example of a graph using TET (a) seen above would be that we have an `author(A)` node whose surrounding connected nodes would be `author_of(A,P)` node. Any nodes connected to the `author_of()` would then be of the type `cites(P',P)`.
 
 ![TET2](pictures\Counts-of-counts_Similarity\TET2.png)
 
