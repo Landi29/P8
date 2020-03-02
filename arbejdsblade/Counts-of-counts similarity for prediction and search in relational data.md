@@ -55,7 +55,7 @@ recursive definition over the nested multiset structure of $\gamma$:
 
   where $σ$ is the sigmoid function $σ (x) = 1/(1 + e^{-x})$.  
 
-If we take an example of how the logistic evaluation function works on the author TET which was used earlier and where $\beta = (-14.7, 5.8)$ then if we look at (C) in the picture above then the bottom true values are evaluated to 1. At the middle  level we evaluate the first value $\{t : 3\}$ as such: 
+If we take an example of how the logistic evaluation function works on the author TET which was used earlier and where $\beta = (-14.7, 5.8)$ then if we look at (C) in the picture above then the bottom true values are evaluated to 1. At the middle level we evaluate the first value $\{t : 3\}$ as such: 
 $$
 l^{(−14.7,5.8)}(\{t : 3\}) = σ (−14.7 + 5.8 · (1 + 1 + 1)) = 0.937
 $$
