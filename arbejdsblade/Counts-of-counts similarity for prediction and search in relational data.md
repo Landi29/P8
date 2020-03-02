@@ -18,7 +18,7 @@ The idea behind it is that  A TET feature defines which relations to follow for 
 
 If we want to find the value of a TET feature T(X) (where X is a set of free variables), for a k-tuple of graph entities $e$, denoted as $V(T(e))$, we do so via via the following example:
 
-If we want to evaluate movie TET $T(M)$ for a an entity we first check if the entity is a movie at all. If it is not then we return false as a value. If the entity is a movie then we return $(\{ f \}\{ f \}), (\{t\}\{ f \}), \{ f \}\{t\})$,or $(\{t\}\{t\})$ depending on whether that movies is a romance, a comedy, both or none of them. 
+If we want to evaluate movie TET $T(M)$ for an entity we first check if the entity is a movie at all. If it is not then we return false as a value. If the entity is a movie then we return $(\{ f \}\{ f \}), (\{t\}\{ f \}), \{ f \}\{t\})$,or $(\{t\}\{t\})$ depending on whether that movies is a romance, a comedy, both or none of them. 
 
  If we instead want to evaluate our author TET then we first consider the sub-TET $T_1(A,P)$. This is evaluated for pairs of entities $(a, p)$, and returns false if `author_of(a, p)` is false. Otherwise $V(T_1(a,p))$ is $\{true:k\}$ where $k$ is the number of papers $p'$ that cite paper $p$. Evaluating the full TET for an author $a$ $V(T (a))$ gives us the multiset  $\{\{true : k_i\} : z_i\}  $ where $z_i$ is the number of papers $p$ that by author $a$ with $k_i$ citations. All of this can be seen above in (c) where we show a tree that shows results of evaluating the TET. First middle part of the tree shows the result of evaluating on $V (T_1(a, p))$. Top part of the tree shows the result of $V(T (a))$. The root leaves show us the result for `cites(P',P)`.
 
