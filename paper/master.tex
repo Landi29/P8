@@ -55,6 +55,13 @@
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
 
+\makeatletter
+\def\endthebibliography{%
+	\def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
+	\endlist
+}
+\makeatother
+
 
 \setlength{\parindent}{0cm}
 
