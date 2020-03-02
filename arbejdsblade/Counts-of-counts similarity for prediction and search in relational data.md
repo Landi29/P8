@@ -4,7 +4,7 @@ In the paper Jaeger et. Al presents a new metric that can be utilized to compare
 
 #### Type Extension Trees (TET)
 
-The metric is called counts-of-counts and works by taking a Type Extension Tree (TET) which is used to describe the counts-of-counts features which describe the overall graph structure. An example of a TET can be seen below:
+The metric is called counts-of-counts and works by using Type Extension Trees (TET's) to describe the counts-of-counts features, which describe the overall graph structure. An example of a TET can be seen below:
 
 ![TET](pictures/Counts-of-counts_Similarity/TET.png)
 
