@@ -1,6 +1,6 @@
 ## Counts-of-counts similarity for prediction and search in relational data
 
-In the paper Jaeger et. Al presents a new metric that can be utilized to compare the similarity between graph entities which in turn can be utilize for searching and prediction on relational data.
+In the paper Jaeger et. Al presents a new metric that can be utilized to compare the similarity between graph entities which in turn can be utilized for searching and prediction on relational data.
 
 #### Type Extension Trees (TET)
 
