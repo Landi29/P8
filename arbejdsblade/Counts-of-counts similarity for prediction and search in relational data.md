@@ -16,7 +16,7 @@ The idea behind it is that  A TET feature defines which relations to follow for 
 
 ![TET2](pictures\Counts-of-counts_Similarity\TET2.png)
 
-It we want to find the value of a TET feature T(X) (where X is a set of free variables), for a k-tuple of graph entities $e$, denoted as $V(T(e))$, we do so via via the following example:
+If we want to find the value of a TET feature T(X) (where X is a set of free variables), for a k-tuple of graph entities $e$, denoted as $V(T(e))$, we do so via via the following example:
 
 If we want to evaluate movie TET $T(M)$ for a an entity we first check if the entity is a movie at all. If it is not then we return false as a value. If the entity is a movie then we return $(\{ f \}\{ f \}), (\{t\}\{ f \}), \{ f \}\{t\})$,or $(\{t\}\{t\})$ depending on whether that movies is a romance, a comedy, both or none of them. 
 
