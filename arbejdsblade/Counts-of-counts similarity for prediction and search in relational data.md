@@ -76,4 +76,4 @@ The final result of the logistic evaluation function $l^\beta(\gamma)$  is the r
 
 #### Histogram approximation
 
-Once the logistic evaluation tree has been computed we need to use to find distances between graph entities. An issue with logistic evaluation trees is that they can become quite large and complex which makes them unsuitable for quick distance measuring. Instead we want convert our logistic evaluation tree over to a node histogram tree from which we can run a similarity metric on.
+Once the logistic evaluation tree has been computed we can begin to find distances between graph entities. An issue with logistic evaluation trees is that they can become quite large and complex which makes them unsuitable for quick distance measuring. Instead we want convert our logistic evaluation tree over to a node histogram tree from which we can run a similarity metric on.
