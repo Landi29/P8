@@ -1,5 +1,6 @@
 import csv
-
+import json
+import requests
 
 #Filepath for movielens files
 #Change accordingly if needed
@@ -9,6 +10,10 @@ moviepath = "C:\\Users\\RedTop\\Desktop\\Movielens data\\movies.csv"
 #Read the ratings csv file and only keep the data that we need, by reading it one line at a time
 #As output we get a txt file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
 
+movietitle = "Sleepless in Seattle (1993)"
+
+
+print(movieyear)
 
 def discratingdata():
     with open(ratingpath, "r") as fp:
@@ -27,29 +32,23 @@ def discratingdata():
 #Read the movies csv file and convert the data to a more readable/useable format
 #As output we get a txt file where each line is a node for a movie of the form (movieId,movieTitle,ReleaseYear,genres)
 def discmoviedata():
-    with open(moviepath, "r") as fp:
-        nf = open("movies.txt","w+")
+    with open(moviepath, "r", encoding='utf-8') as fp:
+        nf = open("movies.csv","w+", newline='')
+        filewriter = csv.writer(nf)
+        counter = 0
+        for line in csv.reader(fp):
+            movietitle = line[1]
 
-        for line in fp:
-            fl = fp.readline()
-            linearray = fl.split(",")
-            print(linearray)
+            if "(" in movietitle:
+                movieyear = movietitle[-5:-1]                
+            else:
+                response = requests.get("http://www.omdbapi.com/?t="+movietitle+"&apikey=ad37bdca")
+                movie = response.json()
+                movieyear = movie["Year"]
+
+
 
         #CLean and split the information further to split the movietitle into title and year
-
-            if len(linearray) == 4:
-                titleyear = linearray[2].split(" (")
-                titleyear[1] = titleyear[1][0:4]
-                titleyear[0] = (linearray[1] + titleyear[0])
-
-                nf.write(linearray[0]+","+titleyear[0]+","+titleyear[1]+","+linearray[2])
-            else:
-                titleyear = linearray[1].split(" (")
-                titleyear[1] = titleyear[1][0:4]
-                nf.write(linearray[0]+","+titleyear[0]+","+titleyear[1]+","+linearray[2])
-
-            print(titleyear)
-
 
 
 
@@ -59,8 +58,6 @@ def discmoviedata():
 #    with open("C:\\Users\\RedTop\\Desktop\\Movielens data\\ratings.csv", "r") as fp:
 
 
-
-
 def removefromstring(match, characters):
 
     # Go through the list and remove any occurencess of given characters
@@ -68,4 +65,4 @@ def removefromstring(match, characters):
     cleanedstring = match.translate(trantab)
     return cleanedstring
 
-discratingdata()
+#discmoviedata()
