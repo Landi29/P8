@@ -6,19 +6,37 @@
 
 Manhattan distance is the absolute distance between two points in a graph. Also known as city block distance as it works pretty much equally to walking around the city block.
 
+
+$$
+d1(p,q) = \sum_{i=1}^{n}|pi−qi|
+$$
+
+
 ### Euclidean distance
 
 Euclidean is the direct path between two points in a graph, going in a birds eye view through the graph between the points. This will give minimum distance between the two points.
+$$
+d(p,q) = \sqrt{\sum_{i=1}^{n}(qi - p1)^2}
+$$
+
 
 ### Chord Distance
 
-By making a circle that contains the two points wanted to be looked at. We can use chord distance to find the distance between two points on the circle.
+By creating a circle that contains both points on its outer limit, we can use chord distance to find the distance between two points on the circle.
 
 Distance between two groups of points. This is useful to find outliers.
+$$
+SCD(x,y) =\sum_{i=1}^{n}(√xi−√yi)
+$$
+
 
 ### Average distance
 
-The average distance between two points.
+Also known as the Average Euclidean Distance, because of Euclidean distance having the drawback of 2 points with no attributes in common can still have a smaller distance than 2 points with something in common. This distance measure was therefore created to help overcome this problem.
+$$
+AvgD(x,y) = \sqrt{1/n \sum_{i=n}^{n}(xi-yi)^2}
+$$
+
 
 ### Canberra distance
 
