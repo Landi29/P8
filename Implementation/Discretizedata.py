@@ -1,68 +1,94 @@
 import csv
 import json
 import requests
+import time
 
-#Filepath for movielens files
+#Filepaths for movielens datadump
 #Change accordingly if needed
 ratingpath = "C:\\Users\\RedTop\\Desktop\\Movielens data\\ratings.csv"
 moviepath = "C:\\Users\\RedTop\\Desktop\\Movielens data\\movies.csv"
-
-#Read the ratings csv file and only keep the data that we need, by reading it one line at a time
-#As output we get a txt file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
-
-movietitle = "Sleepless in Seattle (1993)"
+movielinkpath = "C:\\Users\\RedTop\\Desktop\\Movielens data\\links.csv"
+#API-key from OMDB Api (limit: 1000 daily)
+apikey = "ad37bdca"
 
 
-print(movieyear)
-
+#Read the ratings csv file one line at a time, only keep the data we need
+#As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
 def discratingdata():
     with open(ratingpath, "r") as fp:
         nf = open("graph.csv","w+", newline='')
         filewriter = csv.writer(nf)
 
-        #for each line, split it into an array
-        for line in csv.reader(fp):
+        #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
+        for rating in csv.reader(fp):
         
-            #save the information as a string and read it into a file
-            #each line in the file is now of the form (MovieId, UserId, Rating)
-            filewriter.writerow([line[1],line[0],line[2]])
+            filewriter.writerow([rating[1],rating[0],rating[2]])
 
         nf.close()
 
-#Read the movies csv file and convert the data to a more readable/useable format
-#As output we get a txt file where each line is a node for a movie of the form (movieId,movieTitle,ReleaseYear,genres)
+#Read the movies csv file and take out the information we need, including release year
+#As output we get a csv file where each line is a node for a movie of the form (movieId,movieTitle,ReleaseYear,genres)
 def discmoviedata():
     with open(moviepath, "r", encoding='utf-8') as fp:
-        nf = open("movies.csv","w+", newline='')
+        nf = open("movies.csv","w+", newline='', encoding='utf-8')
         filewriter = csv.writer(nf)
-        counter = 0
-        for line in csv.reader(fp):
-            movietitle = line[1]
 
+        #File that links the movieID to an IMDBid
+        linkfile = open(movielinkpath, "r", encoding='utf-8')
+
+        counter = 0
+        #movie is an array of the form [movieID,movietitle,genres]
+        for movie in csv.reader(fp):
+            movietitle = movie[1]
+
+            #Certain movietitles are missing the year it was released
+            #if so, make api call to get the year from OMDB
             if "(" in movietitle:
                 movieyear = movietitle[-5:-1]                
             else:
-                response = requests.get("http://www.omdbapi.com/?t="+movietitle+"&apikey=ad37bdca")
-                movie = response.json()
-                movieyear = movie["Year"]
+                #link is an array of the form [movieID,imdbID,tmdbID]
+                for link in csv.reader(linkfile):
+                    if link[0] == movie[0]:
+                        imdbid = link[1]
+                        try:
+                            response = requests.get("http://www.omdbapi.com/?i=tt"+imdbid+"&apikey="+apikey)
+                            moviejson = response.json()
+                            movieyear = moviejson["Year"]
+                        except:
+                            print("Failed response")
+                            movieyear = "unknown"
+                        break
+                    else:
+                        pass
+        
+            filewriter.writerow([movie[0],movie[1],movieyear,movie[2]])
 
-
-
-        #CLean and split the information further to split the movietitle into title and year
+        nf.close
+        linkfile.close
 
 
 
 #Read the ratings csv file and convert the data into users
-#As output we get a txt file where each line is a node for a user of the form (userId, ratingcount)
-#def discuserdata():
-#    with open("C:\\Users\\RedTop\\Desktop\\Movielens data\\ratings.csv", "r") as fp:
+#As output we get a csv file where each line is a node for a user of the form (userId, ratingcount)
+def discuserdata():
+    with open(ratingpath, "r") as fp:
+        nf = open("users.csv","w+", newline='')
+        filewriter = csv.writer(nf)
 
+        currentid = '1'
+        counter = 0
 
-def removefromstring(match, characters):
+        #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
+        for rating in csv.reader(fp):
 
-    # Go through the list and remove any occurencess of given characters
-    trantab = match.maketrans("", "", characters)
-    cleanedstring = match.translate(trantab)
-    return cleanedstring
-
-#discmoviedata()
+            #skip line if not a rating
+            if "user" in rating[0]:
+                pass
+            #count up if the samer user have made multiple ratings
+            elif rating[0] == currentid:
+                counter += 1
+            else:
+                filewriter.writerow([currentid,counter])
+                currentid = rating[0]
+                counter = 1
+        nf.close()
