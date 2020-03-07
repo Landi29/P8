@@ -43,5 +43,3 @@ else
     echo "    build: Builds the paper into pdf"
     echo "    install: Downloads the necessary files from springer and pulls docker images"
 fi
-
-
