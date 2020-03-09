@@ -95,7 +95,7 @@ def disc_user_data():
             #skip line if not a rating
             if "user" in rating[0]:
                 pass
-            #count up if the same user have made multiple ratings
+            #count up if the same user has made multiple ratings
             elif rating[0] == currentid:
                 counter += 1
             #Write to file once we find a different userid, remember to count the current row we're at
