@@ -3,7 +3,7 @@ In the article “Page Ranking Algorithms: A Survey” N. Duhan et. al.  explain
 
 “SimRank: A Measure of Structural-Context Similarity” Witten by G. Jeh and J. Widom  describes the SimRank algorithm and its uses on graphs. In SimRank two objects are similar if they are referenced by similar objects and an object is maximally similar to itself. This leads to similarity in different part of a graph to be hard to find and it uses vast amounts of memory (O(n^2)). Sometimes the ranking can seem illogical to a human, but SimRank is reliable in many cases of finding similar subgraphs.
 
-“A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Applications” by H. cai et. al.   is a piper that summarizes and describes the terminology in graph embedding. they decripe what and input graph can be and what kind of embedding its mostly used for. The embedding method are plentiful and are often made to conserve data in compact graphs. The embedding method result in one of these type of embedded graphs, node-, edge-, subgraph- or whole graph embedding.
+“A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Applications” by H. cai et. al. is a paper that summarizes and describes the terminology in graph embedding. they describe what an input graph can be and what kind of embedding its mostly used for. The embedding method are plentiful and are often made to conserve data in compact graphs. The embedding method result in one of these type of embedded graphs, node-, edge-, subgraph- or whole graph embedding.
 
 “Type Extension Trees for feature construction and learning in relational domains” by M. Jaeger et. Al. 
 
