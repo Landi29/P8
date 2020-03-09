@@ -6,6 +6,7 @@
 * Relevant theory (may be changed):
   * Definition of recommendation?
   * Definition of graph embedding
+  * Definition of Type Extention Trees
   * Definition of structural similarity
   * Machine Learning methods
   * Data structures.
