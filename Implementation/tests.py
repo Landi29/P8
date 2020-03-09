@@ -18,9 +18,6 @@ class TestDiscretizedata(unittest.TestCase):
         "1,1217,3.5,1147878326",
         "1,1237,5.0,1147868839"
     ]
-    # (MovieId, UserId, Rating)
-    EXPECTED_VALUE = "296,1,5.0\n"
-    graph_data = None
 
     with open(Discretizedata.RATINGPATH, 'w') as writer:
         for line in RATING_DATA:
@@ -29,10 +26,13 @@ class TestDiscretizedata(unittest.TestCase):
     def test_disc_rating_data(self):
         """ Tests the disc_rating_data() method by using the first 10 lines
          in the ratings.csv file"""
+         # expected_value =  (MovieId, UserId, Rating)
+        expected_value = "296,1,5.0\n"
+        graph_data = None
         Discretizedata.disc_rating_data()
         with open(Discretizedata.GRAPH_DATA_PATH, 'r') as reader:
-            self.graph_data = reader.readlines()
-        self.assertEqual(self.graph_data[1], self.EXPECTED_VALUE)
+            graph_data = reader.readlines()
+        self.assertEqual(graph_data[1], expected_value)
 
 if __name__ == "__main__":
     unittest.main()
