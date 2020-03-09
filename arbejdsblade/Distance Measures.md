@@ -32,7 +32,8 @@ $$
 SCD(p,q) =\sum_{i=1}^{n}(\sqrt{pi}−\sqrt{qi})
 $$
 
-Where p and q are points in the graph and pi and qi are values at the i'th dimension.
+Where $p$ and $q$ are points in the graph and $p_i$ and $q_i$ are values at the i'th dimension.
+
 
 ### Average distance
 
