@@ -1,42 +1,49 @@
+"""Module for reading and discretizing movielens data
+into a graph representation of edges and nodes"""
+
 import csv
-import json
 import requests
-import time
+import pathlib
 
 #Filepaths for movielens datadump
-#Change accordingly if needed
-ratingpath = "Implementation\\Movielens_data\\ratings.csv"
-moviepath = "Implemnetation\\Movielens_data\\movies.csv"
-movielinkpath = "Implementation\\Movielens_data\\links.csv"
+RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
+MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
+MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
+
 #API-key from OMDB Api (limit: 1000 daily)
-apikey = "ad37bdca"
+APIKEY = "ad37bdca"
 
 
 #Read the ratings csv file one line at a time, only keep the data we need
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
 def disc_rating_data():
-    with open(ratingpath, "r") as fp:
-        nf = open("Implementation\\Movielens_data\\graphs.csv","w+", newline='')
+    """Reads file with rating data, changes it into a graph
+    representaition of (Head,Tail,Weight) and writes it into a new file"""
+
+    with open(RATINGPATH, "r") as fp:
+        nf = open("Implementation\\Movielens_data\\graphs.csv", "w+", newline='')
         filewriter = csv.writer(nf)
 
         #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
         for rating in csv.reader(fp):
         
-            filewriter.writerow([rating[1],rating[0],rating[2]])
+            filewriter.writerow([rating[1], rating[0], rating[2]])
 
         nf.close()
 
 #Read the movies csv file and take out the information we need, including release year
 #As output we get a csv file where each line is a node for a movie of the form (movieId,movieTitle,ReleaseYear,genres)
 def disc_movie_data():
-    with open(moviepath, "r", encoding='utf-8') as fp:
-        nf = open("Implementation\\Movielens_data\\movie_nodes.csv","w+", newline='', encoding='utf-8')
+    """Reads file with movie data, finds missing information
+    using OMDB and puts it into a new file"""
+
+    with open(MOVIEPATH, "r", encoding='utf-8') as fp:
+        nf = open("Implementation\\Movielens_data\\movie_nodes.csv", "w+", newline='', encoding='utf-8')
         filewriter = csv.writer(nf)
 
         #File that links the movieID to an IMDBid
-        linkfile = open(movielinkpath, "r", encoding='utf-8')
+        linkfile = open(MOVIELINKPATH, "r", encoding='utf-8')
 
-        counter = 0
         #movie is an array of the form [movieID,movietitle,genres]
         for movie in csv.reader(fp):
             movietitle = movie[1]
@@ -44,15 +51,15 @@ def disc_movie_data():
             #Certain movietitles are missing the year it was released
             #if so, make api call to get the year from OMDB
             if "(" in movietitle:
-                #Take the substring from the movie title that contains the year is, it is always at the end of title as (year)
-                movieyear = movietitle[-5:-1]           
+                #Find substring from movie title that contains the year, it is always at the end of title as (year)
+                movieyear = movietitle[-5:-1]
             else:
                 #link is an array of the form [movieID,imdbID,tmdbID]
                 for link in csv.reader(linkfile):
                     if link[0] == movie[0]:
                         imdbid = link[1]
                         try:
-                            response = requests.get("http://www.omdbapi.com/?i=tt"+imdbid+"&apikey="+apikey)
+                            response = requests.get("http://www.omdbapi.com/?i=tt"+imdbid+"&APIKEY="+APIKEY)
                             moviejson = response.json()
                             movieyear = moviejson["Year"]
                         except:
@@ -61,8 +68,8 @@ def disc_movie_data():
                         break
                     else:
                         pass
-        
-            filewriter.writerow([movie[0],movie[1],movieyear,movie[2]])
+
+            filewriter.writerow([movie[0], movie[1], movieyear, movie[2]])
 
         nf.close
         linkfile.close
@@ -72,8 +79,11 @@ def disc_movie_data():
 #Read the ratings csv file and convert the data into users
 #As output we get a csv file where each line is a node for a user of the form (userId, ratingcount)
 def disc_user_data():
-    with open(ratingpath, "r") as fp:
-        nf = open("Implementation\\Movielens_data\\user_nodes.csv","w+", newline='')
+    """Reads file with user data, counts how many ratings each user
+    have done and writes it into a new file"""
+
+    with open(RATINGPATH, "r") as fp:
+        nf = open("Implementation\\Movielens_data\\user_nodes.csv", "w+", newline='')
         filewriter = csv.writer(nf)
 
         currentid = '1'
@@ -88,9 +98,9 @@ def disc_user_data():
             #count up if the same user have made multiple ratings
             elif rating[0] == currentid:
                 counter += 1
-            #Write to file once we find a different userid, and remember to count the current row we're looking at
+            #Write to file once we find a different userid, remember to count the current row we're at
             else:
-                filewriter.writerow([currentid,counter])
+                filewriter.writerow([currentid, counter])
                 currentid = rating[0]
                 counter = 1
         nf.close()
