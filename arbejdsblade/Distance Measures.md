@@ -7,7 +7,8 @@
 Manhattan distance is the absolute distance between two points in a graph. Also known as city block distance as it works pretty much equally to walking around the city block.
 
 $$
-d1(p,q) = \sum_{i=1}^{n}|pi−qi|
+d1(p,q) = \sum_{i=1}^{n}|p_i−q_i|
+
 $$
 
 Where p and q are points in the graph and pi and qi is value at the i'th dimension.
@@ -44,4 +45,3 @@ Where p and q are points in the graph and pi and qi are values at the i'th dimen
 ### Canberra distance
 
 Manhattan distances using weights.
-
