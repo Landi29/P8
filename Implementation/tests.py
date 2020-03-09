@@ -1,4 +1,5 @@
 # The tests can both be run with python and pytest.
+import Discretizedata
 import unittest
 
 # The test class for graph methods.

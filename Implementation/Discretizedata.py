@@ -8,7 +8,10 @@ import pathlib
 #Filepaths for movielens datadump
 RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
+MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
+USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
+GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphs.csv'
 
 #API-key from OMDB Api (limit: 1000 daily)
 APIKEY = "ad37bdca"
@@ -21,7 +24,7 @@ def disc_rating_data():
     representaition of (Head,Tail,Weight) and writes it into a new file"""
 
     with open(RATINGPATH, "r") as fp:
-        nf = open("Implementation\\Movielens_data\\graphs.csv", "w+", newline='')
+        nf = open(GRAPH_DATA_PATH, "w+", newline='')
         filewriter = csv.writer(nf)
 
         #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
@@ -38,7 +41,7 @@ def disc_movie_data():
     using OMDB and puts it into a new file"""
 
     with open(MOVIEPATH, "r", encoding='utf-8') as fp:
-        nf = open("Implementation\\Movielens_data\\movie_nodes.csv", "w+", newline='', encoding='utf-8')
+        nf = open(MOVIE_NODES_PATH, "w+", newline='', encoding='utf-8')
         filewriter = csv.writer(nf)
 
         #File that links the movieID to an IMDBid
@@ -83,7 +86,7 @@ def disc_user_data():
     have done and writes it into a new file"""
 
     with open(RATINGPATH, "r") as fp:
-        nf = open("Implementation\\Movielens_data\\user_nodes.csv", "w+", newline='')
+        nf = open(USER_NODES_PATH, "w+", newline='')
         filewriter = csv.writer(nf)
 
         currentid = '1'
