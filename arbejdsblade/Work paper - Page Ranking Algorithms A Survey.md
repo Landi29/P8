@@ -3,9 +3,9 @@ PageRank is an algorithm used by Google that ranks web pages. The algorithm coun
 
 The simplest way of calculating the PageRank of a page is given by the formular:
 
- $PR(A)={\frac {PR(B)}{L(B)}}+{\frac {PR(C)}{L(C)}}+{\frac {PR(D)}{L(D)}}$ 
+$PR(A)={\frac {PR(B)}{L(B)}}+{\frac {PR(C)}{L(C)}}+{\frac {PR(D)}{L(D)}}$ 
  
- Where PR(x) is the PageRank of a given page and L(x) is the number of outbound links from a page (A, B, C and D are pages in the formular above). A more general difinition is given by this formular:
+Where PR(x) is the PageRank of a given page and L(x) is the number of outbound links from a page (A, B, C and D are pages in the formular above). A more general difinition is given by this formular:
  
 $PR(u)=\sum_{v \in B(u)}^{10} \frac {PR (v)}{L(v)}$ 
 
