@@ -1,0 +1,15 @@
+This folder is used for holding the Movielens Data dump and the discretized data
+The data is discretized using the discretizedata.py module
+
+Movielens datadump can be found at: : https://grouplens.org/datasets/movielens/
+
+The minimum files that are needed from the dump for running discretizedata.py are the following:
+movies.csv
+ratings.csv
+links.csv
+
+
+after running each method it should also contain the following files:
+graph.csv
+movie_nodes.csv
+user_nodes.csv
