@@ -4,8 +4,8 @@ import os
 import Discretizedata
 
 # The test class for graph methods.
-class TestGraphMethods(unittest.TestCase):
-    """ This class contains all the graph related methods."""
+class TestDiscretizedata(unittest.TestCase):
+    """ This class contains tests for the functions in Discretizedata.py."""
     RATING_DATA = [
         "userId,movieId,rating,timestamp",
         "1,296,5.0,1147880044",
