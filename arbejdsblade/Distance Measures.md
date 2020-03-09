@@ -6,19 +6,20 @@
 
 Manhattan distance is the absolute distance between two points in a graph. Also known as city block distance as it works pretty much equally to walking around the city block.
 
-
 $$
 d1(p,q) = \sum_{i=1}^{n}|pi−qi|
 $$
 
+Where p and q are points in the graph and pi and qi is value at the i'th dimension.
 
 ### Euclidean distance
 
 Euclidean is the direct path between two points in a graph, going in a birds eye view through the graph between the points. This will give minimum distance between the two points.
 $$
-d(p,q) = \sqrt{\sum_{i=1}^{n}(qi - p1)^2}
+d(p,q) = \sqrt{\sum_{i=1}^{n}(pi - qi)^2}
 $$
 
+Where p and q are points in the graph and pi and qi is the value at the i'th dimension.
 
 ### Chord Distance
 
@@ -26,17 +27,19 @@ By creating a circle that contains both points on its outer limit, we can use ch
 
 Distance between two groups of points. This is useful to find outliers.
 $$
-SCD(x,y) =\sum_{i=1}^{n}(√xi−√yi)
+SCD(p,q) =\sum_{i=1}^{n}(\sqrt{pi}−\sqrt{qi})
 $$
 
+Where p and q are points in the graph and pi and qi are values at the i'th dimension.
 
 ### Average distance
 
 Also known as the Average Euclidean Distance, because of Euclidean distance having the drawback of 2 points with no attributes in common can still have a smaller distance than 2 points with something in common. This distance measure was therefore created to help overcome this problem.
 $$
-AvgD(x,y) = \sqrt{1/n \sum_{i=n}^{n}(xi-yi)^2}
+AvgD(p,q) = \sqrt{1/n \sum_{i=n}^{n}(pi-qi)^2}
 $$
 
+Where p and q are points in the graph and pi and qi are values at the i'th dimension.
 
 ### Canberra distance
 
