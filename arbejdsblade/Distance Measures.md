@@ -20,7 +20,8 @@ $$
 d(p,q) = \sqrt{\sum_{i=1}^{n}(pi - qi)^2}
 $$
 
-Where p and q are points in the graph and pi and qi is the value at the i'th dimension.
+Where $p$ and $q$ are points in the graph and $p_i$ and $q_i$ is the value at the i'th dimension.
+
 
 ### Chord Distance
 
