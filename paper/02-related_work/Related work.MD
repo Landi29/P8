@@ -7,7 +7,7 @@ In the article “Page Ranking Algorithms: A Survey” N. Duhan et. al.  explain
 
 “Type Extension Trees for feature construction and learning in relational domains” by M. Jaeger et. Al. 
 
-The article “Counts-of-counts similarity for prediction and search in relational data” by M. jaeger et. al.  gives a quick description of Type Extension Trees (TET) and Count of Counts. The article uses the principles from “Type Extension Trees for feature construction and learning in relational domains” forming the TETs and found substructures in databases. They showed that it is possible to calculate similarity using logical evaluation and histograms or by using earth mover’s distance (EMD).
+The article “Counts-of-counts similarity for prediction and search in relational data” by M. Jaeger et. al.  gives a quick description of Type Extension Trees (TET) and Count of Counts. The article uses the principles from “Type Extension Trees for feature construction and learning in relational domains” in forming the TETs and found substructures in databases. They showed that it is possible to calculate similarity using logical evaluation and histograms or by using earth mover’s distance (EMD).
 
 “Knowledge Graph Embedding for Link Prediction and Triplet Classification” an article by E. Shijia et. Al.  combats the problem of embedding knowledge graphs where graph embedding mostly has been used on social network graphs before.  Their solution is to learn semantic relation between entities in a form of edge embedding where they later would be able to ask logical questions and get one or more relations.
 
