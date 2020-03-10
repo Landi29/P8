@@ -1,16 +1,16 @@
-In (**A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Application**) HongYun Cai et al. discuss about the different ways of doing graph embedding. They split these different embedding strategies into input and output embedding which has 4 categories each. 
+In (**A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Application**) HongYun Cai et al. discuss the different ways of graph embedding. They define a taxonomy for embedding strategies input and output.
 
-For input we have:
+The input taxonomy has four definitions.  
 
 \textit{Homogeneous Graphs} which is graphs where both nodes and edges belong to a single type respectively, and can be further categorized by either adding weights, directions or both. Graphs that have only directions and no weights the nodes should be closer to each other depending on how they relate to each other, so two nodes that are related should be similar.
 
-\textit{Heterogeneous Graphs} can have nodes and edges of multiple types which is typically things like knowledge graphs where edges and nodes usually represent different relations and entities respectively. For example a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" where the relations would then be "Produce", "Direct" and "Act-in".
+\textit{Heterogeneous Graphs} can have nodes and edges of multiple types which is typically things like knowledge graphs where edges and nodes usually represent different relations and entities respectively. For example, a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" where the relations would then be "Produced", "Directed" and "Acted-In".
 
 \textit{Graph with Auxiliary Information} is any graph that contains extra information for a node or relation. To give an example of this we could have the category of nodes called "Book", which contains information about the book and its author. The node in this case would be the name of the book and author could be auxiliary information.
 
 \textit{Graph constructed from non-relational data} instead of providing the input graph we construct it from non-relational input data, this is usually done when the input data is assumed to be in a low dimensional manifold. In this kind of graph relations can be discovered by using methods like K-Nearest-Neighbours.
 
-For output we have:
+The taxonomy for output has four definitions as well.
 
 \textit{Node embedding} is the act of taking the nodes in the graph and represent them as a vector. When doing this two nodes that were similar in the graph should have similar vectors and therefore be able to be identified.
 
