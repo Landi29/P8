@@ -18,11 +18,11 @@ What happens here is is that we run the algorithm $conv(u_n)$ on a representatio
 
 Once node embedding have been performed we have to compute the graph embedding. Here the important question is to figure out which nodes are more important than other. This is done via an attention mechanism that assigns weight to each nodes based on a similarity metric. The attention mechanism works as follows: 
 
- 
+
 $$
 h= \sum^N_{n=1} \sigma(u^T_nc)u_n=\sum^N_{n=1}\sigma(u^T_ntanh((\frac{1}{N}\sum_{m=1}^Nu_n)W_2))u_n
 $$
-The idea behind this mechanism is that $u_n$ is the embedding of node n, $c$ is the global graph context which is computed by taking the average of all node embddings  and feeding it into a nonlinear tranformation function: $c=tanh((\frac{1}{N}\sum_{m=1}^Nu_m)W_2)$ where $W_2$ is a learnable weight matrix. What $c$ provides is the structural and feature information that is adaptive to the given similarity via learning the weight matrix. Once $c$ has been computed we can begin computing once attention weight for each node. For node $n$, to make its attention $a_n$ aware of the global context, we take the inner product between $c$ and its node embedding. The intuition is that, nodes similar to the global context should receive  higher attention weights. We here apply a sigmoid function to ensure that the range of the attention weight is between 0 and 1. Lastly $h$ is the weighted sum of node embeddings $h= \sum^N_{n=1} a_nu_n$.
+The idea behind this mechanism is that $u_n$ is the embedding of node n, $c$ is the global graph context which is computed by taking the average of all node embeddings  and feeding it into a nonlinear tranformation function: $c=tanh((\frac{1}{N}\sum_{m=1}^Nu_m)W_2)$ where $W_2$ is a learnable weight matrix. What $c$ provides is the structural and feature information that is adaptive to the given similarity via learning the weight matrix. Once $c$ has been computed we can begin computing once attention weight for each node. For node $n$, to make its attention $a_n$ aware of the global context, we take the inner product between $c$ and its node embedding. The intuition is that, nodes similar to the global context should receive  higher attention weights. We here apply a sigmoid function to ensure that the range of the attention weight is between 0 and 1. Lastly $h$ is the weighted sum of node embeddings $h= \sum^N_{n=1} a_nu_n$.
 
 Once the graph-level embedding has been computed we can begin computing the relation between the two graphs. This is done via Neural Tensor Networks (NTN) which can be seen below:
 $$
