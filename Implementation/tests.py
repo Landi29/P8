@@ -27,7 +27,7 @@ class TestDiscretizedata(unittest.TestCase):
             "307,1,5.0\n",
             "665,1,5.0\n"
         ]
-        graph_data = None
+
 
         Discretizedata.disc_rating_data()
         with open(Discretizedata.GRAPH_DATA_PATH, 'r') as reader:
