@@ -2,23 +2,31 @@ In (**A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Appli
 
 The input taxonomy has four definitions.  
 
-\textit{Homogeneous Graphs} which is graphs where both nodes and edges belong to a single type respectively, and can be further categorized by either adding weights, directions or both. Graphs that have only directions and no weights the nodes should be closer to each other depending on how they relate to each other, so two nodes that are related should be similar.
+\begin{definition}[Homogeneous Graphs] A graph where both nodes and edges belong to a single type respectively, and can be further categorized by either adding weights, directions or both. Graphs that have only directions and no weights the nodes should be closer to each other depending on how they relate to each other, so two nodes that are related should be similar.
+\end{definition}
 
-\textit{Heterogeneous Graphs} can have nodes and edges of multiple types which is typically things like knowledge graphs where edges and nodes usually represent different relations and entities respectively. For example, a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" where the relations would then be "Produced", "Directed" and "Acted-In".
+\begin{definition}[Heterogeneous Graphs] A graph can have nodes and edges of multiple types which is typically things like knowledge graphs where edges and nodes usually represent different relations and entities respectively. For example, a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" where the relations would then be "Produced", "Directed" and "Acted-In".
+\end{definition}
 
-\textit{Graph with Auxiliary Information} is any graph that contains extra information for a node or relation. To give an example of this we could have the category of nodes called "Book", which contains information about the book and its author. The node in this case would be the name of the book and author could be auxiliary information.
+\begin{definition}[Graph with Auxiliary Information] A graph that contains extra information for a node or relation. To give an example of this we could have the category of nodes called "Book", which contains information about the book and its author. The node in this case would be the name of the book and author could be auxiliary information.
+\end{definition}
 
-\textit{Graph constructed from non-relational data} instead of providing the input graph we construct it from non-relational input data, this is usually done when the input data is assumed to be in a low dimensional manifold. In this kind of graph relations can be discovered by using methods like K-Nearest-Neighbours.
+\begin{definition}[Graph constructed from non-relational data] Instead of providing the input graph we construct it from non-relational input data, this is usually done when the input data is assumed to be in a low dimensional manifold. In this kind of graph relations can be discovered by using methods like K-Nearest-Neighbours.
+\end{definition}
 
 The taxonomy for output has four definitions as well.
 
-\textit{Node embedding} is the act of taking the nodes in the graph and represent them as a vector. When doing this two nodes that were similar in the graph should have similar vectors and therefore be able to be identified.
+\begin{definition}[Node embedding] The act of taking the nodes in the graph and represent them as a vector. When doing this two nodes that were similar in the graph should have similar vectors and therefore be able to be identified.
+\end{definition}
 
-\textit{Edge Embedding} is a bit more complex. Given a relation between two nodes a triplet is created \textit{<h,r,t>}  where h and t are the head and tail node and r is the relation using this it is possible to given two of the three components to predict what the last component should be.
+\begin{definition}[Edge Embedding] Given a relation between two nodes a triplet is created \textit{<h,r,t>}  where h and t are the head and tail node and r is the relation using this it is possible to given two of the three components to predict what the last component should be.
+\end{definition}
 
-\textit{Hybrid Embedding} spans over a few different embedding methods like substructure embedding where each node and edges are embedding for a smaller section of the graph then combined. This can then be used to find substructures that are similar to each other.
+\begin{definition}[Hybrid Embedding] Spans over a few different embedding methods like substructure embedding where each node and edges are embedding for a smaller section of the graph then combined. This can then be used to find substructures that are similar to each other.
+\end{definition}
 
-\textit{Whole-Graph Embedding} is the idea of representing the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules. But this is also the hardest one to do as an embedding method wants to be reversible, but this method can forget information because of the sheer amount of information required to be put together.
+\begin{definition}[Whole-Graph Embedding] Representing the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules. But this is also the hardest one to do as an embedding method wants to be reversible, but this method can forget information because of the sheer amount of information required to be put together.
+\end{definition}
 
 To embed the graph there is several different techniques and each of them has different advantages and disadvantages.
 
