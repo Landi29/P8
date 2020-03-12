@@ -3,8 +3,14 @@ In this section there an introduction to recommender systems.
 
 There are different types of recommender systems and in this paper we focus on the types that might work on sub graphs.
 
-\begin{definition}[Content-based recommendation] 
+\begin{definition}[Content-based recommendation] \label{def:Content_based_recommendation}
+A recommendation system that analyses items preferred by a user to find common attributes of the items, and compares these attributes to attributes of other items to find simultaneities\cite{lu2015recommender}. 
 \end{definition}
 
-\begin{definition}[Collaborative filtering-based] 
+Content-based recommendation as defined in definition \ref{def:Content_based_recommendation} are not dependent on other users but the attributes of the items.
+
+\begin{definition}[Collaborative filtering-based]\label{def:Collaborative_filtering_based}
+A recommender system that represents user or items as vectors, such that a simulation can be calculated between vectors\cite{lu2015recommender}.
 \end{definition}
+
+Collaborative filtering-based recommenders defined in definition \ref{def:Collaborative_filtering_based}, depend on other items or users. These systems therefore gives users trust in the answer but often has the cold start problem.
