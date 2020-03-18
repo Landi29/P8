@@ -1,0 +1,14 @@
+# Related work
+In the article “Page Ranking Algorithms: A Survey” N. Duhan Et. Al.  explains the concept of page rank and the evolution of the algorithm. The authors explain strengths and weaknesses with each stage the algorithm has been through. The original PageRank algorithm are easy to implement and is the basis of PageRank. Weighted PageRank can be more precise and runs faster by having a look at what input and output a page has. 
+
+“SimRank: A Measure of Structural-Context Similarity” Witten by G. Jeh and J. Widom  describes the SimRank algorithm and its uses on graphs. In SimRank two objects are similar if they are referenced by similar objects and an object is maximally similar to itself. This leads to similarity in different part of a graph to be hard to find and it uses vast amounts of memory (O(n^2)). Sometimes the ranking can seem illogical to a human, but SimRank is reliable in many cases of finding similar subgraphs.
+
+“A Comprehensive Survey of Graph Embedding: Problems, Techniques, and Applications” by H. cai Et. Al. is a paper that summarizes and describes the terminology in graph embedding. they describe what an input graph can be and what kind of embedding its mostly used for. The embedding method are plentiful and are often made to conserve data in compact graphs. The embedding method result in one of these type of embedded graphs, node-, edge-, subgraph- or whole graph embedding.
+
+“Type Extension Trees for feature construction and learning in relational domains” by M. Jaeger Et. Al. 
+
+The article “Counts-of-counts similarity for prediction and search in relational data” by M. Jaeger Et. Al.  gives a quick description of Type Extension Trees (TET) and Count of Counts. The article uses the principles from “Type Extension Trees for feature construction and learning in relational domains” in forming the TETs and found substructures in databases. They showed that it is possible to calculate similarity using logical evaluation and histograms or by using earth mover’s distance (EMD).
+
+“Knowledge Graph Embedding for Link Prediction and Triplet Classification” an article by E. Shijia Et. Al.  combats the problem of embedding knowledge graphs where graph embedding mostly has been used on social network graphs before.  Their solution is to learn semantic relation between entities in a form of edge embedding where they later would be able to ask logical questions and get one or more relations.
+
+In “Semi-supervised Graph Embedding for Multi-label Graph Node Classification” by K. Gao Et. Al.  they train a Graph convolution network to classify and embed subgraphs. They use a semi supervised technique this is done because of the inconsistencies that can be found in multi-label graphs this technique also allows for unable relations to be represented but are not something than can be supervised as off the original graph.

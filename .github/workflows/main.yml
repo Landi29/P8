@@ -3,10 +3,8 @@ on:
   push:
     branches: 
       - master
-      - develop
   pull_request:
     branches:
-      - master
       - develop
     
 jobs:
@@ -19,7 +17,7 @@ jobs:
         uses: xu-cheng/latex-action@master
         with:
           working_directory: paper
-          root_file: main.tex
+          root_file: master.tex
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
