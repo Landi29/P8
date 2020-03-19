@@ -1,17 +1,17 @@
 \subsection{Graph Embedding}
 In \cite{8294302} HongYun Cai et al. discuss the different ways of graph embedding. They define a taxonomy for the embedding strategies input and output.
 
-The input taxonomy has four definitions.  
+The input taxonomy has four definitions.
 
 \begin{definition}[Homogeneous Graphs] A graph where both nodes and edges belong to a single type respectively, and can be further categorized by either adding weights, directions or both. In Directed and unweighted Graphs, distance between nodes dependent on how many edges they are related by. Two nodes that are related should be more similar than two where only one node is related to the other\cite{8294302}.
 \end{definition}
 
-\begin{definition}[Heterogeneous Graphs] A Heterogeneous Graph is a graph that can have nodes and edges of multiple types\cite{8294302}. 
+\begin{definition}[Heterogeneous Graphs] A Heterogeneous Graph is a graph that can have nodes and edges of multiple types\cite{8294302}.
 \end{definition}
 
 A commen example of Heterogeneous Graphs are Knowledge Graphs where edges and nodes usually represent different relations and entities respectively. For example, a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" represented as nodes, and the relations "Produced", "Directed" and "Acted-In" represented as edges.
 
-\begin{definition}[Graph with Auxiliary Information] A graph that contains extra information for a node or relation. 
+\begin{definition}[Graph with Auxiliary Information] A graph that contains extra information for a node or relation.
 \end{definition}
 
 An example could be a graph with the category of nodes called "Book", which contains information about the book and its author. The node in this case would be the name of the book and author could be auxiliary information\cite{8294302}.
@@ -30,7 +30,7 @@ The taxonomy for output has four definitions as well.
 \begin{definition}[Hybrid Embedding] Spans over a few different embedding methods like substructure embedding where nodes and/or edges are embedded and then categorised to represent substructures of a graph. This can then be used to find substructures that are similar to each other\cite{8294302}.
 \end{definition}
 
-\begin{definition}[Whole-Graph Embedding] Representing the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules\cite{8294302}. 
+\begin{definition}[Whole-Graph Embedding] Representing the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules\cite{8294302}.
 %But this is also the hardest one to do as an embedding method wants to be reversible, but this method can forget information because of the sheer amount of information required to be put together.
 \end{definition}
 
@@ -44,6 +44,6 @@ To embed the graph there is several different techniques and each of them has di
 
 \textit{Graph Kernel} starts in a kernel and then walks through a subgraph comparing each kernel that was chosen. This is mostly used in graph embedding and only represent and compare structures that are desired to be compared. But this method have problems with substructures that are not independent and will grow the size exponentially\cite{8294302}.
 
-All these embedding strategies all have applications and can be used for a lot of different classification, clustering and recommendation methods. \textit{Node Embedding} can be used for node classifications for SVM and KNN, node clustering in graphs and node recommendations by finding associations in the graph\cite{8294302}. 
+All these embedding strategies all have applications and can be used for a lot of different classification, clustering and recommendation methods. \textit{Node Embedding} can be used for node classifications for SVM and KNN, node clustering in graphs and node recommendations by finding associations in the graph\cite{8294302}.
 
 \textit{Edge Embedding} is used for triplet classifications. As an example we can find if a relation $a-b$ goes through relation $r$ and finding which kind of link appears between two nodes in a graph. \textit{Hybrid and Whole Graph Embedding} will make it possible to classify graphs in a lower dimension than they originally where and this embedding method is better for visualization of the graph for human consumption\cite{8294302}.
