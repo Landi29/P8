@@ -17,23 +17,39 @@
 
 # Movie(m)
 # User(u)
-# rated(u,m)
-# genre(m,g)
+# rated(u,m) den her kan splittes til 3 grupper tror jeg dårlig <3, middel =3 og god >3
+# genre(m,g) måske den skal splittes til mange individuelle genre of blive true false
+
+# TETet kunne gøres  med genre og/eller tags.
+# tags skal bare rydes op og måske klassefiseres til mindre grupper da mange er en variation af the samme
+# eller ligger tæt op af hinanden.
+
+# User(u) -> rated(u,m) -> genre(m, g)
+# User(u) -> rated(u,m) -> tag(m, t)
+# User(u) -> rated(u,m) -> (genre(m, g), tag(m, t))
 
 import csv
 import pathlib
+import TET
 
-TAGSPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tags.dat'
-MOVIESPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'movies.dat'
-RELEVNACEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tag_relevance.dat'
+# TAGSPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tags.dat'
+# MOVIESPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'movies.dat'
+# RELEVNACEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tag_relevance.dat'
 
 # read flash.dat to a list of lists
-#datContent = [i.strip().split() for i in open("./flash.dat").readlines()]
-with open(MOVIESPATH, 'r') as read:
-    for i in  read.readlines():
-        print('lars')
+# datContent = [i.strip().split() for i in open("./flash.dat").readlines()]
+# with open(MOVIESPATH, 'r') as read:
+#    listof = read.readlines():
 
-# write it as a new CSV file
-#with open("./flash.csv", "wb") as f:
-#    writer = csv.writer(f)
-#    writer.writerows(datContent)
+def buildTETs(graph):
+    tets = []
+    for vector in graph.vectors:
+        if User(vector):
+            temp_tet = TET.TET(root=vector)
+            ratings = rated(vector)
+            for movie in ratings:
+                genres = genre(movie)
+                temp_tet.addchild(TET.child(movie, rated(vector,movie), genres))
+            tets.append(temp_tet)
+
+
