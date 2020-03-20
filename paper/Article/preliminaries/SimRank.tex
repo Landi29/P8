@@ -33,7 +33,10 @@ R_0(a,b)= \begin{cases}
 \end{cases}
 \end{equation}
 
+To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank equation mentioned earlier:
 \begin{equation}
 R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 \end{equation}
+
+What the above equation states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$ we update for $(a,b)$ on each iteration $k+1$ using the similarity of the neighbors of $(a,b)$ from the previous iteration $k$. The values $R_k(*,*)$ are nondecreasing as $k$ increases. 
 
