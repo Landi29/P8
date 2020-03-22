@@ -36,20 +36,57 @@ import TET
 # MOVIESPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'movies.dat'
 # RELEVNACEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tag_relevance.dat'
 
+MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
+USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
+GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
+
 # read flash.dat to a list of lists
 # datContent = [i.strip().split() for i in open("./flash.dat").readlines()]
 # with open(MOVIESPATH, 'r') as read:
 #    listof = read.readlines():
 
+with open(MOVIE_NODES_PATH, 'r', encoding="utf-8") as read:
+    MOVIE_NODES = read.readlines()
+with open(USER_NODES_PATH, 'r', encoding="utf-8") as read:
+    USER_NODES = read.readlines()
+with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+    GRAPH_DATA = read.readlines()
+
+def User(u):
+    if u in USER_NODES:
+        return True
+    return False
+
+def rated(u,m=None):
+    if m == None:
+        ratings=[]
+        u = u.strip().split(',')
+        for r in GRAPH_DATA[1:]:
+            if u[0] == r.strip().split(',')[1]:
+                ratings.append(r)
+        return ratings
+    for r in GRAPH_DATA:
+        if u.strip().split(',')[0] == r.strip().split(',')[1] and m == r.strip().split(',')[0]:
+            return r
+    return False
+
+def genre(m,g=None):
+    if g == None:
+        for movie in MOVIE_NODES:
+            if movie.strip().split(',')[0] == m:
+                return movie.strip().split(',')[-1]
+
 def buildTETs(graph):
     tets = []
-    for vector in graph.vectors:
+    for vector in graph[0]:
         if User(vector):
             temp_tet = TET.TET(root=vector)
             ratings = rated(vector)
-            for movie in ratings:
+            for rating in ratings:
+                movie = rating.split(',')[0]
                 genres = genre(movie)
-                temp_tet.addchild(TET.child(movie, rated(vector,movie), genres))
+                temp_tet.addchild(TET.TETChild(movie, rated(vector,movie), genres))
             tets.append(temp_tet)
 
-
+G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
+buildTETs(G)

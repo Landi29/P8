@@ -11,11 +11,13 @@ class TET:
         self._children = TET._children
 
     def addchild(self, child):
+        if self._children==None:
+            self._children=[child]
         self._children.append(child)
 
 
 class TETChild:
-    def TETChild(self, movie,rating, genres):
+    def __init__(self, movie, rating, genres):
         self._rating = rating
         self._movie = movie
         self._children = genres
