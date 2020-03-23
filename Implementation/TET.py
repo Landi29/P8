@@ -30,11 +30,8 @@ class TETChild:
         self._children = genres
 
     def tostring(self):
-        string = "[" + self._rating
-        for child in self._children:
-            string += ",[" + child[0] + "," + str(child[1:]) + "]"
-        string += "]"
-        return string
+        children = ",".join(map(str, self._children[1:]))
+        return "[" + self._rating + ",[" + self._children[0] + ",[" + children + "]]]"
 
 tet = TET()
 

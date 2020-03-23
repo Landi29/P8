@@ -39,6 +39,7 @@ import TET
 MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
+TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
 
 # read flash.dat to a list of lists
 # datContent = [i.strip().split() for i in open("./flash.dat").readlines()]
@@ -94,7 +95,7 @@ def buildTETs(graph):
     tets = []
     for vector in graph[0]:
         if User(vector):
-            temp_tet = TET.TET(root=vector)
+            temp_tet = TET.TET(root=vector.rstrip())
             ratings = rated(vector)
             for group in ratings:
                 genres = []
@@ -110,8 +111,13 @@ def buildTETs(graph):
                         genres.append([mgenre,movie])
                 for lgenre in genres:
                     temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
-            test = temp_tet.tostring()
             tets.append(temp_tet)
 
 G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
-tet = buildTETs(G)
+tets = buildTETs(G)
+
+
+with open(TETS_PATH, "w+", newline='') as file:
+    filewriter = csv.writer(file)
+    for tet in tets:
+        filewriter.writerow(tet.tostring())
