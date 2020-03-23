@@ -1,0 +1,14 @@
+﻿We want to build a program that can:
+* Compare user structures in a graph via:
+   * Simrank
+      * Simrank can be done directly on the graph
+   * Embedding
+      * Embedding is done to represent the structures as vectors and by using machine learning algorithms find the most similar vectors making recommendations in a collaborative user based fashion. Some machine learning methods might use more common distance measures.
+   * Type Extension Trees
+      * TET is done to represent the structures as trees and by using machine learning algorithms find the most similar vectors making recommendations in a collaborative user based fashion. some machine learning methods might use more common distance measures.
+
+
+Input:  The methods should take a graph G=(V,E) where V is user and movie nodes and E is the rating between a user and a movie, these edges are undirected.
+
+
+Output: A recommendation of one or more movie's over a threshold, that user has not seen but are recommended because user and user’ are similar..
