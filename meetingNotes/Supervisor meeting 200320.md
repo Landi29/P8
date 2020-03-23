@@ -12,7 +12,7 @@
   * We don't want to do the embedding ourselves we want to find some tools that can do it for us.
   * An alternative we could create a co-occurence metric for each tag and do spectral clustering.
     * Will be a squared dimension of tags
-    * Laplasian will give us an eigen vectors
+    * Laplasian will give us eigen vectors
     * Will give an embedding of the tags at a lower dimensionality
     * Would be viable for our case
     * We want to find the community of tags that belong to each other
