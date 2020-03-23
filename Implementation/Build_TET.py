@@ -53,10 +53,12 @@ with open(USER_NODES_PATH, 'r', encoding="utf-8") as read:
 with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
     GRAPH_DATA = read.readlines()
 
+
 def User(u):
     if u in USER_NODES:
         return True
     return False
+
 
 def rated(u,m=None):
     if m == None:
@@ -85,11 +87,13 @@ def rated(u,m=None):
             return r
     return False
 
-def genre(m,g=None):
+
+def genre(m, g=None):
     if g == None:
         for movie in MOVIE_NODES:
             if movie.strip().split(',')[0] == m:
                 return movie.strip().split(',')[-1]
+
 
 def buildTETs(graph):
     tets = []
@@ -113,11 +117,14 @@ def buildTETs(graph):
                     temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
             tets.append(temp_tet)
 
+    return tets
+
 G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
 tets = buildTETs(G)
 
-
-with open(TETS_PATH, "w+", newline='') as file:
+with open(TETS_PATH, "w", newline='') as file:
     filewriter = csv.writer(file)
     for tet in tets:
-        filewriter.writerow(tet.tostring())
+        filewriter.writerow([tet.tostring()])
+
+print("done")
