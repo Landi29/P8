@@ -12,8 +12,15 @@ class TET:
 
     def addchild(self, child):
         if self._children==None:
-            self._children=[child]
-        self._children.append(child)
+            self._children = [child]
+        else:
+            self._children.append(child)
+    def tostring(self):
+        string = "[" + self._root
+        for child in self._children:
+            string += "," + child.tostring()
+        string += "]"
+        return string
 
 
 class TETChild:
@@ -21,6 +28,13 @@ class TETChild:
         self._rating = rating
         self._movie = movie
         self._children = genres
+
+    def tostring(self):
+        string = "[" + self._rating
+        for child in self._children:
+            string += ",[" + child[0] + "," + str(child[1:]) + "]"
+        string += "]"
+        return string
 
 tet = TET()
 

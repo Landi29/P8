@@ -107,8 +107,11 @@ def buildTETs(graph):
                         genres[i].append(movie)
                     else:
                         genresfound.append(mgenre)
-                        genres.append([mgenre,movie])                                    
-                temp_tet.addchild(TET.TETChild("1", group, genres))
-                tets.append(temp_tet)
+                        genres.append([mgenre,movie])
+                for lgenre in genres:
+                    temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
+            test = temp_tet.tostring()
+            tets.append(temp_tet)
+
 G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
-buildTETs(G)
+tet = buildTETs(G)
