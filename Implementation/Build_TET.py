@@ -70,9 +70,9 @@ def rated(u,m=None):
                 continue
             rsplit = r.strip().split(',')
             if u[0] == rsplit[1]:
-                if int(r[2]) < 2.5:
+                if float(rsplit[2]) < 2.5:
                     low.append(r)
-                elif int(r[2]) > 3.5:
+                elif float(rsplit[2]) > 3.5:
                     high.append(r)
                 else:
                     mid.append(r)
