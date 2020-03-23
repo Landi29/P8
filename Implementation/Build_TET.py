@@ -59,11 +59,25 @@ def User(u):
 
 def rated(u,m=None):
     if m == None:
-        ratings=[]
+        ratings = []
+        low = ["low"]
+        mid = ["mid"]
+        high = ["high"]
         u = u.strip().split(',')
-        for r in GRAPH_DATA[1:]:
-            if u[0] == r.strip().split(',')[1]:
-                ratings.append(r)
+        for r in GRAPH_DATA:
+            if "Id" in r:
+                continue
+            rsplit = r.strip().split(',')
+            if u[0] == rsplit[1]:
+                if int(r[2]) < 2.5:
+                    low.append(r)
+                elif int(r[2]) > 3.5:
+                    high.append(r)
+                else:
+                    mid.append(r)
+        ratings.append(low)
+        ratings.append(mid)
+        ratings.append(high)
         return ratings
     for r in GRAPH_DATA:
         if u.strip().split(',')[0] == r.strip().split(',')[1] and m == r.strip().split(',')[0]:
@@ -82,11 +96,19 @@ def buildTETs(graph):
         if User(vector):
             temp_tet = TET.TET(root=vector)
             ratings = rated(vector)
-            for rating in ratings:
-                movie = rating.split(',')[0]
-                genres = genre(movie)
-                temp_tet.addchild(TET.TETChild(movie, rated(vector,movie), genres))
-            tets.append(temp_tet)
-
+            for group in ratings:
+                genres = []
+                genresfound = []
+                for rating in group[1:]:
+                    movie = rating.split(',')[0]
+                    mgenre = genre(movie)
+                    if mgenre in genresfound:
+                        i = genresfound.index(mgenre)
+                        genres[i].append(movie)
+                    else:
+                        genresfound.append(mgenre)
+                        genres.append([mgenre,movie])                                    
+                temp_tet.addchild(TET.TETChild("1", group, genres))
+                tets.append(temp_tet)
 G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
 buildTETs(G)
