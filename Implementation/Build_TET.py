@@ -31,6 +31,7 @@
 import csv
 import pathlib
 import TET
+from datetime import datetime
 
 # TAGSPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tags.dat'
 # MOVIESPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'movies.dat'
@@ -96,35 +97,41 @@ def genre(m, g=None):
 
 
 def buildTETs(graph):
+    N = len(USER_NODES)
     tets = []
-    for vector in graph[0]:
-        if User(vector):
-            temp_tet = TET.TET(root=vector.rstrip())
-            ratings = rated(vector)
-            for group in ratings:
-                genres = []
-                genresfound = []
-                for rating in group[1:]:
-                    movie = rating.split(',')[0]
-                    mgenre = genre(movie)
-                    if mgenre in genresfound:
-                        i = genresfound.index(mgenre)
-                        genres[i].append(movie)
-                    else:
-                        genresfound.append(mgenre)
-                        genres.append([mgenre,movie])
-                for lgenre in genres:
-                    temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
-            tets.append(temp_tet)
-
+    with open(TETS_PATH, "w", newline='') as file:
+        filewriter = csv.writer(file)
+        for vector in graph[0]:
+            if User(vector):
+                temp_tet = TET.TET(root=vector.rstrip())
+                ratings = rated(vector)
+                for group in ratings:
+                    genres = []
+                    genresfound = []
+                    for rating in group[1:]:
+                        movie = rating.split(',')[0]
+                        mgenre = genre(movie)
+                        if mgenre in genresfound:
+                            i = genresfound.index(mgenre)
+                            genres[i].append(movie)
+                        else:
+                            genresfound.append(mgenre)
+                            genres.append([mgenre,movie])
+                    for lgenre in genres:
+                        temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
+                tets.append(temp_tet)
+                filewriter.writerow([temp_tet.tostring()])
+                if (int(vector.rstrip().split(",")[0]) % 10) == 0:
+                    print(str(datetime.now()) + ": " + vector.rstrip().split(",")[0] + "/"+ str(N))
     return tets
 
 G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
+print(str(datetime.now()) + ": start")
 tets = buildTETs(G)
 
-with open(TETS_PATH, "w", newline='') as file:
-    filewriter = csv.writer(file)
-    for tet in tets:
-        filewriter.writerow([tet.tostring()])
+#with open(TETS_PATH, "w", newline='') as file:
+#    filewriter = csv.writer(file)
+#    for tet in tets:
+#        filewriter.writerow([tet.tostring()])
 
 print("done")
