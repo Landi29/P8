@@ -70,8 +70,7 @@
 % (uncomment the ones you want to load)
 \usepackage{float}
 
-\usepackage{hyperref}
-\newcommand{\definitionautorefname}{Definition}
+
 % *** MISC UTILITY PACKAGES ***
 %
 %\usepackage{ifpdf}
@@ -170,11 +169,14 @@
 
 % *** MATH PACKAGES ***
 %
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{todonotes}
+\usepackage{hyperref}
 \newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[section]
 %\usepackage{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics.
@@ -490,7 +492,6 @@
 \IEEEpeerreviewmaketitle
 
 \input{inputs.tex}
-
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
 % For figures, \caption should occur after the \includegraphics.
