@@ -8,9 +8,8 @@ somehow related, but not exactly equivalent, we need a notion of similarity of
 vertices, rather than equivalence.
 
 ### Graph spaces:
-We associate with a graph $G = (V,E)$ the vertex space $\mathcal{V} := \mathcal{V}(G) :=
-{f : V \rightarrow \mathbb{R} }$, that is the vectorspace of all real-valued functions on the vertex
-set.
+We associate a graph $G = (V,E)$ with the vertex space $\mathcal{V} := \mathcal{V}(G) :=
+{f : V \rightarrow \mathbb{R} }$, that is the vectorspace of all real-valued functions on the vertex set.
 
 
 ### Structural Similarities:
