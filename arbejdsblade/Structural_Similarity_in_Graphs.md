@@ -22,6 +22,8 @@ membership to $w$ is $p_{wv} \in \mathbb{R}$”).
 
 **Definition 3:** Let $\mathcal{V}$ and $\mathcal{W}$ be two euclidian vectorspaces. A surjective linear homomorphism $\pi: \mathcal{V} \rightarrow \mathcal{W}$ is called a projection if $\pi \pi^T = id_\mathcal{W}$.
 
+*Note to Definition 3: A homomorphism in algebra is a structure-preserving map between two algebraic structures of the same type. Homomorphisms of vector spaces are also called linear maps. A linear map is then a mapping between two vector spaces $V \rightarrow W$ that preserves the operations of addition and scalar multiplication. The linear map $\pi$ is then surjective, if for all $w \in W$, there is at least one element $v \in V$ such that $\pi(v) = w$*
+
 We define similarities as relaxations of equivalence relations, such that similarities and projections are associated with each other just like equivalence and class membership relations.
 
 Let $φ : V \rightarrow W$ be a surjective mapping and $P$ be the (binary) characteristic matrix of $φ$.
