@@ -3,14 +3,61 @@ The TET we build a the tree will be rooted in a user U.
 U is a user-node in the graph if $User(U) = True$. 
 
 The feature User are in the boolean domain meaning that this feature will be either true false.
-$User(U)\rightarrow {True, False}$
+\begin{equation}
+User(U)\rightarrow \{True, False\}
+\end{equation}
 
 Rating is a feature in the domain of low mid or high the original rating have been split into these three categories.
-the original ratings went from 0 to 5, where low<2.5<=mid<=3.5<high.
-$Rating(U, M) \rightarrow {Low, Mid, High}$
+the original ratings went from 0 to 5, where $low<2.5<=mid<=3.5<high$.
 
-genre is in the domain of movie genes. this feature will return a boolian value when given a muvie m and a genre g, returning true if m are categorised as genre G.
-$Genre(M, G) \rightarrow {True, Talse}$
+\begin{equation}
+Rating(U, M) \rightarrow \{Low, Mid, High\}
+\end{equation}
 
-the tets made form the DATASET will be build from this structure.
-$User(U)  \stackrel{M}{\longrightarrow} Rating(U,M) \stackrel{G}{\longrightarrow} Genre(M,G)$
+Genre is in the domain of movie genes. this feature will return a boolian value when given a muvie m and a genre g, returning true if m are categorised as genre G.
+\begin{equation}
+Genre(M) \rightarrow \{True, False\}
+\end{equation}
+
+
+The TETs constructed form the DATASET will be build from this structure.
+\begin{equation}
+User(U) \stackrel{M}{\longrightarrow} Rating(U,M) \longrightarrow Genre(M)
+\end{equation}
+
+The TET will represent a neighbourhood of the graph with a User as the root
+
+the sub-trees are them self TETs
+\begin{equation}
+Rating(U,M) \longrightarrow Genre(M)
+\end{equation}
+
+All of these functions has a been intended to work as if they were programmed in a logical paradigm. 
+
+With the functions that can give a boolean result such as User(U) or any of the genres for example Action(M,G) we are only interested in True values. the tree will thefore have a end up having this form
+
+\begin{figure}[H]
+    \centering
+    \input{Article/figures/TET_ilustration.tex}
+    \caption{caption}
+    \label{fig:caption}
+	
+\end{figure}
+
+\todo{billede af tet med true values og tal samt subtræ}
+
+The value of a TET T(X) for a user U will be denoted as V(T(U)). If the node U is not a user or is not part of domain, the value for the tree default to false.\todo{this part has to be more precise and telling look at bottom of p.39 in tet article}
+
+The tree can also be represented as 
+
+\begin{equation}
+    T(U)=
+    \begin{cases}
+      (low \{(action:t),(casual:t)... (romance:t)\}):2 \\
+      (low \{(action:t),(horror:t)\}):1 \\
+      (mid \{(comedy:t),(romance:t)\}):4 \\
+      (high\{(adventure:t),(romance:t)\}):2
+    \end{cases}
+\end{equation}
+
+This tells that the tree T(U) has 2 movies whith low rating and the genres action, casual, and romance.
