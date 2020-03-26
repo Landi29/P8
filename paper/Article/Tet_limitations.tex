@@ -1,2 +1,16 @@
 \section{TET limitations}
+The TET we build a the tree will be rooted in a user U.
+U is a user-node in the graph if $User(U) = True$. 
+
+The feature User are in the boolean domain meaning that this feature will be either true false.
+$User(U)\rightarrow {True, False}$
+
+Rating is a feature in the domain of low mid or high the original rating have been split into these three categories.
+the original ratings went from 0 to 5, where low<2.5<=mid<=3.5<high.
+$Rating(U, M) \rightarrow {Low, Mid, High}$
+
+genre is in the domain of movie genes. this feature will return a boolian value when given a muvie m and a genre g, returning true if m are categorised as genre G.
+$Genre(M, G) \rightarrow {True, Talse}$
+
+the tets made form the DATASET will be build from this structure.
 $User(U)  \stackrel{M}{\longrightarrow} Rating(U,M) \stackrel{G}{\longrightarrow} Genre(M,G)$
