@@ -28,7 +28,8 @@ It is also possible to extend the above equation to bipartite domains consisting
 The way that SimRank is computed for a graph $G$ can be done via iterating to fixed-point. Let $n$ be the number of nodes within graph $G$, for each iteration $k$ we can keep $n^2$ entries $R_k(*,*)$ of length $n^2$, where $R_k(a,b)$ give the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}. We can compute $R_{k+1}(a,b)$ based on $R_k(a,b)$. First we have to compute $R_0(a,b)$ which is the lower bound of the similarity score $s(a,b)$:
 \begin{equation}
 R_0(a,b)= \begin{cases}
-0 \quad (\text{if } a \neq b) \\
+0, & (\text{if } a \neq b) \\
+
 1 \quad (\text{if } a = b)
 \end{cases}
 \end{equation}
@@ -39,4 +40,3 @@ R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(
 \end{equation}
 
 What the above equation states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$ we update for $(a,b)$ on each iteration $k+1$ using the similarity of the neighbors of $(a,b)$ from the previous iteration $k$. The values $R_k(*,*)$ are nondecreasing as $k$ increases. 
-
