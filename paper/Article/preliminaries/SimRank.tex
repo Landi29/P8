@@ -19,9 +19,8 @@ It is also possible to extend the above equation \ref{eq:basic_simrank} to bipar
 	
 	For objects of type 2 where $c \neq c'$ the similarity is computed as:
 
-	\begin{equation}
+	\begin{equation}\label{eq:bipartite_simrank2}
 	s(c,c')= \frac{C_2}{I|(c)||I(c')|}\sum^{|I(c)|}_{i=1}\sum^{|I(c')|}_{j=1}s(I_i(c),I_j(c'))
-
 	\end{equation}
 	
 	We can then compute the bipartite SimRank score by checking $C_1 = C_2$\cite{10.1145/775047.775126}.
