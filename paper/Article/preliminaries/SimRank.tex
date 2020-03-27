@@ -1,7 +1,7 @@
 \subsection{SimRank}
-And important algorithm for computing the similarity between graphs is SimRank\cite{10.1145/775047.775126}. The intuition behind the SimRank algorithm is is as the author states in the paper \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}. What the algorithm does is that it assigns a similarity score between 0 and 1 based on how similar two objects are. The basic SimRank equation can be seen below:
+An popular algorithm for computing the similarity between substructures in graphs is SimRank, created by Jeh et. al\cite{10.1145/775047.775126}. The intuition behind the SimRank algorithm is as the author states in the paper \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}. The algorithm assigns a similarity score between 0 and 1 based on how similar two objects are. The basic SimRank equation can be seen below:
 \begin{definition}[SimRank]\label{def:simrank} Given two objects $a$ and $b$ as input we compute the similarity $s(a,b) \in [0,1]$ via the following recursive equation:
-	\begin{equation}
+	\begin{equation}\label{eq: basic_simrank}
 	s(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 	\end{equation}
 	Here C is the confidence level or decay factor which is a constant between 0 and 1. If $a=\emptyset$ and $b= \emptyset$ then $s(a,b) = 0$. If both $a$ and $b$ are not $\emptyset$ then we compute $s(a,b)$ by iterating over all in-neighbor pairs of $a$ and $b$ and sum up the similarity $s(I_i(a),I_j(b)$ of these pairs. The similarity is then divided by the total number of in-neighbor pairs in order to normalize it. That is, the similarity between a and b is the average similarity between in-neighbors of $a$ and in-neighbors of $b$. It is important to note here that the similarity between an object and itself is 1\cite{10.1145/775047.775126}.
