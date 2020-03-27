@@ -12,6 +12,7 @@ MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphs.csv'
+GRAPH_DATA_PATH_1000 = pathlib.Path.cwd() / 'Movielens_data' / 'graphs1000.csv'
 
 #API-key from OMDB Api (limit: 1000 daily)
 APIKEY = "ad37bdca"
@@ -19,19 +20,28 @@ APIKEY = "ad37bdca"
 
 #Read the ratings csv file one line at a time, only keep the data we need
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
-def disc_rating_data():
+def disc_rating_data(savepath, number_of_users):
     """Reads file with rating data, changes it into a graph
     representaition of (Head,Tail,Weight) and writes it into a new file"""
 
     with open(RATINGPATH, "r") as fp:
-        nf = open(GRAPH_DATA_PATH, "w+", newline='')
+        nf = open(savepath, "w+", newline='')
         filewriter = csv.writer(nf)
-
+        reader = csv.reader(fp)
+        next(reader)
         #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
-        for rating in csv.reader(fp):
-        
-            filewriter.writerow([rating[1], rating[0], rating[2]])
-
+        if number_of_users is None:
+            print("No number given, discretizing whole dataset")
+            for rating in reader:
+                filewriter.writerow(["M:"+rating[1], "U:"+rating[0], rating[2]])
+        else:
+            print("Discretizing the first "+str(number_of_users)+" users")
+            for rating in reader:
+            #TODO update this method so that number of users to create the data from can be given as a parameter
+                if int(rating[0]) <= number_of_users:
+                    filewriter.writerow(["M:"+rating[1], "U:"+rating[0], rating[2]])
+                else:
+                    break
         nf.close()
 
 #Read the movies csv file and take out the information we need, including release year

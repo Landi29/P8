@@ -21,7 +21,6 @@ class movie_node:
         return("%s;%s;%s;%s" % (self.id,self.title,self.year,self.genre))
 
 
-
 class rating_edge:
 
     def __init__(self,rating,movie_id,user_id):
