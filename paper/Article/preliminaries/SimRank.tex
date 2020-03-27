@@ -26,17 +26,17 @@ It is also possible to extend the above equation \ref{eq:basic_simrank} to bipar
 	We can then compute the bipartite SimRank score by checking $C_1 = C_2$\cite{10.1145/775047.775126}.
 \end{definition}
 
-The way that SimRank is computed for a graph $G$ can be done via iterating to fixed-point. Let $n$ be the number of nodes within graph $G$, for each iteration $k$ we can keep $n^2$ entries $R_k(*,*)$ of length $n^2$, where $R_k(a,b)$ give the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}. We can compute $R_{k+1}(a,b)$ based on $R_k(a,b)$. First we have to compute $R_0(a,b)$ which is the lower bound of the similarity score $s(a,b)$:
-\begin{equation}
+The way that SimRank is computed for a graph $G = (V,E)$ can be done via iterating to fixed-point. Let $n = |V|$ be the number of nodes within graph $G$, for each iteration $k$ we can keep $n^2$ entries $R_k(*,*)$ of length $n^2$. $R_k(a,b)$ where $\{a,b\} \in V$ gives the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}. We can compute $R_{k+1}(a,b)$ based on $R_k(a,b)$. First we have to compute $R_0(a,b)$ which is the lower bound of the similarity score $s(a,b)$:
+\begin{equation}\label{eq:lowerbound_sim_score}
 R_0(a,b)= \begin{cases}
 0, & (\text{if } a \neq b) \\
 
-1 \quad (\text{if } a = b)
+1 ,& (\text{if } a = b)
 \end{cases}
 \end{equation}
 
-To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank equation mentioned earlier:
-\begin{equation}
+To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank equation \ref{eq:basic_simrank}:
+\begin{equation}\label{eq:simrank_computation}
 R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 \end{equation}
 
