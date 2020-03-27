@@ -17,9 +17,11 @@ It is also possible to extend the above equation to bipartite domains consisting
 	s(A,B)= \frac{C_1}{|O(A)||O(B)|}\sum^{|O(A)|}_{i=1}\sum^{|O(B)|}_{j=1}s(O_i(A),O_j(B))
 	\end{equation}
 	
-	For objects of type 2 where $c \neq d$ the similarity is computed as:
+	For objects of type 2 where $c \neq c'$ the similarity is computed as:
+
 	\begin{equation}
-	s(c,d)= \frac{C_2}{I|(c)||I(d)|}\sum^{|I(c)|}_{i=1}\sum^{|I(d)|}_{j=1}s(I_i(c),I_j(d))
+	s(c,c')= \frac{C_2}{I|(c)||I(c')|}\sum^{|I(c)|}_{i=1}\sum^{|I(c')|}_{j=1}s(I_i(c),I_j(c'))
+
 	\end{equation}
 	
 	We can then compute the bipartite SimRank score by checking $C_1 = C_2$\cite{10.1145/775047.775126}.
