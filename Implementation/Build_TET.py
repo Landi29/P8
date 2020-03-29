@@ -55,6 +55,7 @@ with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
     GRAPH_DATA = read.readlines()
 
 Globaltets=[]
+subtrees = [None] * int(MOVIE_NODES[-1].strip().split(',')[0])
 
 def User(u):
     if u in USER_NODES:
@@ -144,15 +145,24 @@ def TETfindTree(user):
 
 
 def constructchild(movieid, rating):
+    intmovieid = int(movieid)
+    if subtrees[intmovieid] != None:
+        return subtrees[intmovieid]
     for movie in MOVIE_NODES:
         movie = movie.strip().split(',')
         if movieid == movie[0]:
             if float(rating) < 2.5:
-                return TET.TETChild("low", children=TET.TETChild(movie[3]))
+                child = TET.TETChild("low", children=TET.TETChild(movie[3]))
+                subtrees[intmovieid] = child
+                return child
             elif float(rating) > 3.5:
-                return TET.TETChild("high", children=TET.TETChild(movie[3]))
+                child = TET.TETChild("high", children=TET.TETChild(movie[3]))
+                subtrees[intmovieid] = child
+                return child
             else:
-                return TET.TETChild("mid", children=TET.TETChild(movie[3]))
+                child = TET.TETChild("mid", children=TET.TETChild(movie[3]))
+                subtrees[intmovieid] = child
+                return child
 
 def buildTETs2(edges):
     N = len(USER_NODES)
@@ -160,7 +170,7 @@ def buildTETs2(edges):
         edge = edge.strip().split(',')
         if User2(edge[1]):
             index, temp_tet = TETfindTree(edge[1])
-            temp_tet.addchild(constructchild(edge[0],edge[2]))
+            temp_tet.addchild(constructchild(edge[0], edge[2]))
             if index == len(Globaltets):
                 Globaltets.append(temp_tet)
                 if (len(Globaltets) % 10) == 0:
