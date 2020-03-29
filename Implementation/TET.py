@@ -15,6 +15,7 @@ class TET:
             self._children = [child]
         else:
             self._children.append(child)
+
     def tostring(self):
         string = "[" + self._root
         for child in self._children:
@@ -22,12 +23,16 @@ class TET:
         string += "]"
         return string
 
+    def isroot(self,user):
+        if user == self._root:
+            return True
+        return False
+
 
 class TETChild:
-    def __init__(self, movie, rating, genres):
-        self._rating = rating
-        self._movie = movie
-        self._children = genres
+    def __init__(self, root, free=None, children=None):
+        self._root = root
+        self._children = children
 
     def tostring(self):
         children = ",".join(map(str, self._children[1:]))

@@ -54,10 +54,18 @@ with open(USER_NODES_PATH, 'r', encoding="utf-8") as read:
 with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
     GRAPH_DATA = read.readlines()
 
+Globaltets=[]
 
 def User(u):
     if u in USER_NODES:
         return True
+    return False
+
+def User2(u):
+    for user in USER_NODES:
+        user = user.strip().split(',')
+        if u == user[0]:
+            return True
     return False
 
 
@@ -125,13 +133,51 @@ def buildTETs(graph):
                     print(str(datetime.now()) + ": " + vector.rstrip().split(",")[0] + "/"+ str(N))
     return tets
 
-G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
-print(str(datetime.now()) + ": start")
-tets = buildTETs(G)
 
-#with open(TETS_PATH, "w", newline='') as file:
-#    filewriter = csv.writer(file)
-#    for tet in tets:
-#        filewriter.writerow([tet.tostring()])
+def TETfindTree(user):
+    for i, tree in enumerate(Globaltets):
+        if tree.isroot(user):
+            return i, tree
+    if Globaltets == []:
+        return 0, TET.TET(root=user)
+    return i+1, TET.TET(root=user)
+
+
+def constructchild(movieid, rating):
+    for movie in MOVIE_NODES:
+        movie = movie.strip().split(',')
+        if movieid == movie[0]:
+            if float(rating) < 2.5:
+                return TET.TETChild("low", children=TET.TETChild(movie[3]))
+            elif float(rating) > 3.5:
+                return TET.TETChild("high", children=TET.TETChild(movie[3]))
+            else:
+                return TET.TETChild("mid", children=TET.TETChild(movie[3]))
+
+def buildTETs2(edges):
+    N = len(USER_NODES)
+    for edge in edges:
+        edge = edge.strip().split(',')
+        if User2(edge[1]):
+            index, temp_tet = TETfindTree(edge[1])
+            temp_tet.addchild(constructchild(edge[0],edge[2]))
+            if index == len(Globaltets):
+                Globaltets.append(temp_tet)
+                if (len(Globaltets) % 10) == 0:
+                    print(str(datetime.now()) + ": " + str(len(Globaltets)) + "/"+ str(N))
+            else:
+                Globaltets[index] = temp_tet
+    return
+
+#G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
+print(str(datetime.now()) + ": start")
+#tets = buildTETs(G)
+
+buildTETs2(GRAPH_DATA[1:])
+
+with open(TETS_PATH, "w", newline='') as file:
+    filewriter = csv.writer(file)
+    for tet in Globaltets:
+        filewriter.writerow([tet.tostring()])
 
 print("done")
