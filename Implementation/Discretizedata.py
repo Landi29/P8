@@ -11,7 +11,7 @@ MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
 MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
-GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphs.csv'
+GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
 GRAPH_DATA_PATH_1000 = pathlib.Path.cwd() / 'Movielens_data' / 'graphs1000.csv'
 
 #API-key from OMDB Api (limit: 1000 daily)
@@ -22,7 +22,12 @@ APIKEY = "ad37bdca"
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
 def disc_rating_data(savepath, number_of_users):
     """Reads file with rating data, changes it into a graph
-    representaition of (Head,Tail,Weight) and writes it into a new file"""
+    representaition of (Head,Tail,Weight) and writes it into a new file
+    
+    Parameters:
+        savepath (filepath): filepath where to save the graph, saves as an .edgelist file
+        number_of_users (int): number of users to make a graph from, if given 'None' will use whole dataset
+    """
 
     with open(RATINGPATH, "r") as fp:
         nf = open(savepath, "w+", newline='')
