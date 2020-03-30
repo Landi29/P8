@@ -53,12 +53,12 @@ def create_graph(data_path, save_path):
         print("success:"+" nodes:"+ str(non) +" Edges:"+str(noe))
 
         now = datetime.now()
-        print("Saving graph as edgelist, started: "+ now)
+        print("Saving graph as edgelist, started: "+ str(now))
 
         nx.write_weighted_edgelist(graph, save_path, comments='#', delimiter=',', encoding='utf-8')
 
         now = datetime.now()
-        print("Saved graph as edgelist, finished: "+now)
+        print("Saved graph as edgelist, finished: "+ str(now))
 
 
 #Method for loading a edgelist into a networkx graph
@@ -92,7 +92,7 @@ def run_node2vec(graph, save_path):
 
     #Parameter p is the propability of revisitting a node you have just seen, a high value means we are less likely to backtract to it
     #Parameter q makes the random walk more biased towards nodes close to our starting node, a high value makes it stay close to out start node
-    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=30, num_walks=50, p=2, q=1, workers=1, temp_folder=TEMP_FOLDER)
+    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=30, num_walks=50, p=2, q=1, workers=1)
 
     n2vmodel = graphn2v.fit(window=10, min_count=5)
 
@@ -112,9 +112,9 @@ def get_model(model_path):
 
 
 if __name__ == "__main__":
-    #create_graph(GRAPH_DATA_PATH_1000,NETWORKX_GRAPH_1000)
-    #graph = load_graph(NETWORKX_GRAPH)
-    #run_node2vec(graph,"n2vfullmodel")
+    #create_graph(GRAPH_DATA_PATH,NETWORKX_GRAPH)
+    graph = load_graph(NETWORKX_GRAPH)
+    run_node2vec(graph,"n2vfullmodel")
     #mostsimilar("U:900")
     #model = getmodel("n2vmodel2.p")
-    print(n2v.__file__)
+    #print(n2v.__file__)
