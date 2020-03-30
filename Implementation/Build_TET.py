@@ -32,6 +32,8 @@ import csv
 import pathlib
 import TET
 from datetime import datetime
+from tqdm import tqdm
+import sys
 
 # TAGSPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'tags.dat'
 # MOVIESPATH = pathlib.Path.cwd() / 'Movielens_data' / 'tag-genome' / 'movies.dat'
@@ -47,147 +49,87 @@ TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
 # with open(MOVIESPATH, 'r') as read:
 #    listof = read.readlines():
 
-with open(MOVIE_NODES_PATH, 'r', encoding="utf-8") as read:
-    MOVIE_NODES = read.readlines()
-with open(USER_NODES_PATH, 'r', encoding="utf-8") as read:
-    USER_NODES = read.readlines()
 with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
     GRAPH_DATA = read.readlines()
 
-Globaltets=[]
-subtrees = [None] * int(MOVIE_NODES[-1].strip().split(',')[0])
-
-def User(u):
-    if u in USER_NODES:
-        return True
-    return False
-
-def User2(u):
-    for user in USER_NODES:
-        user = user.strip().split(',')
-        if u == user[0]:
-            return True
-    return False
-
-
-def rated(u,m=None):
-    if m == None:
-        ratings = []
-        low = ["low"]
-        mid = ["mid"]
-        high = ["high"]
-        u = u.strip().split(',')
-        for r in GRAPH_DATA:
-            if "Id" in r:
-                continue
-            rsplit = r.strip().split(',')
-            if u[0] == rsplit[1]:
-                if float(rsplit[2]) < 2.5:
-                    low.append(r)
-                elif float(rsplit[2]) > 3.5:
-                    high.append(r)
-                else:
-                    mid.append(r)
-        ratings.append(low)
-        ratings.append(mid)
-        ratings.append(high)
-        return ratings
-    for r in GRAPH_DATA:
-        if u.strip().split(',')[0] == r.strip().split(',')[1] and m == r.strip().split(',')[0]:
-            return r
-    return False
-
-
-def genre(m, g=None):
-    if g == None:
+def moviedict():
+    movie_dict = {}
+    with open(MOVIE_NODES_PATH, 'r', encoding="utf-8") as read:
+        MOVIE_NODES = read.readlines()
         for movie in MOVIE_NODES:
-            if movie.strip().split(',')[0] == m:
-                return movie.strip().split(',')[-1]
+            movie = movie.strip().split(',')
+            movie[3] = movie[3].split('|')
+            movie_dict['M:'+movie[0]] = movie
+    return movie_dict
 
+def userdict():
+    user_dict = {}
+    with open(USER_NODES_PATH, 'r', encoding="utf-8") as read:
+        USER_NODES = read.readlines()
+        for user in USER_NODES:
+            user = user.strip().split(',')
+            user_dict['U:'+ user[0]] = True
+    return user_dict
 
-def buildTETs(graph):
-    N = len(USER_NODES)
-    tets = []
-    with open(TETS_PATH, "w", newline='') as file:
-        filewriter = csv.writer(file)
-        for vector in graph[0]:
-            if User(vector):
-                temp_tet = TET.TET(root=vector.rstrip())
-                ratings = rated(vector)
-                for group in ratings:
-                    genres = []
-                    genresfound = []
-                    for rating in group[1:]:
-                        movie = rating.split(',')[0]
-                        mgenre = genre(movie)
-                        if mgenre in genresfound:
-                            i = genresfound.index(mgenre)
-                            genres[i].append(movie)
-                        else:
-                            genresfound.append(mgenre)
-                            genres.append([mgenre,movie])
-                    for lgenre in genres:
-                        temp_tet.addchild(TET.TETChild("1", group[0], lgenre))
-                tets.append(temp_tet)
-                filewriter.writerow([temp_tet.tostring()])
-                if (int(vector.rstrip().split(",")[0]) % 10) == 0:
-                    print(str(datetime.now()) + ": " + vector.rstrip().split(",")[0] + "/"+ str(N))
-    return tets
+Globaltets={}
 
+# For all users, you call the rated function.
+# This function then searches the whole graph to get the ratings for that one user.
+# But going through the graph ones should give you all the information you need
+# in order to create a ratings vector for all users. 
+# If you only go through the graph ones, and then create all the ratings vectors,
+# you will increase the speed. 
+# If the dictionary of all ratings is too big for main memory, you can then save it to a file,
+# and use that file in your function. If not, you can use the dictionary of all rating vectors directly.
+
+# You also call the genre() function on each movie to get the list of genres for each of the movies.
+# Since the genre function goes through the list of all movies, you go through this list
+# for each movie.
+# If you go through the list once, you actually have all the information you need, so you can precompute
+# all the genres for each movie by going through the list once and saving it as a dictionary, 
+# where the key is the movie id and the value is a list or string of genres. The dictionary will give you a 
+# fast lookup time for the genres and you then only have to go through the list once. 
 
 def TETfindTree(user):
-    for i, tree in enumerate(Globaltets):
-        if tree.isroot(user):
-            return i, tree
-    if Globaltets == []:
-        return 0, TET.TET(root=user)
-    return i+1, TET.TET(root=user)
-
+    if user in Globaltets:
+        return Globaltets[user]
+    return TET.TET(root=user)
 
 def constructchild(movieid, rating):
-    intmovieid = int(movieid)
-    if subtrees[intmovieid] != None:
-        return subtrees[intmovieid]
-    for movie in MOVIE_NODES:
-        movie = movie.strip().split(',')
-        if movieid == movie[0]:
-            if float(rating) < 2.5:
-                child = TET.TETChild("low", children=TET.TETChild(movie[3]))
-                subtrees[intmovieid] = child
-                return child
-            elif float(rating) > 3.5:
-                child = TET.TETChild("high", children=TET.TETChild(movie[3]))
-                subtrees[intmovieid] = child
-                return child
-            else:
-                child = TET.TETChild("mid", children=TET.TETChild(movie[3]))
-                subtrees[intmovieid] = child
-                return child
+    movie = moviedict[movieid] 
+    genres = []
+    for genre in movie[3]:
+        genres.append(TET.TETChild(genre))
+    if float(rating) < 2.5: 
+        return TET.TETChild("low", children = genres)
+    elif float(rating) > 3.5: 
+        return TET.TETChild("high", children = genres)
+    else:
+        return TET.TETChild("mid", children = genres)
 
 def buildTETs2(edges):
-    N = len(USER_NODES)
-    for edge in edges:
+    print("built tet")
+    user_dict = userdict()
+    for edge in tqdm(edges):
         edge = edge.strip().split(',')
-        if User2(edge[1]):
-            index, temp_tet = TETfindTree(edge[1])
+        if user_dict.get(edge[1], False):
+            temp_tet = TETfindTree(edge[1])
             temp_tet.addchild(constructchild(edge[0], edge[2]))
-            if index == len(Globaltets):
-                Globaltets.append(temp_tet)
-                if (len(Globaltets) % 10) == 0:
-                    print(str(datetime.now()) + ": " + str(len(Globaltets)) + "/"+ str(N))
-            else:
-                Globaltets[index] = temp_tet
+            Globaltets[edge[1]]=temp_tet
     return
 
 #G=[USER_NODES+MOVIE_NODES[1:], GRAPH_DATA[1:]]
 print(str(datetime.now()) + ": start")
 #tets = buildTETs(G)
+moviedict = moviedict()
 
-buildTETs2(GRAPH_DATA[1:])
+buildTETs2(GRAPH_DATA)
 
 with open(TETS_PATH, "w", newline='') as file:
     filewriter = csv.writer(file)
-    for tet in Globaltets:
+    print("save TETs")
+    for tet in tqdm(Globaltets.values()):
         filewriter.writerow([tet.tostring()])
 
 print("done")
+sys.exit()

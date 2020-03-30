@@ -32,11 +32,23 @@ class TET:
 class TETChild:
     def __init__(self, root, free=None, children=None):
         self._root = root
-        self._children = children
+        if isinstance(children, list): 
+            self._children = children
+        elif children != None:
+            self._children = [children]
+        else:
+            self._children = children
 
     def tostring(self):
-        children = ",".join(map(str, self._children[1:]))
-        return "[" + self._rating + ",[" + self._children[0] + ",[" + children + "]]]"
+        #if self._children = []:
+        #    return "["+self._root+"]"
+        
+        string = "[" + self._root
+        if self._children != None:
+            for child in self._children:
+                string += "," + child.tostring()
+        string += "]"
+        return string
 
 tet = TET()
 
