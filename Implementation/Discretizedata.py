@@ -122,3 +122,7 @@ def disc_user_data():
                 currentid = rating[0]
                 counter = 1
         nf.close()
+
+
+if __name__ == "__main__":
+    

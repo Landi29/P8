@@ -35,4 +35,4 @@ class TestDiscretizedata(unittest.TestCase):
         self.assertEqual(graph_data[1:], expected_value)
 
 if __name__ == "__main__":
-    unittest.main()
+    #unittest.main()
