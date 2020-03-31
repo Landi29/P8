@@ -20,16 +20,17 @@ APIKEY = "ad37bdca"
 
 #Read the ratings csv file one line at a time, only keep the data we need
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
-def disc_rating_data(savepath, number_of_users):
+def disc_rating_data(inputfile, savepath, number_of_users):
     """Reads file with rating data, changes it into a graph
     representaition of (Head,Tail,Weight) and writes it into a new file
     
     Parameters:
+        inputfile (filepath): filepath for the file to read, should be in the form of an edgelist
         savepath (filepath): filepath where to save the graph, saves as an .edgelist file
         number_of_users (int): number of users to make a graph from, if given 'None' will use whole dataset
     """
 
-    with open(RATINGPATH, "r") as fp:
+    with open(inputfile, "r") as fp:
         nf = open(savepath, "w+", newline='')
         filewriter = csv.writer(nf)
         reader = csv.reader(fp)
@@ -126,4 +127,3 @@ def disc_user_data():
 
 if __name__ == "__main__":
     print("Hello")
-    

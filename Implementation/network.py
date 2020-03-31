@@ -112,9 +112,14 @@ def get_model(model_path):
 
 
 if __name__ == "__main__":
+    print("Hallo")
+
     #create_graph(GRAPH_DATA_PATH,NETWORKX_GRAPH)
-    graph = load_graph(NETWORKX_GRAPH)
-    run_node2vec(graph,"n2vfullmodel")
+
+    #graph = load_graph(NETWORKX_GRAPH)
+    #run_node2vec(graph,"n2vfullmodel")
+    
     #mostsimilar("U:900")
     #model = getmodel("n2vmodel2.p")
     #print(n2v.__file__)
+    
