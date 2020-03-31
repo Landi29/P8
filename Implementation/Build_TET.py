@@ -25,9 +25,7 @@ def moviedict(movie_nodes_path):
     '''
     movie_dict = {}
     with open(movie_nodes_path, 'r', encoding="utf-8") as movie_nodes_file:
-        movie_nodes = movie_nodes_file.readlines()
-        for movie in movie_nodes:
-            movie = movie.strip().split(',')
+        for movie in csv.reader(movie_nodes_file):
             movie[3] = movie[3].split('|')
             movie_dict['M:'+movie[0]] = movie
     return movie_dict
@@ -70,6 +68,7 @@ def construct_child(movieid, rating, moviedict):
     genres = []
     for genre in movie[3]:
         genres.append(TET.TETChild(genre))
+        G[genre]=True
     if float(rating) < 2.5:
         child = TET.TETChild("low", children=genres)
     elif float(rating) > 3.5:
@@ -108,6 +107,8 @@ def save_tets(tets, tets_path):
             filewriter.writerow([tet.tostring()])
 
 if __name__ == "__main__":
+    G = {}
+    
     MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
@@ -119,7 +120,9 @@ if __name__ == "__main__":
     MOVIEDICT = moviedict(MOVIE_NODES_PATH)
 
     TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
-
+    for i in G:
+        print(i)
     save_tets(TETS, TETS_PATH)
-
+    
+    
     print("done")
