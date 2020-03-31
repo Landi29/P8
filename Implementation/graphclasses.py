@@ -11,7 +11,7 @@ class user_node:
 
 class movie_node:
 
-    def __init__(self,id,title,genre):
+    def __init__(self,id,title,genre, year):
         self.id = id
         self.title = title
         self.year = year
