@@ -59,8 +59,8 @@ def tet_find_tree(user, tets):
 def construct_child(movieid, rating, moviedict):
     '''
     description: construct child ondstructs the child of a root and the childs children
-    parameters: mivieid is the movire that an edge between user and movie leeds to via rating
-                rating is the rating binding a user and a movie miviedict is
+    parameters: movieid is the movir that an edge between user and movie leads to via rating
+                rating is the rating binding a user and a moviedict is
                 the dictionary of all movies in the graph
     retun: this return a subTET
     '''
