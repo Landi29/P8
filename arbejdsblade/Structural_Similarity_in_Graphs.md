@@ -24,6 +24,27 @@ membership to $w$ is $p_{wv} \in \mathbb{R}$”).
 
 *Note to Definition 3: A homomorphism in algebra is a structure-preserving map between two algebraic structures of the same type. Homomorphisms of vector spaces are also called linear maps. A linear map is then a mapping between two vector spaces $V \rightarrow W$ that preserves the operations of addition and scalar multiplication. The linear map $\pi$ is then surjective, if for all $w \in W$, there is at least one element $v \in V$ such that $\pi(v) = w$*
 
+**Matrix transpose:** In linear algebra, the transpose of a matrix $A$ is an operator which flips a matrix over its diagonal such that the row and column indices of the matrix are switched. This produces a new matrix, called the transpose of $A$, denoted as $A^T$. Here, the rows of $A$ become the columns of $A^T$ and the columns of $A$ become the rows of $A^T$. 
+
+**Matrix transpose example:** 
+$$
+
+A =
+    \begin{bmatrix}
+        1 & 2\\
+        3 & 4\\
+        5 & 6\\
+        7 & 8
+    \end{bmatrix}, \,
+
+    A^T = 
+
+    \begin{bmatrix}
+        1 & 3 & 5 & 7\\
+        2 & 4 & 6 & 8
+    \end{bmatrix}
+$$
+
 We define similarities as relaxations of equivalence relations, such that similarities and projections are associated with each other just like equivalence and class membership relations.
 
 Let $φ : V \rightarrow W$ be a surjective mapping and $P$ be the (binary) characteristic matrix of $φ$.
