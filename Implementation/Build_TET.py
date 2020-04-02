@@ -117,8 +117,7 @@ if __name__ == "__main__":
     MOVIEDICT = moviedict(MOVIE_NODES_PATH)
 
     TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
-    for i in G:
-        print(i)
+    
     save_tets(TETS, TETS_PATH)
     
     print("done")
