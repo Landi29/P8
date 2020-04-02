@@ -21,7 +21,7 @@ def moviedict(movie_nodes_path):
     '''
     description: This funktion constructs a movie dictionary from the movies in a file
     parameters: movie_nodes_path is a filepath to a file with movie descriptions
-    retun: this function returns a dictionary of movies
+    return: this function returns a dictionary of movies
     '''
     movie_dict = {}
     with open(movie_nodes_path, 'r', encoding="utf-8") as movie_nodes_file:
@@ -35,7 +35,7 @@ def userdict(user_nodes_path):
     description: This funktion constructs a user dictionary of
                  boolean values from the users in a file
     parameters: user_nodes_path is a filepath to a file with user descriptions
-    retun: this function returns a dictionary of users
+    return: this function returns a dictionary of users
     '''
     user_dict = {}
     with open(user_nodes_path, 'r', encoding="utf-8") as user_nodes_file:
@@ -50,7 +50,7 @@ def tet_find_tree(user, tets):
     description: This function finds the TET that has user as the root
                  if such a tree does not exist it is build
     parameters: user is a user id as a string and tets is the dictionary of tets
-    retun: is a TET with user as root
+    return: is a TET with user as root
     '''
     if user in tets:
         return tets[user]
@@ -62,7 +62,7 @@ def construct_child(movieid, rating, moviedict):
     parameters: movieid is the movir that an edge between user and movie leads to via rating
                 rating is the rating binding a user and a moviedict is
                 the dictionary of all movies in the graph
-    retun: this return a subTET
+    return: this return a subTET
     '''
     movie = moviedict[movieid]
     genres = []
@@ -81,7 +81,7 @@ def build_tets(edges, moviedict, user_nodes_path):
     description: this function builds all the tets in a graph
     parameters: edges are all edges in the graph, moviedict is a dictionary of all movie nodes in
                 the graph and user_nodes_path is the filepath to the file with all usernodes
-    retun: the return is a dictionary of all tets
+    return: the return is a dictionary of all tets
     '''
     tets = {}
     user_dict = userdict(user_nodes_path)
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     MOVIEDICT = moviedict(MOVIE_NODES_PATH)
 
     TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
-    
+
     save_tets(TETS, TETS_PATH)
     
     print("done")
