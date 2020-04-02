@@ -58,7 +58,7 @@ def tet_find_tree(user, tets):
 
 def construct_child(movieid, rating, moviedict):
     '''
-    description: construct child ondstructs the child of a root and the childs children
+    description: construct_child constructs the child whoms root is a rating (low, mid or high) and its children
     parameters: movieid is the movir that an edge between user and movie leads to via rating
                 rating is the rating binding a user and a moviedict is
                 the dictionary of all movies in the graph
@@ -79,7 +79,7 @@ def construct_child(movieid, rating, moviedict):
 def build_tets(edges, moviedict, user_nodes_path):
     '''
     description: this function builds all the tets in a graph
-    parameters: edges are all edges in the graph moviedict is a dictionary of all movies in
+    parameters: edges are all edges in the graph, moviedict is a dictionary of all movie nodes in
                 the graph and user_nodes_path is the filepath to the file with all usernodes
     retun: the return is a dictionary of all tets
     '''
@@ -106,8 +106,6 @@ def save_tets(tets, tets_path):
             filewriter.writerow([tet.tostring()])
 
 if __name__ == "__main__":
-    G = {}
-    
     MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
@@ -122,6 +120,5 @@ if __name__ == "__main__":
     for i in G:
         print(i)
     save_tets(TETS, TETS_PATH)
-    
     
     print("done")
