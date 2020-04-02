@@ -14,7 +14,7 @@ The original ratings is a numerical value between 0 and 5, which was then transl
 Rating(U, M) \rightarrow \{Low, Mid, High\}
 \end{equation}
 
-Each renre in the dataset are afeature in the boolian domain. These feature will return a value when given a movie M, returns true if M is categorised as the genre(\autoref{Eq:genredomain}).
+Each genre in the dataset are a feature in the boolean domain. These feature will return a value when given a movie M, returns true if M is categorized as the genre(\autoref{Eq:genredomain}).
 \begin{equation}\label{Eq:genredomain}
 \begin{aligned}
 Action(M) \rightarrow \{True, False\} \\
@@ -43,7 +43,7 @@ Rating(U,M)& \longrightarrow Western(M)
 
 All of these functions has a been intended to work as if they were programmed in a logical paradigm. 
 
-With the functions that can give a boolean result such as User(U) or any of the genres for example Action(M) we are only interested in True values. The tree will therefore have a end up having this form seen in \autoref{fig:Tetekempel}
+With the functions that can give a boolean result such as User(U) or any of the genres for example Action(M) we are only interested in True values. The tree will therefore end up having the form seen in \autoref{fig:Tetekempel}
 
 \begin{figure}[H]
     \centering
@@ -71,4 +71,4 @@ The tree can also be represented as \autoref{Eq:TETvector}
 This tells that the tree T(U) has 2 movies whith low rating and the genres action, casual, and romance, a movie rated low that has action and horror. there is a movire rated in the mid range with comedy and romance and a movie thas highly rated with adventure and romance.
 
 Whith this structure we have a representetation of an users preferences and subgraph in a dataset. 
-The structures can be compared to find simularities and therefore make more trustworty recomendation to an user.
+The structures can be compared to find simulareties and thereby make more trustworty recomendation to an user.
