@@ -7,20 +7,26 @@
     ]
   
   \node {\{\{low\{\{a:t\},\{c:t\},\{r:t\}\}:2\}, \{low\{\{a:t\},\{h:t\}\}:1\},\\
-   \{mid \{\{c:t\},\{r:t\}\}:4\}, \{high\{\{a:t\},\{r:t\}\}:2\}\}}
-	child{ node{\{\{a:t\},\{c:t\},\{r:t\}\}} 
+   \{mid \{\{c:t\},\{r:t\}\}:1\}, \{high\{\{a:t\},\{r:t\}\}:1\}\}}
+	child{ node{\{low\{a:t\},\{c:t\},\{r:t\}\}} 
 		child{ node{a:t}}
 		child{ node{c:t}}
 		child{ node{r:t}}
 		}
-	child{ node{\{\{c:t\},\{r:t\}\}} 
+	child{ node{\{mid\{c:t\},\{r:t\}\}} 
 		child{ node{a:t}}
 		child{ node{r:t}}
 		}
-    child{ node{\{\{a:t\},\{r:t\}\}}
+	child{ node{\{low\{a:t\},\{c:t\},\{r:t\}\}} 
+		child{ node{a:t}}
+		child{ node{c:t}}
+		child{ node{r:t}}
+		}
+    child{ node{\{high\{a:t\},\{r:t\}\}}
 	    child { node{a:t}}
       	child { node{r:t}} 
-      	};
+      	}
+      ;
 \end{tikzpicture}
 
 %
