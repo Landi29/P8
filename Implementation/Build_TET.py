@@ -68,7 +68,6 @@ def construct_child(movieid, rating, moviedict):
     genres = []
     for genre in movie[3]:
         genres.append(TET.TETChild(genre))
-        G[genre]=True
     if float(rating) < 2.5:
         child = TET.TETChild("low", children=genres)
     elif float(rating) > 3.5:
