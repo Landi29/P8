@@ -15,14 +15,9 @@ import networkx as nx
 
 
 #Different filepaths used for the project, these paths are used for the different methods.
-MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
-USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-GRAPH_DATA_PATH_1000 = pathlib.Path.cwd() / 'Movielens_data' / 'graphs1000.csv'
+RATING_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 NETWORKX_GRAPH = pathlib.Path.cwd() / 'Movielens_data' / 'movielens.edgelist'
-NETWORKX_GRAPH_1000 = pathlib.Path.cwd() / 'Movielens_data' / 'movielens1000.edgelist'
-NETWORKX_GRAPH_500 =pathlib.Path.cwd() / 'Movielens_data' / 'movielens500.edgelist'
-TEMP_FOLDER = pathlib.Path.cwd() / 'temp_folder'
 
 #method to create a NetworkX graph using graph representation data
 def create_graph(data_path, save_path):
@@ -92,7 +87,7 @@ def run_node2vec(graph, save_path):
 
     #Parameter p is the propability of revisitting a node you have just seen, a high value means we are less likely to backtract to it
     #Parameter q makes the random walk more biased towards nodes close to our starting node, a high value makes it stay close to out start node
-    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=30, num_walks=50, p=2, q=1, workers=1)
+    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=40, num_walks=50, p=1, q=2, workers=6)
 
     n2vmodel = graphn2v.fit(window=10, min_count=5)
 

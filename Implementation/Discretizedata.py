@@ -10,9 +10,7 @@ RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
 MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-GRAPH_DATA_PATH_1000 = pathlib.Path.cwd() / 'Movielens_data' / 'graphs1000.csv'
 
 #API-key from OMDB Api (limit: 1000 daily)
 APIKEY = "ad37bdca"
@@ -26,7 +24,7 @@ def disc_rating_data(inputfile, savepath, number_of_users):
     
     Parameters:
         inputfile (filepath): filepath for the file to read, should be in the form of an edgelist
-        savepath (filepath): filepath where to save the graph, saves as an .edgelist file
+        savepath (filepath): filepath where to save the graph, saves as an csv file
         number_of_users (int): number of users to make a graph from, if given 'None' will use whole dataset
     """
 
@@ -43,7 +41,6 @@ def disc_rating_data(inputfile, savepath, number_of_users):
         else:
             print("Discretizing the first "+str(number_of_users)+" users")
             for rating in reader:
-            #TODO update this method so that number of users to create the data from can be given as a parameter
                 if int(rating[0]) <= number_of_users:
                     filewriter.writerow(["M:"+rating[1], "U:"+rating[0], rating[2]])
                 else:
