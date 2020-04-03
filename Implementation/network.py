@@ -99,7 +99,7 @@ def get_model(model_path):
     Loads and unpickles a pickled node2vec model
 
     Parameters:
-    model_path (filepath): filepath to pickle node2vec model for unpickled
+    model_path (filepath): filepath to a pickled node2vec model
     """
 
     model = pickle.load(open(model_path, "rb"))
