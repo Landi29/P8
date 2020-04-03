@@ -1,7 +1,8 @@
 class user_node:
 
-    def __init__(self,id):
+    def __init__(self,id,ratings_count):
         self.id = id
+        self.ratings_count = ratings_count
 
     def __str__(self):
         return("%s" % (self.id))
@@ -10,14 +11,14 @@ class user_node:
 
 class movie_node:
 
-    def __init__(self,id,title,genre):
+    def __init__(self,id,title,genre, year):
         self.id = id
         self.title = title
+        self.year = year
         self.genre = genre
 
     def __str__(self):
-        return("%s;%s;%s" % (self.id,self.title,self.genre))
-
+        return("%s;%s;%s;%s" % (self.id,self.title,self.year,self.genre))
 
 
 class rating_edge:
