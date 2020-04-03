@@ -70,8 +70,7 @@
 % (uncomment the ones you want to load)
 \usepackage{float}
 
-\usepackage{hyperref}
-\newcommand{\definitionautorefname}{Definition}
+
 % *** MISC UTILITY PACKAGES ***
 %
 %\usepackage{ifpdf}
@@ -123,6 +122,7 @@
 \ifCLASSINFOpdf
   \usepackage[pdftex]{graphicx}
   \usepackage{tikz}
+  \usepackage{adjustbox}
   %\usepackage{subcaption}
   \usepackage{subfig}
   \usetikzlibrary{
@@ -170,12 +170,19 @@
 
 % *** MATH PACKAGES ***
 %
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amsmath}
 \usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,shapes.geometric,shapes.symbols,shapes.misc,trees}
+\usepackage{amsmath}
 \newtheorem{theorem}{Theorem}
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[section]
 %\usepackage{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics.
@@ -491,7 +498,6 @@
 \IEEEpeerreviewmaketitle
 
 \input{inputs.tex}
-
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
 % For figures, \caption should occur after the \includegraphics.
