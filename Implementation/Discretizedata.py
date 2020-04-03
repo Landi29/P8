@@ -8,6 +8,7 @@ import pathlib
 #Filepaths for movielens datadump
 RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
+MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
 MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
