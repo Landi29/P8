@@ -35,7 +35,7 @@ R_0(a,b)= \begin{cases}
 \end{cases}
 \end{equation}
 
-To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank equation \ref{eq:basic_simrank}:
+To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank from \autoref{eq:basic_simrank}:
 \begin{equation}\label{eq:simrank_computation}
 R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 \end{equation}
