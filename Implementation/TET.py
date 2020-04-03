@@ -17,11 +17,29 @@ class TET:
             self._children.append(child)
 
     def tostring(self):
-        string = "[" + self._root
+        stringchildren = {}
         for child in self._children:
-            string += "," + child.tostring()
-        string += "]"
+            stringchildren[child.tostring()] += stringchildren.get(child.tostring(), 0)
+        string = "[" + self._root + ',[' + list(stringchildren)[0] + ':' + stringchildren[list(stringchildren)[0]]
+        for child in list(stringchildren)[1:]:
+            string += "," + child + ':' + stringchildren[child]
+        string += "]]"
         return string
+    
+    def count_children(self):
+        stringchildren = {}
+        for child in self._children:
+            if stringchildren.get(child.tostring(), 0) == 0:
+                stringchildren[child.tostring()] = 1
+            else:
+                stringchildren[child.tostring()] = stringchildren[child.tostring()] + 1
+        return stringchildren
+
+    def getroot(self):
+        return self._root
+
+    def getchildren(self):
+        return self._children
 
     def isroot(self,user):
         if user == self._root:
@@ -40,16 +58,14 @@ class TETChild:
             self._children = children
 
     def tostring(self):
-        #if self._children = []:
-        #    return "["+self._root+"]"
-        
+
         string = "[" + self._root
         if self._children != None:
-            for child in self._children:
+            string += ',[' + self._children[0].tostring()
+            for child in self._children[1:]:
                 string += "," + child.tostring()
+            string += "]"
         string += "]"
         return string
-
-tet = TET()
 
 

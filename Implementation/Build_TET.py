@@ -103,10 +103,30 @@ def save_tets(tets, tets_path):
         filewriter = csv.writer(tets_file)
         print("save TETs")
         for tet in tqdm(tets.values()):
-            filewriter.writerow([tet.tostring()])
+            tetlist=[tet.getroot()]
+            child_count_dict = tet.count_children()
+            for child in child_count_dict:
+                tetlist.append(child + ':' + str(child_count_dict[child]))
+            filewriter.writerow(tetlist)
+
+def load_tets(loadpath):
+    tets = {}
+    with open(loadpath, 'r', encoding="utf-8") as file:
+        for stringtet in tqdm(csv.reader(file)):
+            tetchildren=[]
+            for stringsubtet in stringtet[1:]:
+                stringsubtet = stringsubtet.replace('[' , '').replace(']','').split(':')
+                stringsubtet[0] = stringsubtet[0].split(',')
+                genres = []
+                for genre in stringsubtet[0][1:]:
+                    genres.append(TET.TETChild(genre))
+                partlist = [TET.TETChild(stringsubtet[0][0], children=genres)] * int(stringsubtet[1]) 
+                tetchildren = tetchildren + partlist 
+            tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
+    return tets
 
 if __name__ == "__main__":
-    MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
+    '''MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
     TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
@@ -119,5 +139,10 @@ if __name__ == "__main__":
     TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
 
     save_tets(TETS, TETS_PATH)
+    
+    print("save done")'''
+
+    TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
+    TETS = load_tets(TETS_PATH)
     
     print("done")
