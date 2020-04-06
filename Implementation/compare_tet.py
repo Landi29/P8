@@ -27,7 +27,7 @@ def manhatten_distance(structure1, structure2, keys):
 def knn(user, others, k=3):
     sims = []
     for other in others:
-        sims.append((other,comparetets(user, others[tet2])))
+        sims.append((other,comparetets(user, other)))
     bestk = sorted(sims, key=lambda x: x[-1])[:k]
     predictions = pred(user, bestk)
     return predictions
@@ -35,7 +35,6 @@ def knn(user, others, k=3):
 def pred(user, others):
     #ra average
     average_rating_user = 0
-
     seenbyuser = list(User_database[user])
     for rating in User_database[user].values():
         average_rating_user += rating
@@ -85,7 +84,5 @@ if __name__ == "__main__":
     TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     Tets = list(Build_TET.load_tets(TETS_PATH).values())
     N_Tets = len(Tets)
-    for tet1 in tqdm(range(N_Tets)):
-        for tet2 in range(tet1+1, N_Tets):
-            comparetets(Tets[tet1], Tets[tet2])
-            #print(str(tet1) + ' and ' + str(tet2) + ': ' + str(comparetets(Tets[tet1], Tets[tet2])))
+    knn(Tets[1], Tets)
+    print('done')
