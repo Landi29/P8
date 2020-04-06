@@ -137,7 +137,7 @@ def load_tets(loadpath):
 
 def grouping(tets):
     category = {}
-    for tet in tets.values():
+    for tet in tqdm(tets.values()):
         genres = []
         subtrees = tet.findmostwithrating('high')
         for subtree in subtrees:
