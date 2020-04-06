@@ -8,3 +8,4 @@ networkx==2.4
 node2vec==0.3.2
 matplotlib==3.2.0
 gensim==3.8.1
+pytest==5.3.5
