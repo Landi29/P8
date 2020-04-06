@@ -135,6 +135,22 @@ def load_tets(loadpath):
             count += 1
     return tets
 
+def grouping(tets):
+    category = {}
+    for tet in tets.values():
+        genres = []
+        subtrees = tet.findmostwithrating('high')
+        for subtree in subtrees:
+            subtree = subtree[0].replace('[' , '').replace(']','').split(',')
+            for genre in subtree[1:]:
+                if genre not in genres:
+                    genres.append(genre)
+        for genre in genres:
+            cat = category.get(genre,[])
+            cat.append(tet.getroot())
+            category[genre] = cat
+    return category
+
 if __name__ == "__main__":
     MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'

@@ -46,6 +46,18 @@ class TET:
             return True
         return False
 
+    def findmostwithrating(self, rating):
+        stringchildren = self.count_children()
+        best = None
+        for string in stringchildren:
+            if rating in string:
+                if best == None or best[0][1] < stringchildren[string]:
+                    best = [[string, stringchildren[string]]]
+                elif best[0][1] == stringchildren[string]:
+                    best.append([string, stringchildren[string]])
+                else:
+                    continue
+        return best
 
 class TETChild:
     def __init__(self, root, free=None, children=None):

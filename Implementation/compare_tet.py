@@ -75,7 +75,6 @@ def reasing_sims(sims):
         sims[-(i+1)][1] = temp
     return sims
 
-
 def userdatabase():
     users = {}
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
