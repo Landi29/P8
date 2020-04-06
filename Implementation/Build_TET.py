@@ -16,6 +16,7 @@ import csv
 import pathlib
 from tqdm import tqdm
 import TET
+import pickle
 
 def moviedict(movie_nodes_path):
     '''
@@ -97,33 +98,18 @@ def build_tets(edges, moviedict, user_nodes_path):
 def save_tets(tets, tets_path):
     '''
     description: this function saves the tets in the tets dictionary
-    parameters: tets is a dictionary of all tets tets_path is the path to where the trees are saved
+    
+    parameters: 
+    tets: tets is a dictionary of all tets 
+    tets_path: tets_path is the path to where the trees are saved
     '''
-    with open(tets_path, "w", newline='') as tets_file:
-        filewriter = csv.writer(tets_file)
-        print("save TETs")
-        for tet in tqdm(tets.values()):
-            tetlist=[tet.getroot()]
-            child_count_dict = tet.count_children()
-            for child in child_count_dict:
-                tetlist.append(child + ':' + str(child_count_dict[child]))
-            filewriter.writerow(tetlist)
+    with open(tets_path,"wb") as dest:
+        pickle.dump(tets, dest)
+       
 
 def load_tets(loadpath):
-    tets = {}
-    with open(loadpath, 'r', encoding="utf-8") as file:
-        for stringtet in tqdm(csv.reader(file)):
-            tetchildren=[]
-            for stringsubtet in stringtet[1:]:
-                stringsubtet = stringsubtet.replace('[' , '').replace(']','').split(':')
-                stringsubtet[0] = stringsubtet[0].split(',')
-                genres = []
-                for genre in stringsubtet[0][1:]:
-                    genres.append(TET.TETChild(genre))
-                partlist = [TET.TETChild(stringsubtet[0][0], children=genres)] * int(stringsubtet[1]) 
-                tetchildren = tetchildren + partlist 
-            tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
-    return tets
+    with open(loadpath, "rb") as source:
+        return pickle.load(source)
 
 if __name__ == "__main__":
     '''MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
@@ -142,7 +128,7 @@ if __name__ == "__main__":
     
     print("save done")'''
 
-    TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
+    TETS_PATH = pathlib.Path.cwd() / 'TET.pkl'
     TETS = load_tets(TETS_PATH)
     
     print("done")
