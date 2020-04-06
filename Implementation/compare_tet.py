@@ -1,6 +1,7 @@
 import Build_TET
 import pathlib
 from tqdm import tqdm
+import csv
 
 def comparetets(tet1, tet2):
     sim = 0
@@ -24,41 +25,63 @@ def manhatten_distance(structure1, structure2, keys):
     return distance
 
 def knn(user, others, k=3):
-    sim = []
+    sims = []
     for other in others:
         sims.append((other,comparetets(user, others[tet2])))
     bestk = sorted(sims, key=lambda x: x[-1])[:k]
-    predictions = self.pred(test_row, bestk, predcol)
+    predictions = pred(user, bestk)
     return predictions
 
 def pred(user, others):
     #ra average
     average_rating_user = 0
-    # seen = list of movies rated
-    for i in range(len(user)):
-        average_rating_user += user[i]
-    average_rating_user = averagerating_user / (len(user) - 1)
+
+    seenbyuser = list(User_database[user])
+    for rating in User_database[user].values():
+        average_rating_user += rating
+    average_rating_user = average_rating_user / (len(user) - 1)
+
     sum_simularity = 0
     # part of W
     for naighbor in others:
         sum_simularity += naighbor[1]
-    for naighbor in n:
-        # naighborseen = list of movies rated by naighbors
-        average_rating_other_user += naighbor
-        othersrating.append(average_rating_user / (len(naighbor[0]) - 1))
+
+    others_average_rating ={}
+    naighborseen = []
+    for other in others:
+        for movie in other:
+            if movie not in seenbyuser:
+                naighborseen.append(movie)
+        average_rating_other_user = 0
+        for rating in User_database[other].values():
+            average_rating_other_user += rating
+        others_average_rating[other] = average_rating_other_user / (len(User_database[other].values()))
 
     predictions = {}
     for movie in naighborseen:
-        sumrating = average_rating_user
-        for naighbor in naighbors:
-            sumrating += (naighbor[1] / addsim) * (naighborrating[other][movie] - sumnab)
+        for other in others:
+            sumrating += (other[1] / sum_simularity) * (User_database[other][movie] - others_average_rating[other])
         if sumrating > 4:
             predictions[movie] = sumrating
     return predictions
 
-
-
+def userdatabase():
+    users = {}
+    GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
+    with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+        GRAPH_DATA = csv.reader(read)
+        for line in GRAPH_DATA:
+            if users.get(line[1], None) == None:
+                user = {}
+                user[line[0]] = float(line[2])
+                users[line[1]] = user
+            else:
+                user = users[line[1]]
+                user[line[0]] = float(line[2])
+    return users
+            
 if __name__ == "__main__":
+    User_database = userdatabase()
     TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     Tets = list(Build_TET.load_tets(TETS_PATH).values())
     N_Tets = len(Tets)
