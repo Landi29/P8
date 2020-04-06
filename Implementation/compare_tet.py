@@ -93,9 +93,9 @@ def userdatabase():
 if __name__ == "__main__":
     User_database = userdatabase()
     TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
-    Tets = list(Build_TET.load_tets(TETS_PATH).values())
+    Tets = Build_TET.load_tets(TETS_PATH)
     groups = Build_TET.grouping(Tets)
 
-    for predrating in knn(Tets[0], Tets):
-        print('{} predicted rating: {}'.format(predrating[0], predrating[1]))
+    #for predrating in knn(list(Tets.values())[0], list(Tets.values())):
+    #    print('{} predicted rating: {}'.format(predrating[0], predrating[1]))
     print('\ndone')

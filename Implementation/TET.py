@@ -57,6 +57,8 @@ class TET:
                     best.append([string, stringchildren[string]])
                 else:
                     continue
+        if best == None:
+            return [[self._root, 'None'+rating]]
         return best
 
 class TETChild:

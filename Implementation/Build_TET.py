@@ -116,7 +116,7 @@ def save_tets(tets, tets_path):
 
 def load_tets(loadpath):
     tets = {}
-    count = 0
+    #count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
         for stringtet in tqdm(csv.reader(file)):
             tetchildren=[]
@@ -130,9 +130,9 @@ def load_tets(loadpath):
                 tetchildren = tetchildren + partlist 
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
-            if count > 1000:
+            '''if count >= 2000:
                 break
-            count += 1
+            count += 1'''
     return tets
 
 def grouping(tets):
