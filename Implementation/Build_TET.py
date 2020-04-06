@@ -116,6 +116,7 @@ def save_tets(tets, tets_path):
 
 def load_tets(loadpath):
     tets = {}
+    count = 0
     with open(loadpath, 'r', encoding="utf-8") as file:
         for stringtet in tqdm(csv.reader(file)):
             tetchildren=[]
@@ -128,6 +129,10 @@ def load_tets(loadpath):
                 partlist = [TET.TETChild(stringsubtet[0][0], children=genres)] * int(stringsubtet[1]) 
                 tetchildren = tetchildren + partlist 
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
+            # the if under this comment can be ereased on a later point
+            if count > 1000:
+                break
+            count += 1
     return tets
 
 if __name__ == "__main__":
