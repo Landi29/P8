@@ -83,8 +83,7 @@ $p$ is the return parameter, and controls the likelihood of immediately revisiti
 
 $q$ is the In-out parameter, and allows the search to differintiate between inward and outward nodes. A high value will keep the walker more biased towards a starting node $u$, obtaining a local view. Whereas a low value will make the walker more inclined to visit nodes further away from $u$, encouraging outward exploration.
 
-Using the node2vec strategy, transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker than traverses the tree sampling a chosen amount of neighborhood $Ns(u)$. The walks are then fed to gensim which learns a model and embeds the walks into a feature vector of $d$ dimensions.
-
+Using the node2vec strategy, transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker then traverses the tree sampling for a chosen amount of neighborhood $Ns(u)$. The walks are then fed to gensim which learns a model and embeds the walks into a feature vector of $d$ dimensions.
 
 
 
