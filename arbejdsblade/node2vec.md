@@ -28,7 +28,7 @@ Thus given a graph and a source node, they want to sample its neighborhood $Ns(u
 
 There are in general two extreme sampling strategies for generating neighborhood sets $Ns(u)$ of $k$ nodes.
 
-A Breadth-first sampling (BFS), where a nodes neighborhood is restricted to nodes which are immediate neighbors to the node, finding the immediate community that the node is part of. This gives us a microscopic view of the neighborhood and is therefor good for finding structural equivalence.
+A Breadth-first sampling (BFS), where a nodes neighborhood is restricted to nodes which are immediate neighbors to the node, finding the immediate community that the node is part of. This gives us a microscopic view of the neighborhood and is therefore good for finding structural equivalence.
 
 A Depth-first sampling (DFS), where a nodes neighborhood consist of nodes sampled at an increasing distance from the node, giving a bigger view of the structure and differences. This gives us a macro-view of the neighborhood, which is essential for inferring communities based on homophily.
 
@@ -84,7 +84,6 @@ $p$ is the return parameter, and controls the likelihood of immediately revisiti
 $q$ is the In-out parameter, and allows the search to differintiate between inward and outward nodes. A high value will keep the walker more biased towards a starting node $u$, obtaining a local view. Whereas a low value will make the walker more inclined to visit nodes further away from $u$, encouraging outward exploration.
 
 Using the node2vec strategy, transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker than traverses the tree sampling a chosen amount of neighborhood $Ns(u)$. The walks are then fed to gensim which learns a model and embeds the walks into a feature vector of $d$ dimensions.
-
 
 
 
