@@ -18,7 +18,7 @@ $$
 \max_{f} \sum_{u\in{V}} [-log Z_u + \sum_{n_i\in{Ns(u)}} f(n_i) \times f(u) ]
 $$
 
-where $Z_u = \sum_u\in{V} exp(f(u)\times f(v))$ is approximated using negative sampling. The equation is then optimized using sotchastic gradient ascent over the model parameters defining the features $f$.
+where $Z_u = \sum_u\in{V} exp(f(u)\times f(v))$ is approximated using negative sampling. The equation is then optimized using stochastic gradient ascent over the model parameters defining the features $f$.
 
 The skip-gram architecture was originally developed within the context of natural languages, text have a linear nature, whereas networks are not linear and thus a rich notion of a neighborhood is needed. They propose a randomized procedure, which samples many different neighborhoods for a given source node u. A neighborhood $Ns(u)$ is also not restricted to just the immediate neighbors but can have different structures depending on the sampling strategy $S$ that is used.
 
@@ -84,7 +84,6 @@ $p$ is the return parameter, and controls the likelihood of immediately revisiti
 $q$ is the In-out parameter, and allows the search to differintiate between inward and outward nodes. A high value will keep the walker more biased towards a starting node $u$, obtaining a local view. Whereas a low value will make the walker more inclined to visit nodes further away from $u$, encouraging outward exploration.
 
 Using the node2vec strategy, transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker than traverses the tree sampling a chosen amount of neighborhood $Ns(u)$. The walks are then fed to gensim which learns a model and embeds the walks into a feature vector of $d$ dimensions.
-
 
 
 
