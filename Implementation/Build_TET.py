@@ -116,7 +116,7 @@ def save_tets(tets, tets_path):
 
 def load_tets(loadpath):
     tets = {}
-    #count = 1
+    count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
         for stringtet in tqdm(csv.reader(file)):
             tetchildren=[]
@@ -130,9 +130,9 @@ def load_tets(loadpath):
                 tetchildren = tetchildren + partlist 
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
-            '''if count >= 2000:
+            if count >= 2000:
                 break
-            count += 1'''
+            count += 1
     return tets
 
 def grouping(tets):
@@ -151,7 +151,7 @@ def grouping(tets):
             category[genre] = cat
     return category
 
-if __name__ == "__main__":
+def main():
     MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
@@ -171,4 +171,8 @@ if __name__ == "__main__":
     '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     TETS = load_tets(TETS_PATH)'''
     
+    
+
+if __name__ == "__main__":
+    main()
     print("done")
