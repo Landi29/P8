@@ -123,12 +123,33 @@ def get_users_in_cluster(cluster_number, cluster_labels):
     '''
     return np.where(cluster_labels == cluster_number)[0]
 
+def print_cluster_information(labels):
+    '''
+    Description:
+    ------------
+    The function counts how many vectors there are in each cluster.
+
+    Parameters:
+    -----------
+    `labels` : The list of labels denoting which cluster a vector belongs to.
+    '''
+    cluster_info = {}
+    for label in labels:
+        if label not in cluster_info:
+            cluster_info[label] = 1
+        else:
+            cluster_info[label] += 1
+    # The keys are in the order found in labels, so we sort them by their numeric value.
+    for key in sorted(list(cluster_info)):
+        print("The size of cluster {}: {}".format(key, cluster_info[key]))
+
 if __name__ == "__main__":
     # Constants to be used when calling create_vectors(tets,genres).
-    TETS = Build_TET.load_tets(Paths.TETS_PATH, 10000)
+    TETS = Build_TET.load_tets(Paths.TETS_PATH, 20000)
     ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
 
     VECTORS = create_vectors(TETS, ALL_GENRES)
     print("\nCreated the vectors")
     CLUSTERS = cluster_users(VECTORS)
     print("Clustered the TETs")
+    print_cluster_information(CLUSTERS.labels_)
