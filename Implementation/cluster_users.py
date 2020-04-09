@@ -1,6 +1,9 @@
 import csv
 import Paths
 import Build_TET
+from sklearn.cluster import KMeans
+from sklearn.model_selection import train_test_split
+import numpy as np
 
 def get_all_genres(movie_nodes_path):
     '''
@@ -63,10 +66,42 @@ def create_vectors(tets, genres):
         vectors.append(list(vector_map.values()))
     return vectors
 
-# Constants to be used when calling create_vectors(tets,genres).
-TETS = Build_TET.load_tets(Paths.TETS_PATH, 100)
-ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
-VECTORS = create_vectors(TETS, ALL_GENRES)
+def cluster_users(vectors):
+    '''
+    Description:
+    
+    Cluster the TETS in 10 clusters based on their vector representation.
 
-for vector in VECTORS:
-    print(vector)
+    Parameters:
+    * vectors: The TET vectors to cluster.
+    Returns:
+    
+    A fitted `sklearn.cluster.KMeans` object. 
+    '''
+    # KMeans object with 10 clusters.
+    kmeans = KMeans(n_clusters=10)
+    # Fit the clusters. Here, we calculate the center points of each cluster.
+    kmeans.fit(vectors)
+    # We do not need to predict, since we have no labeled data to test on.
+    return kmeans
+
+def get_users_in_cluster(cluster_number, cluster_labels):
+    '''
+    Description:
+
+    Get the vector/TET indeces for all the vectors/TETs in the cluster with label cluster_number.
+
+    Parameters:
+    * cluster_number: The cluster to search.
+    * cluster_labels: The list of cluster_labels. 
+    '''
+    return np.where(cluster_labels == cluster_number)[0]
+
+# Constants to be used when calling create_vectors(tets,genres).
+TETS = Build_TET.load_tets(Paths.TETS_PATH, 10000)
+ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
+
+VECTORS = create_vectors(TETS, ALL_GENRES)
+print("Created the vectors")
+CLUSTERS = cluster_users(VECTORS)
+print("Clustered the TETs")
