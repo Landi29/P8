@@ -116,7 +116,7 @@ def save_tets(tets, tets_path):
 
 def load_tets(loadpath, limit):
     tets = {}
-    count = 0
+    count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
         for stringtet in tqdm(csv.reader(file)):
             tetchildren=[]
@@ -135,11 +135,29 @@ def load_tets(loadpath, limit):
             count += 1
     return tets
 
-if __name__ == "__main__":
+def grouping(tets):
+    category = {}
+    for tet in tqdm(tets.values()):
+        genres = []
+        subtrees = tet.findmostwithrating('high')
+        for subtree in subtrees:
+            subtree = subtree[0].replace('[' , '').replace(']','').split(',')
+            for genre in subtree[1:]:
+                if genre not in genres:
+                    genres.append(genre)
+        for genre in genres:
+            cat = category.get(genre,[])
+            cat.append(tet.getroot())
+            category[genre] = cat
+    return category
+
+def main():
     MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
     USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
     TETS_PATH = pathlib.Path.cwd() / 'Movielens_data' /'TET.csv'
+    TETS = load_tets(TETS_PATH,1000)
+    print("load_tets is done")
 
     #with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
         #GRAPH_DATA = read.readlines()
@@ -151,6 +169,8 @@ if __name__ == "__main__":
     #save_tets(TETS, TETS_PATH)
     
     #print("save done")
+   
 
-    TETS = load_tets(TETS_PATH,1000)
-    print("load_tets is done")
+if __name__ == "__main__":
+    main()
+    print("done")

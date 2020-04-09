@@ -3,32 +3,37 @@ import pathlib
 from tqdm import tqdm
 import csv
 
-def comparetets(tet1, tet2):
-    sim = 0
-    if tet1 != tet2:
-        structure1 = tet1.count_children()
-        structure2 = tet2.count_children()
-        keys = find_all_keys_in_dicts(list(structure1),list(structure2))
-        sim = manhatten_distance(structure1, structure2, keys)
-    return sim
-
 def find_all_keys_in_dicts(keys1,keys2):
     for key in keys2:
         if key not in keys1:
             keys1.append(key)
     return keys1
 
-def manhatten_distance(structure1, structure2, keys):
+def manhatten_distance(tet1, tet2):
     distance = 0.0
-    for key in keys:
-        distance += abs(structure1.get(key, 0) - structure2.get(key, 0))
+    if tet1 != tet2:
+        structure1 = tet1.histogram()
+        structure2 = tet2.histogram()
+        keys = find_all_keys_in_dicts(list(structure1),list(structure2))
+        for key in keys:
+            distance += abs(structure1.get(key, 0) - structure2.get(key, 0))
+    return distance
+
+def graph_edit_distance(tet1, tet2):
+    distance = 0.0
+    if tet1 != tet2:
+        structure1 = tet1.histogram()
+        structure2 = tet2.histogram()
+        keys = find_all_keys_in_dicts(list(structure1),list(structure2))
+        for key in keys:
+            distance += abs(structure1.get(key, 0) - structure2.get(key, 0))
     return distance
 
 def knn(user, others, k=3):
     sims = []
     for other in others:
         if user != other:
-            sims.append([other,comparetets(user, other)])
+            sims.append([other,manhatten_distance(user, other)])
     bestk = sorted(sims, key=lambda x: x[-1])[:k]
     predictions = pred(user, bestk)
     return sorted(predictions, key=lambda x: x[-1])
@@ -75,7 +80,6 @@ def reasing_sims(sims):
         sims[-(i+1)][1] = temp
     return sims
 
-
 def userdatabase():
     users = {}
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
@@ -94,8 +98,9 @@ def userdatabase():
 if __name__ == "__main__":
     User_database = userdatabase()
     TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
-    Tets = list(Build_TET.load_tets(TETS_PATH).values())
+    Tets = Build_TET.load_tets(TETS_PATH)
+    groups = Build_TET.grouping(Tets)
 
-    for predrating in knn(Tets[0], Tets):
+    for predrating in knn(list(Tets.values())[0], list(Tets.values())):
         print('{} predicted rating: {}'.format(predrating[0], predrating[1]))
     print('\ndone')
