@@ -1,15 +1,22 @@
 import csv
+from sklearn.cluster import KMeans
+import numpy as np
 import Paths
 import Build_TET
-from sklearn.cluster import KMeans
-from sklearn.model_selection import train_test_split
-import numpy as np
 
 def get_all_genres(movie_nodes_path):
     '''
-    Description: This function returns a list of all the movie genres.
+    Description:
+    ------------
+    This function returns a list of all the movie genres.
+
     Parameters:
-    * movie_nodes_path: The path to the csv file containing the movie nodes.
+    -----------
+    `movie_nodes_path` : The path to the csv file containing the movie nodes.
+
+    Returns:
+    -------
+    A list of all the movie genres.
     '''
     genres_index = 3
     all_genres = []
@@ -27,11 +34,14 @@ def get_all_genres(movie_nodes_path):
 
 def init_vector_map(genres):
     '''
-    Description: The function returns an initial vector map where each key is a genre
+    Description:
+    ------------
+    The function returns an initial vector map where each key is a genre
     ande each value is 0.
 
     Parameters:
-    * genres: The list of all movie genres.
+    -----------
+    `genres` : The list of all movie genres.
     '''
     vector_map = {}
     for genre in genres:
@@ -40,12 +50,19 @@ def init_vector_map(genres):
 
 def create_vectors(tets, genres):
     '''
-    Description: The function creates a vector representation of the given tets.
+    Description:
+    ------------
+    The function creates a vector representation of the given TETs.
     The function uses a weight value, which is set according to the rating.
 
     Parameters:
-    * tets: The tets to vectorize.
-    * genres: A list of all the movie genres.
+    -----------
+    `tets` : The tets to vectorize.
+    `genres` : A list of all the movie genres.
+
+    Returns:
+    --------
+    A list of vectors represented as a list of lists.
     '''
     vectors = []
     for tet in tets.values():
@@ -69,14 +86,16 @@ def create_vectors(tets, genres):
 def cluster_users(vectors):
     '''
     Description:
-    
+    ------------
     Cluster the TETS in 10 clusters based on their vector representation.
 
     Parameters:
-    * vectors: The TET vectors to cluster.
+    -----------
+    `vectors` : The TET vectors to cluster.
+
     Returns:
-    
-    A fitted `sklearn.cluster.KMeans` object. 
+    --------
+    A fitted `sklearn.cluster.KMeans` object.
     '''
     # KMeans object with 10 clusters.
     kmeans = KMeans(n_clusters=10)
@@ -88,20 +107,28 @@ def cluster_users(vectors):
 def get_users_in_cluster(cluster_number, cluster_labels):
     '''
     Description:
-
+    ------------
     Get the vector/TET indeces for all the vectors/TETs in the cluster with label cluster_number.
 
     Parameters:
-    * cluster_number: The cluster to search.
-    * cluster_labels: The list of cluster_labels. 
+    -----------
+    `cluster_number` : The cluster to search.
+    `cluster_labels` : The list of cluster_labels.
+
+    Returns:
+    --------
+    A list of integers representing indeces.
+    The list of TET vectors can use the indeces directly, where the dictionary of TETs
+    need to append the index to the string 'U:' for it to be a valid key.
     '''
     return np.where(cluster_labels == cluster_number)[0]
 
-# Constants to be used when calling create_vectors(tets,genres).
-TETS = Build_TET.load_tets(Paths.TETS_PATH, 10000)
-ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
+if __name__ == "__main__":
+    # Constants to be used when calling create_vectors(tets,genres).
+    TETS = Build_TET.load_tets(Paths.TETS_PATH, 10000)
+    ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
 
-VECTORS = create_vectors(TETS, ALL_GENRES)
-print("Created the vectors")
-CLUSTERS = cluster_users(VECTORS)
-print("Clustered the TETs")
+    VECTORS = create_vectors(TETS, ALL_GENRES)
+    print("\nCreated the vectors")
+    CLUSTERS = cluster_users(VECTORS)
+    print("Clustered the TETs")
