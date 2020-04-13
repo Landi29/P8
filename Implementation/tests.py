@@ -382,11 +382,34 @@ class test_compare_tet(unittest.TestCase):
     def test_pred(self):
         pass
 
-    def test_reasing_sims(self):
-        pass
+    def test_reasing_sims1(self):
+        sims = [['sam',10],
+                ['ams',5],
+                ['bob',1]]
+        res = [['sam',1],
+               ['ams',5],
+               ['bob',10]]
+        self.assertEqual(compare_tet.reasing_sims(sims),res)
+    
+    def test_reasing_sims2(self):
+        sims = [['sam',10],
+                ['ams',5],
+                ['msa',3],
+                ['bob',1]]
+        res = [['sam',1],
+               ['ams',3],
+               ['msa',5],
+               ['bob',10]]
+        self.assertEqual(compare_tet.reasing_sims(sims),res)
 
     def test_userdatabase(self):
-        pass 
+        test_userdatabase = compare_tet.userdatabase()
+        for user in test_userdatabase:
+            self.assertIn('U', user)
+            for movie in test_userdatabase[user]:
+                self.assertIn('M', movie)
+                self.assertIsInstance(test_userdatabase[user][movie],float)
+
 
 if __name__ == "__main__":
     unittest.main()
