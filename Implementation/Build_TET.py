@@ -113,7 +113,6 @@ def save_tets(tets, tets_path):
                 tetlist.append(child + ':' + str(child_count_dict[child]))
             filewriter.writerow(tetlist)
        
-
 def load_tets(loadpath):
     tets = {}
     count = 1
@@ -139,7 +138,7 @@ def grouping(tets):
     category = {}
     for tet in tqdm(tets.values()):
         genres = []
-        subtrees = tet.findmostwithrating('high')
+        subtrees = tet.find_most_with_rating('high')
         for subtree in subtrees:
             subtree = subtree[0].replace('[' , '').replace(']','').split(',')
             for genre in subtree[1:]:
@@ -171,8 +170,6 @@ def main():
     '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     TETS = load_tets(TETS_PATH)'''
     
-    
-
 if __name__ == "__main__":
     main()
     print("done")
