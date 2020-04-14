@@ -114,7 +114,7 @@ def save_tets(tets, tets_path):
             filewriter.writerow(tetlist)
        
 
-def load_tets(loadpath, limit):
+def load_tets(loadpath, limit=None):
     tets = {}
     count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
@@ -130,8 +130,9 @@ def load_tets(loadpath, limit):
                 tetchildren = tetchildren + partlist 
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
-            if count > limit:
-                break
+            if limit != None:
+                if count > limit:
+                    break
             count += 1
     return tets
 
@@ -159,16 +160,16 @@ def main():
     TETS = load_tets(TETS_PATH,1000)
     print("load_tets is done")
 
-    #with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
-        #GRAPH_DATA = read.readlines()
+    with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+        GRAPH_DATA = read.readlines()
 
-    #MOVIEDICT = moviedict(MOVIE_NODES_PATH)
+        MOVIEDICT = moviedict(MOVIE_NODES_PATH)
 
-    #TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
+        TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
 
-    save_tets(TETS, TETS_PATH)
-    
-    print("save done")
+        save_tets(TETS, TETS_PATH)
+        
+        print("save done")
 
     '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     TETS = load_tets(TETS_PATH)'''
