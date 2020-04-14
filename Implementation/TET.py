@@ -88,12 +88,12 @@ class TET:
         best = None
         for string in stringchildren:
             if rating in string:
-                if best is None or best[0][1] < stringchildren[string]:
+                if best is None:
+                    best = [[string, stringchildren[string]]]
+                elif best[0][1] < stringchildren[string]:
                     best = [[string, stringchildren[string]]]
                 elif best[0][1] == stringchildren[string]:
                     best.append([string, stringchildren[string]])
-                else:
-                    continue
         if best is None:
             return [['['+ rating + ',[[no' + rating + ']]]', 0]]
         return best
