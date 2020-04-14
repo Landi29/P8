@@ -76,7 +76,7 @@ def create_vectors(tets, genres):
             else:
                 rating = 1
             for genre in tet_data[1:]:
-                # Set the updated value to be value + (1*weight).
+                # Add the rating to the value. 
                 vector_map[genre] = vector_map[genre] + rating
         # When the tet has been processed, add it to the vectors list.
         vectors.append(list(vector_map.values()))
