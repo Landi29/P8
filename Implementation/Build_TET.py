@@ -137,9 +137,9 @@ def load_tets(loadpath, limit=None):
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
             if limit is not None:
-                if count > limit:
+                if count >= limit:
                     break
-            count += 1
+                count += 1
     return tets
 
 def grouping(tets):
