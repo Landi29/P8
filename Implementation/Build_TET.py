@@ -17,6 +17,7 @@ import pathlib
 from tqdm import tqdm
 import TET
 import pickle
+import Paths
 
 def moviedict(movie_nodes_path):
     '''
@@ -153,21 +154,17 @@ def grouping(tets):
     return category
 
 def main():
-    MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
-    USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-    GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-    TETS_PATH = pathlib.Path.cwd() / 'Movielens_data' /'TET.csv'
-    TETS = load_tets(TETS_PATH,1000)
+    TETS = load_tets(Paths.TETS_PATH,1000)
     print("load_tets is done")
 
-    with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+    with open(Paths.GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
         GRAPH_DATA = read.readlines()
 
-        MOVIEDICT = moviedict(MOVIE_NODES_PATH)
+        MOVIEDICT = moviedict(Paths.MOVIE_NODES_PATH)
 
-        TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
+        TETS = build_tets(GRAPH_DATA, MOVIEDICT, Paths.USER_NODES_PATH)
 
-        save_tets(TETS, TETS_PATH)
+        save_tets(TETS, Paths.TETS_PATH)
         
         print("save done")
 
