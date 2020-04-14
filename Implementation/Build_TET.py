@@ -160,13 +160,13 @@ def main():
     with open(Paths.GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
         GRAPH_DATA = read.readlines()
 
-        MOVIEDICT = moviedict(Paths.MOVIE_NODES_PATH)
+    MOVIEDICT = moviedict(Paths.MOVIE_NODES_PATH)
 
-        TETS = build_tets(GRAPH_DATA, MOVIEDICT, Paths.USER_NODES_PATH)
+    TETS = build_tets(GRAPH_DATA, MOVIEDICT, Paths.USER_NODES_PATH)
 
-        save_tets(TETS, Paths.TETS_PATH)
-        
-        print("save done")
+    save_tets(TETS, Paths.TETS_PATH)
+    
+    print("save done")
 
     '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
     TETS = load_tets(TETS_PATH)'''

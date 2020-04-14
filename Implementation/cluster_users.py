@@ -53,7 +53,6 @@ def create_vectors(tets, genres):
     Description:
     ------------
     The function creates a vector representation of the given TETs.
-    The function uses a weight value, which is set according to the rating.
 
     Parameters:
     -----------
@@ -68,17 +67,17 @@ def create_vectors(tets, genres):
     for tet in tets.values():
         vector_map = init_vector_map(genres)
         for child in tet.getchildren():
-            weight = 0
+            rating = 0
             tet_data = child.tostring().replace('[', '').replace(']', '').split(',')
             if tet_data[0] == 'low':
-                weight = 0.1
+                rating = 0.1
             elif tet_data[0] == 'mid':
-                weight = 0.5
+                rating = 0.5
             else:
-                weight = 1
+                rating = 1
             for genre in tet_data[1:]:
                 # Set the updated value to be value + (1*weight).
-                vector_map[genre] = vector_map[genre] + (1*weight)
+                vector_map[genre] = vector_map[genre] + rating
         # When the tet has been processed, add it to the vectors list.
         vectors.append(list(vector_map.values()))
     return vectors
