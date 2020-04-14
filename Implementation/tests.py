@@ -741,7 +741,7 @@ class testcompare_tet(unittest.TestCase):
     def test_userdatabase(self):
         '''
         #test userdatabase and values
-        '''
+    '''
         test_userdatabase = compare_tet.userdatabase()
         for user in test_userdatabase:
             self.assertIn('U', user)
