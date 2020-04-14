@@ -16,7 +16,7 @@ User(u) -> rated(u,m) -> (genre(m, g), tag(m, t))
 
 import csv
 from tqdm import tqdm
-import TET
+import tet
 import Paths
 
 def moviedict(movie_nodes_path):
@@ -56,7 +56,7 @@ def tet_find_tree(user, tets):
     '''
     if user in tets:
         return tets[user]
-    return TET.TET(root=user)
+    return tet.TET(root=user)
 
 def construct_child(movieid, rating, vmoviedict):
     '''
@@ -70,13 +70,13 @@ def construct_child(movieid, rating, vmoviedict):
     movie = vmoviedict[movieid]
     genres = []
     for genre in movie[3]:
-        genres.append(TET.TETChild(genre))
+        genres.append(tet.TETChild(genre))
     if float(rating) < 2.5:
-        child = TET.TETChild("low", children=genres)
+        child = tet.TETChild("low", children=genres)
     elif float(rating) > 3.5:
-        child = TET.TETChild("high", children=genres)
+        child = tet.TETChild("high", children=genres)
     else:
-        child = TET.TETChild("mid", children=genres)
+        child = tet.TETChild("mid", children=genres)
     return child
 
 def build_tets(edges, vmoviedict, user_nodes_path):
@@ -107,9 +107,9 @@ def save_tets(tets, tets_path):
     with open(tets_path, "w", newline='') as tets_file:
         filewriter = csv.writer(tets_file)
         print("save TETs")
-        for tet in tqdm(tets.values()):
-            tetlist = [tet.getroot()]
-            child_count_dict = tet.count_children()
+        for vtet in tqdm(tets.values()):
+            tetlist = [vtet.getroot()]
+            child_count_dict = vtet.count_children()
             for child in child_count_dict:
                 tetlist.append(child + ':' + str(child_count_dict[child]))
             filewriter.writerow(tetlist)
@@ -130,11 +130,11 @@ def load_tets(loadpath, limit=None):
                 stringsubtet[0] = stringsubtet[0].split(',')
                 genres = []
                 for genre in stringsubtet[0][1:]:
-                    genres.append(TET.TETChild(genre))
-                partlist = [TET.TETChild(stringsubtet[0][0], children=genres)]\
+                    genres.append(tet.TETChild(genre))
+                partlist = [tet.TETChild(stringsubtet[0][0], children=genres)]\
                      * int(stringsubtet[1])
                 tetchildren = tetchildren + partlist
-            tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
+            tets[stringtet[0]] = tet.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
             if limit is not None:
                 if count >= limit:
@@ -151,9 +151,9 @@ def grouping(tets):
             lists of userids.
     '''
     category = {}
-    for tet in tqdm(tets.values()):
+    for vtet in tqdm(tets.values()):
         genres = []
-        subtrees = tet.find_most_with_rating('high')
+        subtrees = vtet.find_most_with_rating('high')
         for subtree in subtrees:
             subtree = subtree[0].replace('[', '').replace(']', '').split(',')
             for genre in subtree[1:]:
@@ -161,7 +161,7 @@ def grouping(tets):
                     genres.append(genre)
         for genre in genres:
             cat = category.get(genre, [])
-            cat.append(tet.getroot())
+            cat.append(vtet.getroot())
             category[genre] = cat
     return category
 

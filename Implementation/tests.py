@@ -2,7 +2,7 @@
 import unittest
 import os
 import Discretizedata
-import TET
+import tet
 import build_tet
 import pathlib
 import compare_tet
@@ -38,131 +38,131 @@ import compare_tet
             graph_data = reader.readlines()
         self.assertEqual(graph_data[1:], expected_value)'''
 
-class TestTET(unittest.TestCase):
-    def test_Tet_construction(self):
-        test_objekt = TET.TET()
-        self.assertIsInstance(test_objekt, TET.TET)
+class Testtet(unittest.TestCase):
+    def test_tet_construction(self):
+        test_objekt = tet.TET()
+        self.assertIsInstance(test_objekt, tet.TET)
     
-    def test_Tet_getroot(self):
+    def test_tet_getroot(self):
         username ='u:1234'
-        test_objekt = TET.TET(root=username)
+        test_objekt = tet.TET(root=username)
         self.assertIs(test_objekt.getroot(), username)
     
-    def test_Tet_isroot(self):
+    def test_tet_isroot(self):
         username ='u:1234'
-        test_objekt = TET.TET(root=username)
+        test_objekt = tet.TET(root=username)
         self.assertTrue(test_objekt.isroot(username))
 
     def test_tet_getchildren(self):
         username ='u:1234'
-        children = [TET.TETChild('Lars')]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('Lars')]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.getchildren(), children)
     
     def test_tet_tostring1(self):
         username ='u:1234'
-        test_objekt = TET.TET(root=username)
+        test_objekt = tet.TET(root=username)
         self.assertEqual(test_objekt.tostring(), '[u:1234]')
     
     def test_tet_tostring2(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.tostring(), '[u:1234,[[high,[[action]]]:1]]')
    
     def test_tet_tostring3(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.tostring(), '[u:1234,[[high,[[action]]]:2]]')
 
     def test_tet_tostring4(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.tostring(), '[u:1234,[[high,[[action]]]:1,[low,[[action]]]:1]]')
 
     def test_tet_count_children1(self):
         username ='u:1234'
-        test_objekt = TET.TET(root=username)
+        test_objekt = tet.TET(root=username)
         self.assertEqual(test_objekt.count_children(), {})
 
     def test_tet_count_children2(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.count_children(), {'[high,[[action]]]': 1})
 
     def test_tet_count_children3(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.count_children(), {'[high,[[action]]]': 2})
 
     def test_tet_count_children4(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.count_children(), {'[high,[[action]]]': 1, '[low,[[action]]]': 1})
 
     def test_tet_find_most_with_rating1(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.find_most_with_rating('high'), [['[high,[[action]]]', 1]])
 
     def test_tet_find_most_with_rating2(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.find_most_with_rating('high'), [['[high,[[action]]]', 2]])
 
     def test_tet_find_most_with_rating3(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.find_most_with_rating('low'), [['[low,[[action]]]', 1]])
 
     def test_tet_find_most_with_rating4(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('comedy'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('comedy'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.find_most_with_rating('high'), [['[high,[[action]]]', 1],['[high,[[comedy]]]', 1]])
 
     def test_tet_find_most_with_rating5(self):
         username ='u:1234'
-        children = [TET.TETChild('low', children=TET.TETChild('action')), TET.TETChild('low', children=TET.TETChild('comedy'))]
-        test_objekt = TET.TET(root=username, children=children)
+        children = [tet.TETChild('low', children=tet.TETChild('action')), tet.TETChild('low', children=tet.TETChild('comedy'))]
+        test_objekt = tet.TET(root=username, children=children)
         self.assertEqual(test_objekt.find_most_with_rating('high'), [['[high,[[nohigh]]]', 0]])
 
 class TestTETchild(unittest.TestCase):
     def test_TetChild_construction1(self):
-        test_objekt = TET.TETChild('action')
-        self.assertIsInstance(test_objekt, TET.TETChild)
-        self.assertIsInstance(test_objekt, TET.TET)
+        test_objekt = tet.TETChild('action')
+        self.assertIsInstance(test_objekt, tet.TETChild)
+        self.assertIsInstance(test_objekt, tet.TET)
     
     def test_TetChild_construction2(self):
-        children = [TET.TETChild('action')]
-        test_objekt = TET.TETChild('high', children=children)
+        children = [tet.TETChild('action')]
+        test_objekt = tet.TETChild('high', children=children)
         self.assertEqual(test_objekt.getchildren(), children)
     
     def test_TetChild_construction3(self):
-        children = [TET.TETChild('action')]
-        test_objekt = TET.TETChild('high', children=children[0])
+        children = [tet.TETChild('action')]
+        test_objekt = tet.TETChild('high', children=children[0])
         self.assertEqual(test_objekt.getchildren(), children)
 
     def test_tetchild_tostring1(self):
-        test_objekt = TET.TETChild('action')
+        test_objekt = tet.TETChild('action')
         self.assertEqual(test_objekt.tostring(), '[action]')
 
     def test_tetchild_tostring2(self):
-        children = [TET.TETChild('action')]
-        test_objekt = TET.TETChild('high', children=children)
+        children = [tet.TETChild('action')]
+        test_objekt = tet.TETChild('high', children=children)
         self.assertEqual(test_objekt.tostring(), '[high,[[action]]]')
 
     def test_tetchild_tostring3(self):
-        children = [TET.TETChild('action'),TET.TETChild('comedy')]
-        test_objekt = TET.TETChild('high', children=children)
+        children = [tet.TETChild('action'),tet.TETChild('comedy')]
+        test_objekt = tet.TETChild('high', children=children)
         self.assertEqual(test_objekt.tostring(), '[high,[[action],[comedy]]]')
 
 class Testbuild_tet(unittest.TestCase):
@@ -185,15 +185,15 @@ class Testbuild_tet(unittest.TestCase):
     
     def test_tet_find_tree1(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_tet = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_tet = tet.TET(root=username, children=children)
         test_tets = {username:test_tet}
         self.assertEqual(build_tet.tet_find_tree(username, test_tets), test_tet)
         
     def test_tet_find_tree2(self):
         username ='u:1234'
-        children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
-        test_tet = TET.TET(root=username, children=children)
+        children = [tet.TETChild('high', children=tet.TETChild('action')), tet.TETChild('high', children=tet.TETChild('action'))]
+        test_tet = tet.TET(root=username, children=children)
         test_tets = {username:test_tet}
         self.assertNotEqual(build_tet.tet_find_tree('u:5678', test_tets), test_tet)
 
@@ -233,8 +233,8 @@ class Testbuild_tet(unittest.TestCase):
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
         test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(len(test_tets),3)
-        for tet in test_tets:
-            self.assertIsInstance(test_tets[tet],TET.TET)
+        for tetid in test_tets:
+            self.assertIsInstance(test_tets[tetid], tet.TET)
 
     def test_save_load_tets(self):
         TETS_PATH = pathlib.Path.cwd() / 'TET_test_save.csv'
