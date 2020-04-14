@@ -371,10 +371,10 @@ class test_compare_tet(unittest.TestCase):
         test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'],test_tets['U:3']),1.5)
 
-    def test_c(self):
-        self.assertEqual(compare_tet.c('low'), 0.25)
-        self.assertEqual(compare_tet.c('mid'), 0.5)
-        self.assertEqual(compare_tet.c('high'), 1)
+    def test_cost(self):
+        self.assertEqual(compare_tet.cost('low'), 0.25)
+        self.assertEqual(compare_tet.cost('mid'), 0.5)
+        self.assertEqual(compare_tet.cost('high'), 1)
     
     def test_knn(self):
         pass
