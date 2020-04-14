@@ -1,5 +1,5 @@
 import csv
-import Build_TET
+import build_tet
 import Paths
 
 def find_all_keys_in_dicts(keys1, keys2):
@@ -153,8 +153,8 @@ def userdatabase():
     return users
 
 if __name__ == "__main__":
-    TETS = Build_TET.load_tets(Paths.TETS_PATH)
-    GROUPS = Build_TET.grouping(TETS)
+    TETS = build_tet.load_tets(Paths.TETS_PATH)
+    GROUPS = build_tet.grouping(TETS)
 
     for predrating in knn(list(TETS.values())[0], list(TETS.values())):
         print('{} predicted rating: {}'.format(predrating[0], predrating[1]))

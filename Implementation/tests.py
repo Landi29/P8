@@ -3,7 +3,7 @@ import unittest
 import os
 import Discretizedata
 import TET
-import Build_TET
+import build_tet
 import pathlib
 import compare_tet
 
@@ -165,10 +165,10 @@ class TestTETchild(unittest.TestCase):
         test_objekt = TET.TETChild('high', children=children)
         self.assertEqual(test_objekt.tostring(), '[high,[[action],[comedy]]]')
 
-class TestBuild_TET(unittest.TestCase):
+class Testbuild_tet(unittest.TestCase):
     def test_moviedict(self):
         MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
-        test_dict = Build_TET.moviedict(MOVIE_NODES_PATH)
+        test_dict = build_tet.moviedict(MOVIE_NODES_PATH)
         for thing in test_dict:
             self.assertEqual(len(test_dict[thing]), 4)
             self.assertIsInstance(test_dict[thing][0], str)
@@ -179,7 +179,7 @@ class TestBuild_TET(unittest.TestCase):
     
     def test_userdict(self):
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_dict = Build_TET.userdict(USER_NODES_PATH)
+        test_dict = build_tet.userdict(USER_NODES_PATH)
         for thing in test_dict:
             self.assertIsInstance(test_dict[thing], bool)
     
@@ -188,21 +188,21 @@ class TestBuild_TET(unittest.TestCase):
         children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
         test_tet = TET.TET(root=username, children=children)
         test_tets = {username:test_tet}
-        self.assertEqual(Build_TET.tet_find_tree(username, test_tets), test_tet)
+        self.assertEqual(build_tet.tet_find_tree(username, test_tets), test_tet)
         
     def test_tet_find_tree2(self):
         username ='u:1234'
         children = [TET.TETChild('high', children=TET.TETChild('action')), TET.TETChild('high', children=TET.TETChild('action'))]
         test_tet = TET.TET(root=username, children=children)
         test_tets = {username:test_tet}
-        self.assertNotEqual(Build_TET.tet_find_tree('u:5678', test_tets), test_tet)
+        self.assertNotEqual(build_tet.tet_find_tree('u:5678', test_tets), test_tet)
 
     def test_construct_child1(self):
         movieid='m:1234'
         rating = '4.3'
         movie = ['1234','Toy Story (1995)','1995',['Adventure','Animation','Children','Comedy','Fantasy']]
         dictofmovies = {'m:1234': movie}
-        test_child = Build_TET.construct_child(movieid,rating,dictofmovies)
+        test_child = build_tet.construct_child(movieid,rating,dictofmovies)
         self.assertEqual(test_child.getroot(), 'high')
     
     def test_construct_child2(self):
@@ -210,7 +210,7 @@ class TestBuild_TET(unittest.TestCase):
         rating = '3.0'
         movie = ['1234','Toy Story (1995)','1995',['Adventure','Animation','Children','Comedy','Fantasy']]
         dictofmovies = {'m:1234': movie}
-        test_child = Build_TET.construct_child(movieid,rating,dictofmovies)
+        test_child = build_tet.construct_child(movieid,rating,dictofmovies)
         self.assertEqual(test_child.getroot(), 'mid')
     
     def test_construct_child3(self):
@@ -218,7 +218,7 @@ class TestBuild_TET(unittest.TestCase):
         rating = '2.3'
         movie = ['1234','Toy Story (1995)','1995',['Adventure','Animation','Children','Comedy','Fantasy']]
         dictofmovies = {'m:1234': movie}
-        test_child = Build_TET.construct_child(movieid,rating,dictofmovies)
+        test_child = build_tet.construct_child(movieid,rating,dictofmovies)
         self.assertEqual(test_child.getroot(), 'low')
     
     def test_build_tets(self):
@@ -231,7 +231,7 @@ class TestBuild_TET(unittest.TestCase):
         moviedict = {'M:1234': ['1234','Toy Story (1995)','1995',['Adventure','Animation','Children','Comedy','Fantasy']],
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(len(test_tets),3)
         for tet in test_tets:
             self.assertIsInstance(test_tets[tet],TET.TET)
@@ -248,9 +248,9 @@ class TestBuild_TET(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
-        Build_TET.save_tets(test_tets, TETS_PATH)
-        load_tets = Build_TET.load_tets(TETS_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
+        build_tet.save_tets(test_tets, TETS_PATH)
+        load_tets = build_tet.load_tets(TETS_PATH)
         for tet in test_tets:
             tet1 = test_tets[tet]
             tet2 = load_tets[tet]
@@ -269,8 +269,8 @@ class TestBuild_TET(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
-        groups = Build_TET.grouping(test_tets)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
+        groups = build_tet.grouping(test_tets)
 
         for group in groups:
             self.assertIn(group, ['Adventure','Animation','Children','Comedy','Fantasy', 'nohigh'])
@@ -298,7 +298,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'],test_tets['U:1']),0)
 
     def test_manhatten_distance2(self):
@@ -312,7 +312,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'],test_tets['U:2']),2)
 
     def test_manhatten_distance3(self):
@@ -326,7 +326,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'],test_tets['U:3']),1)
 
     def test_graph_edit_distance1(self):
@@ -340,7 +340,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'],test_tets['U:1']),0)
     
     def test_graph_edit_distance2(self):
@@ -354,7 +354,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'],test_tets['U:2']),2)
 
     def test_graph_edit_distance3(self):
@@ -368,7 +368,7 @@ class test_compare_tet(unittest.TestCase):
                      'M:5678': ['5678','Jumanji (1995)','1995',['Adventure','Children','Fantasy']],
                      'M:3456': ['3456','Jumanji (1995)','1995',['Adventure','Children','Fantasy']]}
         USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-        test_tets = Build_TET.build_tets(edges, moviedict, USER_NODES_PATH)
+        test_tets = build_tet.build_tets(edges, moviedict, USER_NODES_PATH)
         self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'],test_tets['U:3']),1.5)
 
     def test_cost(self):

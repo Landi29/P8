@@ -1,4 +1,5 @@
-''' Movie(m)
+'''
+Movie(m)
 User(u)
 rated(u,m) den her kan splittes til 3 grupper tror jeg dårlig <3, middel =3 og god >3
 genre(m,g) måske den skal splittes til mange individuelle genre of blive true false
@@ -10,13 +11,12 @@ eller ligger tæt op af hinanden.
 
 User(u) -> rated(u,m) -> genre(m, g)
 User(u) -> rated(u,m) -> tag(m, t)
-User(u) -> rated(u,m) -> (genre(m, g), tag(m, t))'''
+User(u) -> rated(u,m) -> (genre(m, g), tag(m, t))
+'''
 
 import csv
-import pathlib
 from tqdm import tqdm
 import TET
-import pickle
 import Paths
 
 def moviedict(movie_nodes_path):
@@ -58,15 +58,16 @@ def tet_find_tree(user, tets):
         return tets[user]
     return TET.TET(root=user)
 
-def construct_child(movieid, rating, moviedict):
+def construct_child(movieid, rating, vmoviedict):
     '''
-    description: construct_child constructs the child whoms root is a rating (low, mid or high) and its children
+    description: construct_child constructs the child whoms root is a rating (low, mid or high)
+                 and its children.
     parameters: movieid is the movie that an edge between user and movie leads to via rating
-                rating is the rating binding a user and a moviedict is
-                the dictionary of all movies in the graph
-    return: this return a subTET
+                rating is the rating binding a user and a vmoviedict is
+                the dictionary of all movies in the graph.
+    return: this return a subTET.
     '''
-    movie = moviedict[movieid]
+    movie = vmoviedict[movieid]
     genres = []
     for genre in movie[3]:
         genres.append(TET.TETChild(genre))
@@ -78,10 +79,10 @@ def construct_child(movieid, rating, moviedict):
         child = TET.TETChild("mid", children=genres)
     return child
 
-def build_tets(edges, moviedict, user_nodes_path):
+def build_tets(edges, vmoviedict, user_nodes_path):
     '''
     description: this function builds all the tets in a graph
-    parameters: edges are all edges in the graph, moviedict is a dictionary of all movie nodes in
+    parameters: edges are all edges in the graph, vmoviedict is a dictionary of all movie nodes in
                 the graph and user_nodes_path is the filepath to the file with all usernodes
     return: the return is a dictionary of all tets
     '''
@@ -92,28 +93,27 @@ def build_tets(edges, moviedict, user_nodes_path):
         edge = edge.strip().split(',')
         if user_dict.get(edge[1], False):
             temp_tet = tet_find_tree(edge[1], tets)
-            temp_tet.addchild(construct_child(edge[0], edge[2], moviedict))
+            temp_tet.addchild(construct_child(edge[0], edge[2], vmoviedict))
             tets[edge[1]] = temp_tet
     return tets
 
 def save_tets(tets, tets_path):
     '''
-    description: this function saves the tets in the tets dictionary
-    
-    parameters: 
-    tets: tets is a dictionary of all tets 
-    tets_path: tets_path is the path to where the trees are saved
+    description: this function saves the tets in the tets dictionary.
+    parameters:
+        tets: tets is a dictionary of all tets
+        tets_path: tets_path is the path to where the trees are saved.
     '''
     with open(tets_path, "w", newline='') as tets_file:
         filewriter = csv.writer(tets_file)
         print("save TETs")
         for tet in tqdm(tets.values()):
-            tetlist=[tet.getroot()]
+            tetlist = [tet.getroot()]
             child_count_dict = tet.count_children()
             for child in child_count_dict:
                 tetlist.append(child + ':' + str(child_count_dict[child]))
             filewriter.writerow(tetlist)
-    
+
 def load_tets(loadpath, limit=None):
     '''
     description: This funkrion loads and rebuilds the tets saved by save_tets
@@ -124,18 +124,19 @@ def load_tets(loadpath, limit=None):
     count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
         for stringtet in tqdm(csv.reader(file)):
-            tetchildren=[]
+            tetchildren = []
             for stringsubtet in stringtet[1:]:
-                stringsubtet = stringsubtet.replace('[' , '').replace(']','').split(':')
+                stringsubtet = stringsubtet.replace('[', '').replace(']', '').split(':')
                 stringsubtet[0] = stringsubtet[0].split(',')
                 genres = []
                 for genre in stringsubtet[0][1:]:
                     genres.append(TET.TETChild(genre))
-                partlist = [TET.TETChild(stringsubtet[0][0], children=genres)] * int(stringsubtet[1]) 
-                tetchildren = tetchildren + partlist 
+                partlist = [TET.TETChild(stringsubtet[0][0], children=genres)]\
+                     * int(stringsubtet[1])
+                tetchildren = tetchildren + partlist
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
-            if limit != None:
+            if limit is not None:
                 if count > limit:
                     break
             count += 1
@@ -143,44 +144,45 @@ def load_tets(loadpath, limit=None):
 
 def grouping(tets):
     '''
-    description: This groupes the uses by gendre a user can be in more than one group, 
-                 but are only in the group of the genres he has rated high the most. 
-    parameters: tets is a dictionary of tets you want to group the users from
-    return: the return is a dictionary of all groups that been constructed containing lists of userids
+    description: This groupes the uses by gendre a user can be in more than one group,
+                 but are only in the group of the genres he has rated high the most.
+    parameters: tets is a dictionary of tets you want to group the users from.
+    return: the return is a dictionary of all groups that been constructed containing
+            lists of userids.
     '''
     category = {}
     for tet in tqdm(tets.values()):
         genres = []
         subtrees = tet.find_most_with_rating('high')
         for subtree in subtrees:
-            subtree = subtree[0].replace('[' , '').replace(']','').split(',')
+            subtree = subtree[0].replace('[', '').replace(']', '').split(',')
             for genre in subtree[1:]:
                 if genre not in genres:
                     genres.append(genre)
         for genre in genres:
-            cat = category.get(genre,[])
+            cat = category.get(genre, [])
             cat.append(tet.getroot())
             category[genre] = cat
     return category
 
 def main():
-    TETS = load_tets(Paths.TETS_PATH,1000)
-    print("load_tets is done")
-
+    '''
+    made to release memory when done
+    '''
     with open(Paths.GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
-        GRAPH_DATA = read.readlines()
+        graph_data = read.readlines()
 
-    MOVIEDICT = moviedict(Paths.MOVIE_NODES_PATH)
+    vmoviedict = moviedict(Paths.MOVIE_NODES_PATH)
 
-    TETS = build_tets(GRAPH_DATA, MOVIEDICT, Paths.USER_NODES_PATH)
+    tets = build_tets(graph_data, vmoviedict, Paths.USER_NODES_PATH)
 
-    save_tets(TETS, Paths.TETS_PATH)
-    
+    save_tets(tets, Paths.TETS_PATH)
+
     print("save done")
 
-    '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
-    TETS = load_tets(TETS_PATH)'''
-    
+    tets = load_tets(Paths.TETS_PATH, 1000)
+    print("load_tets is done")
+
 if __name__ == "__main__":
     main()
     print("done")
