@@ -114,6 +114,11 @@ def save_tets(tets, tets_path):
             filewriter.writerow(tetlist)
        
 def load_tets(loadpath):
+    '''
+    description: This funkrion loads and rebuilds the tets saved by save_tets
+    parameters: the loadpath is the path to the file where the tets are saved
+    return: the return is a dictionary of all tets
+    '''
     tets = {}
     count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
@@ -135,6 +140,12 @@ def load_tets(loadpath):
     return tets
 
 def grouping(tets):
+    '''
+    description: This groupes the uses by gendre a user can be in more than one group, 
+                 but are only in the group of the genres he has rated high the most. 
+    parameters: tets is a dictionary of tets you want to group the users from
+    return: the return is a dictionary of all groups that been constructed containing lists of userids
+    '''
     category = {}
     for tet in tqdm(tets.values()):
         genres = []
