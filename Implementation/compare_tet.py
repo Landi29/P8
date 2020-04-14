@@ -22,18 +22,27 @@ def manhatten_distance(tet1, tet2):
 def graph_edit_distance(tet1, tet2):
     distance = 0.0
     if tet1 != tet2:
-        structure1 = tet1.histogram()
-        structure2 = tet2.histogram()
+        structure1 = tet1.count_children()
+        structure2 = tet2.count_children()
         keys = find_all_keys_in_dicts(list(structure1),list(structure2))
         for key in keys:
-            distance += abs(structure1.get(key, 0) - structure2.get(key, 0))
+            distance += c(key) * abs(structure1.get(key, 0) - structure2.get(key, 0))
     return distance
+
+def c(stringkey):
+    rating = stringkey.replace('[' , '').replace(']','').split(',')[0]
+    switcher = {
+        'low': 0.25,
+        'mid': 0.5,
+        'high': 1,
+    }
+    return switcher[rating]
 
 def knn(user, others, k=3):
     sims = []
     for other in others:
         if user != other:
-            sims.append([other,manhatten_distance(user, other)])
+            sims.append([other, graph_edit_distance(user, other)])
     bestk = sorted(sims, key=lambda x: x[-1])[:k]
     predictions = pred(user, bestk)
     return sorted(predictions, key=lambda x: x[-1])

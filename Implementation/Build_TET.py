@@ -139,7 +139,7 @@ def grouping(tets):
     category = {}
     for tet in tqdm(tets.values()):
         genres = []
-        subtrees = tet.findmostwithrating('high')
+        subtrees = tet.find_most_with_rating('high')
         for subtree in subtrees:
             subtree = subtree[0].replace('[' , '').replace(']','').split(',')
             for genre in subtree[1:]:
@@ -166,11 +166,13 @@ def main():
 
     #TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
 
-    #save_tets(TETS, TETS_PATH)
+    save_tets(TETS, TETS_PATH)
     
-    #print("save done")
-   
+    print("save done")
 
+    '''TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
+    TETS = load_tets(TETS_PATH)'''
+    
 if __name__ == "__main__":
     main()
     print("done")
