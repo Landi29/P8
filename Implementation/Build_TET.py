@@ -17,6 +17,7 @@ import pathlib
 from tqdm import tqdm
 import TET
 import pickle
+import Paths
 
 def moviedict(movie_nodes_path):
     '''
@@ -113,7 +114,8 @@ def save_tets(tets, tets_path):
                 tetlist.append(child + ':' + str(child_count_dict[child]))
             filewriter.writerow(tetlist)
        
-def load_tets(loadpath):
+
+def load_tets(loadpath, limit=None):
     tets = {}
     count = 1
     with open(loadpath, 'r', encoding="utf-8") as file:
@@ -129,8 +131,9 @@ def load_tets(loadpath):
                 tetchildren = tetchildren + partlist 
             tets[stringtet[0]] = TET.TET(stringtet[0], children=tetchildren)
             # the if under this comment can be ereased on a later point
-            if count >= 2000:
-                break
+            if limit != None:
+                if count > limit:
+                    break
             count += 1
     return tets
 
@@ -151,19 +154,17 @@ def grouping(tets):
     return category
 
 def main():
-    MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
-    USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-    GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-    TETS_PATH = pathlib.Path.cwd() / 'TET.csv'
+    TETS = load_tets(Paths.TETS_PATH,1000)
+    print("load_tets is done")
 
-    with open(GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+    with open(Paths.GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
         GRAPH_DATA = read.readlines()
 
-    MOVIEDICT = moviedict(MOVIE_NODES_PATH)
+    MOVIEDICT = moviedict(Paths.MOVIE_NODES_PATH)
 
-    TETS = build_tets(GRAPH_DATA, MOVIEDICT, USER_NODES_PATH)
+    TETS = build_tets(GRAPH_DATA, MOVIEDICT, Paths.USER_NODES_PATH)
 
-    save_tets(TETS, TETS_PATH)
+    save_tets(TETS, Paths.TETS_PATH)
     
     print("save done")
 
