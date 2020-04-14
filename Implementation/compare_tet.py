@@ -59,7 +59,7 @@ def cost(stringkey):
     }
     return switcher[rating]
 
-def knn(user, others, k=3):
+def knn(user, others, k=3, user_database=None, filterv=4):
     '''
     description: this is a simpel implementation of knn finding the k nearest neighbors
                  and making predictions.
@@ -68,21 +68,22 @@ def knn(user, others, k=3):
     return: the return is a sorted list of recommendet movies.
     '''
     sims = []
+    if user_database is None:
+        user_database = userdatabase()
     for other in others:
         if user != other:
             sims.append([other, graph_edit_distance(user, other)])
     bestk = sorted(sims, key=lambda x: x[-1])[:k]
-    predictions = pred(user, bestk)
+    predictions = pred(user, bestk, user_database, filterv)
     return sorted(predictions, key=lambda x: x[-1])
 
-def pred(user, others):
+def pred(user, others, user_database, filtervalue=None):
     '''
     description: This function calculates a prediction on the users rating on movies
                  others has seen that the user have not seen.
     parameters: user is a user you want to recommend to, others are the k other users.
     return: The return is a list of recommendet movies.
     '''
-    user_database = userdatabase()
     #ra average
     average_rating_user = 0
     seenbyuser = list(user_database[user.getroot()])
@@ -96,7 +97,7 @@ def pred(user, others):
     naighborseen = []
     for other in others:
         for movie in user_database[other[0].getroot()]:
-            if movie not in seenbyuser:
+            if movie not in seenbyuser and movie not in naighborseen:
                 naighborseen.append(movie)
         average_rating_other_user = 0
         for rating in user_database[other[0].getroot()].values():
@@ -116,7 +117,10 @@ def pred(user, others):
                 sumrating += (other[1] / sum_simularity) \
                 * (user_database[other[0].getroot()][movie] \
                 - others_average_rating[other[0].getroot()])
-        if sumrating >= 4:
+        if filtervalue is not None:
+            if sumrating >= filtervalue:
+                predictions.append((movie, sumrating))
+        else:
             predictions.append((movie, sumrating))
     return predictions
 
@@ -153,7 +157,7 @@ def userdatabase():
     return users
 
 if __name__ == "__main__":
-    TETS = build_tet.load_tets(Paths.TETS_PATH)
+    TETS = build_tet.load_tets(Paths.TETS_PATH, 1000)
     GROUPS = build_tet.grouping(TETS)
 
     for predrating in knn(list(TETS.values())[0], list(TETS.values())):

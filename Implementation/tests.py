@@ -9,6 +9,7 @@ import compare_tet
 import Paths
 
 # The test class for graph methods.
+'''
 class TestDiscretizedata(unittest.TestCase):
     """ This class contains tests for the functions in Discretizedata.py."""
     RATING_DATA = [
@@ -38,6 +39,7 @@ class TestDiscretizedata(unittest.TestCase):
         with open(Discretizedata.GRAPH_DATA_PATH, 'r') as reader:
             graph_data = reader.readlines()
         self.assertEqual(graph_data[1:], expected_value)
+'''
 
 class Testtet(unittest.TestCase):
     '''
@@ -549,17 +551,156 @@ class testcompare_tet(unittest.TestCase):
 
     def test_cost(self):
         '''
-        tets cost function
+        test cost function
         '''
         self.assertEqual(compare_tet.cost('low'), 0.25)
         self.assertEqual(compare_tet.cost('mid'), 0.5)
         self.assertEqual(compare_tet.cost('high'), 1)
 
-    def test_knn(self):
-        pass
+    def test_knn1(self):
+        '''
+        test knn
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 5.0, 'M:5678': 3.5},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
 
-    def test_pred(self):
-        pass
+        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
+                                user_database=userdatabase)
+        self.assertEqual(preds, [('M:3456', 4.75)])
+
+    def test_knn2(self):
+        '''
+        test knn standard filter
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 4.25},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
+        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
+                                user_database=userdatabase)
+        self.assertEqual(preds, [('M:3456', 4.75)])
+
+    def test_knn3(self):
+        '''
+        test knn lowered filter
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 4.25},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
+        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
+                                user_database=userdatabase, filterv=3)
+        self.assertEqual(preds, [('M:5678', 3.8928571428571423), ('M:3456', 4.75)])
+
+
+    def test_pred1(self):
+        '''
+        test pred one film not seen by user no filter
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 5.0, 'M:5678': 3.5},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
+        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
+        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase), [('M:3456', 4.75)])
+
+    def test_pred2(self):
+        '''
+        test pred two film not seen by user no filter
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 4.25},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
+        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
+        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase),
+                         [('M:3456', 4.75), ('M:5678', 3.861570247933884)])
+
+    def test_pred3(self):
+        '''
+        test pred two film not seen by user filter 4
+        '''
+        edges = ['M:1234,U:1,5.0\n',
+                 'M:5678,U:1,3.5\n',
+                 'M:3456,U:2,2.0\n',
+                 'M:5678,U:2,1.0\n',
+                 'M:1234,U:3,4.5\n',
+                 'M:5678,U:3,4.0\n']
+        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
+                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
+                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']],
+                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
+                                ['Adventure', 'Children', 'Fantasy']]}
+        userdatabase = {'U:1': {'M:1234': 4.25},
+                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
+        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
+        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase, 4),
+                         [('M:3456', 4.75)])
 
     def test_reasing_sims1(self):
         '''
