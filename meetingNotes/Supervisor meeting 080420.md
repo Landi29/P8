@@ -7,7 +7,8 @@
 * It should release the memory from one iteration to another which our code does not which is where the problem might be.
 * It sounds like that their code doesn't release the memory it uses. It sounds like the library we are using a bit screwed.
 
-* Node2vec has 2 parameter, alpha and beta, there should be a setting where they become a uniform. We should try that setting. It should make our transition probabilities uniform and save on space.
+* Node2vec has 2 parameters, alpha and beta, there should be a setting where they become a uniform. We should try that setting. It should make our transition probabilities uniform and save on space.
+
 * We could devide our random walk up on smaller graphs and feed the list of walks to the embedder.
   * The collection of random walks should be as similar to the random walks we would have gotten in the full graphs.
   * The alpha and beta parameters determine how the random walks look like.  There are settings that make the random walks more local and setting that make them more exploratory. 
