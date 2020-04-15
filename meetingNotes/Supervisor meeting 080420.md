@@ -5,7 +5,8 @@
 * Run random walks on all the subgraphs and then embed it on those. 
 * The transistion matrix shouldn't be larger than the graph. 
 * It should release the memory from one iteration to another which our code does not which is where the problem might be.
-* It sounds like that their code doesn't release the code. It sounds like the library we are using a bit screwed.
+* It sounds like that their code doesn't release the memory it uses. It sounds like the library we are using a bit screwed.
+
 * Node2vec has 2 parameter, alpha and beta, there should be a setting where they become a uniform. We should try that setting. It should make our transition probabilities uniform and save on space.
 * We could devide our random walk up on smaller graphs and feed the list of walks to the embedder.
   * The collection of random walks should be as similar to the random walks we would have gotten in the full graphs.
