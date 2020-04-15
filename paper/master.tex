@@ -1,16 +1,10 @@
 \documentclass{llncs}
+
 \usepackage{float}
-
-
-
-  \usepackage[pdftex]{graphicx}
-  \usepackage{tikz}
-  \usepackage{adjustbox}
-  %\usepackage{subcaption}
-  \usepackage{subfig}
-  \usetikzlibrary{}
-
-
+\usepackage[pdftex]{graphicx}
+\usepackage{tikz}
+\usepackage{adjustbox}
+\usepackage{subfig}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amssymb}
@@ -20,19 +14,15 @@
 \usepackage{tikz}
 \usetikzlibrary{calc,positioning,shapes.geometric,shapes.symbols,shapes.misc,trees}
 \usepackage{amsmath}
-\def\definitionautorefname{Definition}
+%\def\definitionautorefname{Definition}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
 
-
-
 \begin{document}
+
 \title{P8}
-
-
-\author{S. R. Petersen, L. Svane, A. D. Nielsen, K. K. Malowanczyk, A. M. Landi% <-this % stops a space
-}
-
+\author{S. R. Petersen \and L. Svane \and A. D. Nielsen \and K. K. Malowanczyk \and A. M. Landi}
+\institute{Institut for Datalogi, Aalborg Universitet, Denmark}
 
 \maketitle
 
@@ -40,16 +30,9 @@
 	The abstract should be placed here.
 \end{abstract}
 
-% Note that keywords are not normally used for peerreview papers.
-%\begin{IEEEkeywords}
-
-%mutation, testing, conformance testing, UPPAAL, timed automata, real-time systems, diabolic %completion, model-based mutation testing, model-based testing.
-%\end{IEEEkeywords}
-
-
 \input{inputs.tex}
 
-\bibliographystyle{IEEEtran}
+\bibliographystyle{splncs04}
 \bibliography{bib}
 
 \end{document}
