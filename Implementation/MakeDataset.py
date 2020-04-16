@@ -1,7 +1,7 @@
 """Contains functionality for creating the dataset used in SimGNN"""
 import pathlib
 from tqdm import tqdm
-from SimGNN import SimGNN_Trainer
+#from SimGNN import SimGNN_Trainer
 
 class SimGNNDatasetCreator:
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
@@ -39,7 +39,7 @@ class SimGNNDatasetCreator:
             for x in tqdm(range(1, allgraphs.__len__())):
                 user1 = "U:" + str(x)
                 dataset[user1] = {}
-                for y in range(x + 1, x + 6):
+                for y in range(x + 1, x + 2):
                     try:
                         user2 = "U:" + str(y)
                         dataset[user1][user2] = {}
@@ -50,16 +50,16 @@ class SimGNNDatasetCreator:
                         dataset[user1][user2]["GED"] = self.my_find_ged(labels[user1], labels[user2], allgraphs[user1], allgraphs[user2])
                     except:
                         break
-        return allgraphs
+        return dataset
 
 
     @staticmethod
     def get_new_graph(graph):
         edgelist = []
         value = float(graph[2].strip())
-        if value >= 4.0:
+        if value > 3.5:
             edgelist.append(["High", graph[0]])
-        elif value >= 2.0:
+        elif value > 2.5:
             edgelist.append(["Medium", graph[0]])
         else:
             edgelist.append(["Low", graph[0]])
@@ -93,7 +93,7 @@ class SimGNNDatasetCreator:
                 continue
             else:
                 gedscore += 1
-        for node in similarnodes:
+        """for node in similarnodes:
             i1 = 0.0
             i2 = 0.0
             for node1 in graph1:
@@ -104,11 +104,19 @@ class SimGNNDatasetCreator:
                 if node1[0] == node:
                     i2 = float(node1[2].strip())
                     break
-            gedscore += abs(i1-i2)
+            gedscore += abs(i1-i2)"""
         return gedscore
 
-
+import json
 f = SimGNNDatasetCreator()
 dataset = f.make_dataset()
-SimGNN_Trainer(dataset)
-JSON_FILE = pathlib.Path.cwd() / 'Movielens_data' / 'training.json'
+JSON_FILE = pathlib.Path.cwd() / 'Movielens_data'
+x = 1
+while x < 100:
+    out_file = open("Movielens_data/Training_Data/" + str(x) + ".json", "w")
+    y = x + 1
+    user1 = "U:" + str(x)
+    user2 = "U:" + str(y)
+    json.dump(dataset[user1][user2], out_file)
+    x += 1
+    out_file.close()
