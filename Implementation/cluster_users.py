@@ -2,7 +2,7 @@ import csv
 from sklearn.cluster import KMeans
 import numpy as np
 import Paths
-import Build_TET
+import build_tet
 
 def get_all_genres(movie_nodes_path):
     '''
@@ -20,7 +20,7 @@ def get_all_genres(movie_nodes_path):
     '''
     genres_index = 3
     all_genres = []
-    with open(movie_nodes_path, 'r') as movies_file:
+    with open(movie_nodes_path, 'r', encoding="utf-8") as movies_file:
         line1 = True
         for movie in csv.reader(movies_file):
             if line1:
@@ -144,7 +144,7 @@ def print_cluster_information(labels):
 
 if __name__ == "__main__":
     # Constants to be used when calling create_vectors(tets,genres).
-    TETS = Build_TET.load_tets(Paths.TETS_PATH, 20000)
+    TETS = build_tet.load_tets(Paths.TETS_PATH, 20000)
     ALL_GENRES = sorted(get_all_genres(Paths.MOVIE_NODES_PATH))
 
     VECTORS = create_vectors(TETS, ALL_GENRES)

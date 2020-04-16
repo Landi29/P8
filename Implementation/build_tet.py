@@ -135,7 +135,6 @@ def load_tets(loadpath, limit=None):
                      * int(stringsubtet[1])
                 tetchildren = tetchildren + partlist
             tets[stringtet[0]] = tet.TET(stringtet[0], children=tetchildren)
-            # the if under this comment can be ereased on a later point
             if limit is not None:
                 if count >= limit:
                     break
