@@ -45,8 +45,8 @@ class SimGNNDatasetCreator:
                         dataset[user1][user2] = {}
                         dataset[user1][user2]["graph_1"] = allgraphs[user1]
                         dataset[user1][user2]["graph_2"] = allgraphs[user2]
-                        dataset[user1][user2]["label_1"] = labels[user1]
-                        dataset[user1][user2]["label_2"] = labels[user2]
+                        dataset[user1][user2]["labels_1"] = labels[user1]
+                        dataset[user1][user2]["labels_2"] = labels[user2]
                         dataset[user1][user2]["GED"] = self.my_find_ged(labels[user1], labels[user2], allgraphs[user1], allgraphs[user2])
                     except:
                         break
