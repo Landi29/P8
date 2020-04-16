@@ -13,6 +13,10 @@ MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
 
+RATINGPATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'ratings_10m.dat'
+GRAPH_DATA_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'graph_10m.csv'
+USER_NODES_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes_10m.csv'
+
 #API-key from OMDB Api (limit: 1000 daily)
 APIKEY = "ad37bdca"
 
@@ -20,7 +24,7 @@ APIKEY = "ad37bdca"
 #Read the ratings csv file one line at a time, only keep the data we need
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
 def disc_rating_data(inputfile, savepath, number_of_users):
-    """Reads file with rating data, changes it into a graph
+    """Reads a csv file with rating data, changes it into a graph
     representaition of (Head,Tail,Weight) and writes it into a new file
     
     Parameters:
@@ -48,11 +52,32 @@ def disc_rating_data(inputfile, savepath, number_of_users):
                     break
         nf.close()
 
+def disc_rating_data_2(inputfile, savepath):
+    """Reads a .dat file with rating data, changes it into a graph
+    representaition of (Head,Tail,Weight) and writes it into a new file as .csv
+    
+    Parameters:
+        inputfile (filepath): filepath for the file to read, should be in the form of an edgelist
+        savepath (filepath): filepath where to save the graph, saves as an csv file
+        number_of_users (int): number of users to make a graph from, if given 'None' will use whole dataset
+    """
+
+    with open(inputfile, "r") as fp:
+        nf = open(savepath, "w+", newline='')
+        filewriter = csv.writer(nf)
+
+        for rating in fp:
+            edge = rating.split("::")
+            filewriter.writerow(["1"+edge[1], "2"+edge[0], edge[2]])
+            
+    
+    nf.close()
+
 #Read the movies csv file and take out the information we need, including release year
 #As output we get a csv file where each line is a node for a movie of the form (movieId,movieTitle,ReleaseYear,genres)
 def disc_movie_data():
     """Reads file with movie data, finds missing information
-    using OMDB and puts it into a new file"""
+    using OMDB and writes it into a new file"""
 
     with open(MOVIEPATH, "r", encoding='utf-8') as fp:
         nf = open(MOVIE_NODES_PATH, "w+", newline='', encoding='utf-8')
@@ -95,12 +120,12 @@ def disc_movie_data():
 
 #Read the ratings csv file and convert the data into users
 #As output we get a csv file where each line is a node for a user of the form (userId, ratingcount)
-def disc_user_data():
+def disc_user_data(inputfile, savepath):
     """Reads file with user data, counts how many ratings each user
     have done and writes it into a new file"""
 
-    with open(RATINGPATH, "r") as fp:
-        nf = open(USER_NODES_PATH, "w+", newline='')
+    with open(inputfile, "r") as fp:
+        nf = open(savepath, "w+", newline='')
         filewriter = csv.writer(nf)
 
         currentid = '1'
@@ -110,7 +135,7 @@ def disc_user_data():
         for rating in csv.reader(fp):
 
             #skip line if not a rating
-            if "user" in rating[0]:
+            if "user" in rating[1]:
                 pass
             #count up if the same user has made multiple ratings
             elif rating[0] == currentid:
@@ -123,5 +148,44 @@ def disc_user_data():
         nf.close()
 
 
+def avg_total_rating(inputfile):
+    """Hello"""
+
+
+    total_rating = 0
+    number_of_users = 0
+
+    with open(inputfile, "r") as fp:
+
+        for user in csv.reader(fp):
+            total_rating += int(user[1])
+            number_of_users += 1
+    
+        avg_rating = (total_rating/number_of_users)
+
+    print(avg_rating)
+    print(number_of_users)
+
+    return avg_rating
+             
+
+def users_above_avg_rating(inputfile,rating_threshold):
+    """hallo"""
+
+    ratings_above_threshold = 0
+
+    with open(USER_NODES_PATH, "r") as fp:
+
+        for user in csv.reader(fp):
+            if int(user[1]) > rating_threshold:
+                ratings_above_threshold += 1
+            else:
+                pass
+    
+    print(ratings_above_threshold)
+
+    return ratings_above_threshold
+
+
 if __name__ == "__main__":
-    print("Hello")
+    print("hello")
