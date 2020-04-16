@@ -21,7 +21,7 @@ class SimGNNDatasetCreator:
             for lines in file:
                 lines_split = lines.split(",")
                 if lines_split[1] in allgraphs:
-                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split))
+                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
                     labels[lines_split[1]].append(lines_split[0])
                 else:
                     allgraphs[lines_split[1]] = []
@@ -29,7 +29,7 @@ class SimGNNDatasetCreator:
                     allgraphs[lines_split[1]].append([lines_split[1], "High"])
                     allgraphs[lines_split[1]].append([lines_split[1], "Medium"])
                     allgraphs[lines_split[1]].append([lines_split[1], "Low"])
-                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split))
+                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
                     labels[lines_split[1]].append("Medium")
                     labels[lines_split[1]].append("Low")
                     labels[lines_split[1]].append("High")
