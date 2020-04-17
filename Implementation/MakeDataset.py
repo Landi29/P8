@@ -22,7 +22,7 @@ class SimGNNDatasetCreator:
                 lines_split = lines.split(",")
                 if lines_split[1] in allgraphs:
                     allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
-                    labels[lines_split[1]].append(int(lines_split[0].split(":")[1]))
+                    labels[lines_split[1]].append(int("2"+lines_split[0].split(":")[1]))
                 else:
                     allgraphs[lines_split[1]] = []
                     labels[lines_split[1]] = []
@@ -33,8 +33,8 @@ class SimGNNDatasetCreator:
                     labels[lines_split[1]].append(1)
                     labels[lines_split[1]].append(2)
                     labels[lines_split[1]].append(3)
-                    labels[lines_split[1]].append(int(lines_split[1].split(":")[1]))
-                    labels[lines_split[1]].append(int(lines_split[0].split(":")[1]))
+                    labels[lines_split[1]].append(int("1"+lines_split[1].split(":")[1]))
+                    labels[lines_split[1]].append(int("2"+lines_split[0].split(":")[1]))
             dataset = {}
             for x in tqdm(range(1, allgraphs.__len__())):
                 user1 = "U:" + str(x)
