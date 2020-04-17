@@ -34,7 +34,7 @@ def moviedict(movie_nodes_path):
 
 def userdict(user_nodes_path):
     '''
-    description: This funktion constructs a user dictionary of
+    description: This function constructs a user dictionary of
                  boolean values from the users in a file
     parameters: user_nodes_path is a filepath to a file with user descriptions
     return: this function returns a dictionary of users
