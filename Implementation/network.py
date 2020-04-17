@@ -16,6 +16,7 @@ import networkx as nx
 
 #Different filepaths used for the project, these paths are used for the different methods.
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
+CLEANED_GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph_cleaned.csv'
 RATING_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 NETWORKX_GRAPH = pathlib.Path.cwd() / 'Movielens_data' / 'movielens.edgelist'
 
@@ -87,7 +88,7 @@ def run_node2vec(graph, save_path):
 
     #Parameter p is the propability of revisitting a node you have just seen, a high value means we are less likely to backtract to it
     #Parameter q makes the random walk more biased towards nodes close to our starting node, a high value makes it stay close to out start node
-    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=40, num_walks=50, p=1, q=2, workers=6)
+    graphn2v = n2v.Node2Vec(graph, dimensions=50, walk_length=40, num_walks=50, p=1, q=2, workers=1)
 
     n2vmodel = graphn2v.fit(window=10, min_count=5)
 
@@ -109,10 +110,10 @@ def get_model(model_path):
 if __name__ == "__main__":
     print("Hallo")
 
-    #create_graph(GRAPH_DATA_PATH,NETWORKX_GRAPH)
+    create_graph(CLEANED_GRAPH_DATA_PATH, NETWORKX_GRAPH)
 
-    #graph = load_graph(NETWORKX_GRAPH)
-    #run_node2vec(graph,"n2vfullmodel")
+    graph = load_graph(NETWORKX_GRAPH)
+    run_node2vec(graph,"n2v_5000_model")
     
     #mostsimilar("U:900")
     #model = getmodel("n2vmodel2.p")
