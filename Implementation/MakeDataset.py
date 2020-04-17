@@ -22,19 +22,19 @@ class SimGNNDatasetCreator:
                 lines_split = lines.split(",")
                 if lines_split[1] in allgraphs:
                     allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
-                    labels[lines_split[1]].append(lines_split[0])
+                    labels[lines_split[1]].append(int(lines_split[0].split(":")[1]))
                 else:
                     allgraphs[lines_split[1]] = []
                     labels[lines_split[1]] = []
-                    allgraphs[lines_split[1]].append([lines_split[1], "High"])
-                    allgraphs[lines_split[1]].append([lines_split[1], "Medium"])
-                    allgraphs[lines_split[1]].append([lines_split[1], "Low"])
+                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 3])
+                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 2])
+                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 1])
                     allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
-                    labels[lines_split[1]].append("Medium")
-                    labels[lines_split[1]].append("Low")
-                    labels[lines_split[1]].append("High")
-                    labels[lines_split[1]].append(lines_split[1])
-                    labels[lines_split[1]].append(lines_split[0])
+                    labels[lines_split[1]].append(1)
+                    labels[lines_split[1]].append(2)
+                    labels[lines_split[1]].append(3)
+                    labels[lines_split[1]].append(int(lines_split[1].split(":")[1]))
+                    labels[lines_split[1]].append(int(lines_split[0].split(":")[1]))
             dataset = {}
             for x in tqdm(range(1, allgraphs.__len__())):
                 user1 = "U:" + str(x)
@@ -58,11 +58,11 @@ class SimGNNDatasetCreator:
         edgelist = []
         value = float(graph[2].strip())
         if value > 3.5:
-            edgelist.append(["High", graph[0]])
+            edgelist.append([3, int("2"+graph[0].split(":")[1])])
         elif value > 2.5:
-            edgelist.append(["Medium", graph[0]])
+            edgelist.append([2, int("2"+graph[0].split(":")[1])])
         else:
-            edgelist.append(["Low", graph[0]])
+            edgelist.append([1, int("2"+graph[0].split(":")[1])])
         return edgelist
 
     @staticmethod
