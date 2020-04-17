@@ -116,7 +116,7 @@ def save_tets(tets, tets_path):
 
 def load_tets(loadpath, limit=None):
     '''
-    description: This funkrion loads and rebuilds the tets saved by save_tets
+    description: This function loads and rebuilds the tets saved by save_tets
     parameters: the loadpath is the path to the file where the tets are saved
     return: the return is a dictionary of all tets
     '''
