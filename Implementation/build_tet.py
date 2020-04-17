@@ -21,7 +21,7 @@ import Paths
 
 def moviedict(movie_nodes_path):
     '''
-    description: This funktion constructs a movie dictionary from the movies in a file
+    description: This function constructs a movie dictionary from the movies in a file
     parameters: movie_nodes_path is a filepath to a file with movie descriptions
     return: this function returns a dictionary of movies
     '''
