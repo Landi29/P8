@@ -7,18 +7,12 @@ from datetime import datetime
 import pickle
 import node2vec as n2v
 import networkx as nx
+import Paths
 
 #Link for article about node2vec and graph2vec with useful links https://maelfabien.github.io/machinelearning/graph_5/#
 # https://github.com/eliorc/node2vec Node2vec implementation
 # https://arxiv.org/pdf/1607.00653.pdf Node2vec article
 # https://github.com/benedekrozemberczki/graph2vec Graph2vec implementation
-
-
-#Different filepaths used for the project, these paths are used for the different methods.
-GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-CLEANED_GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph_cleaned.csv'
-RATING_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
-NETWORKX_GRAPH = pathlib.Path.cwd() / 'Movielens_data' / 'movielens.edgelist'
 
 #method to create a NetworkX graph using graph representation data
 def create_graph(data_path, save_path):
@@ -110,9 +104,9 @@ def get_model(model_path):
 if __name__ == "__main__":
     print("Hallo")
 
-    create_graph(CLEANED_GRAPH_DATA_PATH, NETWORKX_GRAPH)
+    create_graph(Paths.CLEANED_GRAPH_DATA_PATH, Paths.NETWORKX_GRAPH)
 
-    graph = load_graph(NETWORKX_GRAPH)
+    graph = load_graph(Paths.NETWORKX_GRAPH)
     run_node2vec(graph,"n2v_5000_model")
     
     #mostsimilar("U:900")
