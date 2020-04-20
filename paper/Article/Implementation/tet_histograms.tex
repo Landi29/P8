@@ -1,18 +1,18 @@
 \subsection{TET Histograms and Distance}
-	Comparing the TET can be done in different ways. One of the method used to find similarity between the TETs is to transform the TET into a histogram is representing the by using the vector representation from \autoref{Eq:TETvector} we can calculate each substructures percentile distribution. this would give a representation as \autoref{fig:Tethistogram}
+	Comparing the TET can be done in different ways. One of the methods that can be used to find similarity between the TETs is to transform the TETs into histograms and compare these\cite{JAEGER201330}. calculateing each substructures percentile distribution for \autoref{fig:Tetekempel} gives the representation \autoref{Eq:TETvector}. This would give a representation as \autoref{fig:Tethistogram}
 	
 	\begin{figure}[H]
 		\centering
 		\begin{adjustbox}{width=0.5\textwidth}
 			\input{Article/figures/TET_histogram.tex}
 		\end{adjustbox}
-		\caption{caption}
+		\caption{TET histogram}
 		\label{fig:Tethistogram}
 	\end{figure}
 	
-	By using this representation as a vector we can compare two histograms with simple distance measures as forekamle manhatten or euclidean distance.
+	By using this representation as a vector we can compare two histograms with simple distance measures as foreksamle manhatten or euclidean distance.
 	
-	when comparing two histograms, one might have some elements that the other does not have. For any missing element in a histogram we add the value $0$, and we are thereby able to calculate distance for the missing element. A simple example done with manhattan distance can be seen in \autoref{Eq:manhattencomparason}.
+	when comparing two histograms, one might have some elements that the other does not have. For any missing element in a histogram we add the value $0$, and we are thereby able to calculate distance for the missing element. A simple example done with manhatten distance can be seen in \autoref{Eq:manhattencomparason}\cite{singh2013k}.
 	
 	\begin{equation}\label{Eq:manhattencomparason}
 	D(\begin{bmatrix}
@@ -26,4 +26,4 @@
 	\end{bmatrix})= |x_{1.1} - x_{2.1}| + |x_{1.2} - x_{2.2}| + |0 - x_{2.3}|
 	\end{equation}
 	
-	This is easily implemented if the vectors are programmed as dictionaries by going through, the union of keywords in the two dictionaries and returning 0 it a key is not found.
+	\autoref{Eq:manhattencomparason} is easily implemented if the vectors are programmed as dictionaries, by going through the union of keywords in the two dictionaries and returning 0 it a key is not found.
