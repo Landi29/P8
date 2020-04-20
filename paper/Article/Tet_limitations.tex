@@ -1,4 +1,4 @@
-\section{TET Features}
+\subsection{TET Features}
 The TET that is built will be rooted in user U.
 U is a user-node in the graph if $User(U) = True$. 
 
@@ -17,10 +17,10 @@ Rating(U, M) \rightarrow \{Low, Mid, High\}
 Each genre in the dataset are a feature in the boolean domain. These feature will return a value when given a movie M, returns true if M is categorized as the genre(\autoref{Eq:genredomain}).
 \begin{equation}\label{Eq:genredomain}
 \begin{aligned}
-Action(M) \rightarrow \{True, False\} \\
-Comedy(M) \rightarrow \{True, False\} \\
-\vdots \\
-Western(M) \rightarrow \{True, False\} \\
+Action(M)& \rightarrow \{True, False\} \\
+Comedy(M)& \rightarrow \{True, False\} \\
+&\vdots \\
+Western(M)& \rightarrow \{True, False\} \\
 \end{aligned}
 \end{equation}
 
@@ -62,7 +62,6 @@ The tree can also be represented as \autoref{Eq:TETvector}
     T(U)=
     \begin{cases}
       (low \{(action:t),(casual:t), (romance:t)\}):2 \\
-      (low \{(action:t),(horror:t)\}):1 \\
       (mid \{(comedy:t),(romance:t)\}):1 \\
       (high\{(adventure:t),(romance:t)\}):1
     \end{cases}
