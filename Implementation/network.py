@@ -1,6 +1,6 @@
 """Module for creating a graph using networkx
 and training a node2vec model given a networkx graph"""
-
+import networkx.algorithms.community as nxac
 import csv
 import pathlib
 from datetime import datetime
@@ -104,10 +104,10 @@ def get_model(model_path):
 if __name__ == "__main__":
 
     print("Creating graph")
-    create_graph(GRAPH_DATA_PATH, NETWORKX_GRAPH)
+    create_graph(Paths.GRAPH_DATA_PATH, Paths.NETWORKX_GRAPH)
 
     print("Loading graph")
-    graph = load_graph(NETWORKX_GRAPH)
+    graph = load_graph(Paths.NETWORKX_GRAPH)
 
     print("Running graph split algorithm")
     split = list(nxac.greedy_modularity_communities(graph))
