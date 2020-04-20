@@ -1,6 +1,8 @@
 """Contains functionality for creating the dataset used in SimGNN"""
 import pathlib
 from tqdm import tqdm
+import json
+#import simgnn.main as main
 #from SimGNN import SimGNN_Trainer
 
 class SimGNNDatasetCreator:
@@ -18,11 +20,18 @@ class SimGNNDatasetCreator:
             next(file)
             labels = {}
             allgraphs = {}
-            for lines in file:
+            amount_of_graphs = 0
+            label_amount = 0
+            label_list = []
+            for lines in tqdm(file):
                 lines_split = lines.split(",")
                 if lines_split[1] in allgraphs:
                     allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
                     labels[lines_split[1]].append("2"+lines_split[0].split(":")[1])
+                    if label_list.__contains__(lines_split[0].split(":")[1]):
+                        continue
+                    else:
+                        label_list.append(lines_split[0].split(":")[1])
                 else:
                     allgraphs[lines_split[1]] = []
                     labels[lines_split[1]] = []
@@ -35,7 +44,15 @@ class SimGNNDatasetCreator:
                     labels[lines_split[1]].append("3")
                     labels[lines_split[1]].append("1"+lines_split[1].split(":")[1])
                     labels[lines_split[1]].append("2"+lines_split[0].split(":")[1])
+                    if label_list.__contains__(lines_split[0].split(":")[1]):
+                        continue
+                    else:
+                        label_list.append(lines_split[0].split(":")[1])
             dataset = {}
+            #label_list = self.make_zero_list(labels)
+            zero_list = []
+            for _ in tqdm(range(0, len(label_list))):
+                zero_list.append(0)
             for x in tqdm(range(1, allgraphs.__len__())):
                 user1 = "U:" + str(x)
                 dataset[user1] = {}
@@ -45,14 +62,24 @@ class SimGNNDatasetCreator:
                         dataset[user1][user2] = {}
                         dataset[user1][user2]["graph_1"] = allgraphs[user1]
                         dataset[user1][user2]["graph_2"] = allgraphs[user2]
-                        dataset[user1][user2]["labels_1"] = labels[user1]
-                        dataset[user1][user2]["labels_2"] = labels[user2]
+                        dataset[user1][user2]["labels_1"] = zero_list
+                        dataset[user1][user2]["labels_2"] = zero_list
                         dataset[user1][user2]["ged"] = self.my_find_ged(labels[user1], labels[user2], allgraphs[user1], allgraphs[user2])
+                        amount_of_graphs += 1
                     except:
                         break
-        return dataset
+        return dataset, amount_of_graphs, label_amount
 
-
+    @staticmethod
+    def make_zero_list(label_list):
+        zero_list = []
+        for user in tqdm(label_list):
+            for labels in label_list[user]:
+                if zero_list.__contains__(labels):
+                    continue
+                else:
+                    zero_list.append(labels)
+        return zero_list
     @staticmethod
     def get_new_graph(graph):
         edgelist = []
@@ -107,12 +134,11 @@ class SimGNNDatasetCreator:
             gedscore += abs(i1-i2)"""
         return gedscore
 
-import json
 f = SimGNNDatasetCreator()
-dataset = f.make_dataset()
+dataset, amount_of_runs, label_amount = f.make_dataset()
 JSON_FILE = pathlib.Path.cwd() / 'Movielens_data'
 x = 1
-while x < 100:
+while x < 500:
     out_file = open("Movielens_data/Training_Data/" + str(x) + ".json", "w")
     y = x + 1
     user1 = "U:" + str(x)
