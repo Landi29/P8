@@ -12,7 +12,7 @@
 	
 	By using this representation as a vector we can compare two histograms with simple distance measures as forekamle manhatten or euclidean distance.
 	
-	When comparing two histograms they will most likely have some elements the other does not have the histogram without the element will simply get 0 for the missing value and thereby be able to add distance for the missing element. A simple example done with manhattan distance can be seen in \autoref{Eq:manhattencomparason}.
+	when comparing two histograms, one might have some elements that the other does not have. For any missing element in a histogram we add the value $0$, and we are thereby able to calculate distance for the missing element. A simple example done with manhattan distance can be seen in \autoref{Eq:manhattencomparason}.
 	
 	\begin{equation}\label{Eq:manhattencomparason}
 	D(\begin{bmatrix}
