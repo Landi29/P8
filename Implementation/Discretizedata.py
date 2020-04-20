@@ -242,6 +242,7 @@ def remove_users_from_graph(inputfile, savepath):
 
 if __name__ == "__main__":
     #remove_users_from_graph(RATINGPATH, CLEANED_RATINGPATH)
-    disc_user_data(CLEANED_RATINGPATH, CLEANED_USER_NODES_PATH)
-    avg_total_rating(USER_NODES_PATH)
-    avg_total_rating(CLEANED_USER_NODES_PATH)
+    #disc_user_data(CLEANED_RATINGPATH, CLEANED_USER_NODES_PATH)
+    #avg_total_rating(USER_NODES_PATH)
+    #avg_total_rating(CLEANED_USER_NODES_PATH)
+    disc_rating_data(CLEANED_RATINGPATH,CLEANED_GRAPH_DATA_PATH, 500)

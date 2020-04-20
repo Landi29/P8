@@ -102,14 +102,20 @@ def get_model(model_path):
 
 
 if __name__ == "__main__":
-    print("Hallo")
 
-    create_graph(Paths.CLEANED_GRAPH_DATA_PATH, Paths.NETWORKX_GRAPH)
+    print("Creating graph")
+    create_graph(GRAPH_DATA_PATH, NETWORKX_GRAPH)
 
-    graph = load_graph(Paths.NETWORKX_GRAPH)
-    run_node2vec(graph,"n2v_5000_model")
+    print("Loading graph")
+    graph = load_graph(NETWORKX_GRAPH)
+
+    print("Running graph split algorithm")
+    split = list(nxac.greedy_modularity_communities(graph))
+
+    print(split[0])
+
+    #run_node2vec(graph,"n2v_5000_model")
     
     #mostsimilar("U:900")
     #model = getmodel("n2vmodel2.p")
     #print(n2v.__file__)
-    
