@@ -79,7 +79,7 @@ class MTnode:
     def isleaf(self):
         '''
         description: tells if a node is a leaf node
-        return: returns a boolian, true if leaf and false if not
+        return: returns a boolean, true if leaf and false if not
         '''
         if self.left is None and self.right is None:
             return True
