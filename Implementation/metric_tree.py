@@ -7,7 +7,7 @@ import Paths
 
 def mt_build(dmax, nmax, depth, data):
     '''
-    description: This funktion constructs the metric tree and subtrees
+    description: This function constructs the metric tree and subtrees
     parameters: dmax is the wished max depth of the tree, nmax is the maximal number of entities
     in a bucket, depth is the current depth and data is the data that is being categorized in the mt
     return: the return is the full mt
