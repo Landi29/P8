@@ -50,7 +50,7 @@ def get_random_pair(data):
 
 def split_data(masterdata, splitpoint1, splitpoint2):
     '''
-    description: this function splits data in two according to the distance to the split points
+    description: This function splits data in two according to the distance to the split points
     parameters: masterdata is the data you wish to split splitpoint1 and splitpoint2 is
     the entities you wish to split around
     and k is the number of entities you wish to find
