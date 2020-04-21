@@ -104,15 +104,22 @@ def get_model(model_path):
 if __name__ == "__main__":
 
     print("Creating graph")
-    create_graph(Paths.GRAPH_DATA_PATH, Paths.NETWORKX_GRAPH)
+    create_graph(Paths.GRAPH_DATA_PATH, Paths.NETWORKX_GRAPH_MODUL)
 
     print("Loading graph")
-    graph = load_graph(Paths.NETWORKX_GRAPH)
+    graph = load_graph(Paths.NETWORKX_GRAPH_MODUL)
 
     print("Running graph split algorithm")
+    now = datetime.now()
+    print("Start: " + str(now))
+
     split = list(nxac.greedy_modularity_communities(graph))
 
-    print(split[0])
+    now = datetime.now()
+
+    print("Done: " + str(now))
+
+    pickle.dump(split, open("modularity_split.p", "rb"))
 
     #run_node2vec(graph,"n2v_5000_model")
     
