@@ -37,7 +37,7 @@ def mt_search(node, searched, k):
 
 def get_random_pair(data):
     '''
-    description: This funktion gets two random entities form the date
+    description: This function gets two random entities from the date
     parameters: data is the entities you want to find two random of
     return: the return is two entities from data
     '''
