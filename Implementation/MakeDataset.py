@@ -87,7 +87,7 @@ class SimGNNDatasetCreator:
                 continue
             if label_list.__contains__(edge[1]):
                 edge_list.append([])
-        print("f")
+
     @staticmethod
     def make_zero_list(label_list):
         zero_list = []
@@ -98,6 +98,7 @@ class SimGNNDatasetCreator:
                 else:
                     zero_list.append(labels)
         return zero_list
+
     @staticmethod
     def get_new_graph(graph, labels):
         edgelist = []
@@ -161,7 +162,7 @@ f = SimGNNDatasetCreator()
 dataset, amount_of_runs, label_amount = f.make_dataset()
 JSON_FILE = pathlib.Path.cwd() / 'Movielens_data'
 x = 1
-while x < 500:
+while x < 50000:
     out_file = open("Movielens_data/Training_Data/" + str(x) + ".json", "w")
     y = x + 1
     user1 = "U:" + str(x)
