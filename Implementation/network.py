@@ -42,13 +42,13 @@ def create_graph(data_path, save_path):
 
         print("success:"+" nodes:"+ str(non) +" Edges:"+str(noe))
 
-        now = datetime.now()
-        print("Saving graph as edgelist, started: "+ str(now))
+    now = datetime.now()
+    print("Saving graph as edgelist, started: "+ str(now))
 
-        nx.write_weighted_edgelist(graph, save_path, comments='#', delimiter=',', encoding='utf-8')
+    nx.write_weighted_edgelist(graph, save_path, comments='#', delimiter=',', encoding='utf-8')
 
-        now = datetime.now()
-        print("Saved graph as edgelist, finished: "+ str(now))
+    now = datetime.now()
+    print("Saved graph as edgelist, finished: "+ str(now))
 
 
 #Method for loading a edgelist into a networkx graph
