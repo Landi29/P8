@@ -26,8 +26,9 @@ class SimGNNDatasetCreator:
             for lines in tqdm(file):
                 lines_split = lines.split(",")
                 if lines_split[1] in allgraphs:
-                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
-                    labels[lines_split[1]].append("2"+lines_split[0].split(":")[1])
+                    labels[lines_split[1]].append(lines_split[0])
+                    edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
+                    allgraphs[lines_split[1]].append(edge[0])
                     if label_list.__contains__(lines_split[0].split(":")[1]):
                         continue
                     else:
@@ -35,15 +36,16 @@ class SimGNNDatasetCreator:
                 else:
                     allgraphs[lines_split[1]] = []
                     labels[lines_split[1]] = []
-                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 3])
-                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 2])
-                    allgraphs[lines_split[1]].append([int("1"+lines_split[1].split(":")[1]), 1])
-                    allgraphs[lines_split[1]].append(self.get_new_graph(lines_split)[0])
-                    labels[lines_split[1]].append("1")
-                    labels[lines_split[1]].append("2")
-                    labels[lines_split[1]].append("3")
-                    labels[lines_split[1]].append("1"+lines_split[1].split(":")[1])
-                    labels[lines_split[1]].append("2"+lines_split[0].split(":")[1])
+                    labels[lines_split[1]].append(lines_split[1])
+                    labels[lines_split[1]].append("High")
+                    labels[lines_split[1]].append("Medium")
+                    labels[lines_split[1]].append("Low")
+                    labels[lines_split[1]].append(lines_split[0])
+                    allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 1])
+                    allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 2])
+                    allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 3])
+                    edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
+                    allgraphs[lines_split[1]].append(edge[0])
                     if label_list.__contains__(lines_split[0].split(":")[1]):
                         continue
                     else:
@@ -51,8 +53,6 @@ class SimGNNDatasetCreator:
             dataset = {}
             #label_list = self.make_zero_list(labels)
             zero_list = []
-            for _ in tqdm(range(0, len(label_list))):
-                zero_list.append(0)
             for x in tqdm(range(1, allgraphs.__len__())):
                 user1 = "U:" + str(x)
                 dataset[user1] = {}
@@ -62,14 +62,32 @@ class SimGNNDatasetCreator:
                         dataset[user1][user2] = {}
                         dataset[user1][user2]["graph_1"] = allgraphs[user1]
                         dataset[user1][user2]["graph_2"] = allgraphs[user2]
-                        dataset[user1][user2]["labels_1"] = zero_list
-                        dataset[user1][user2]["labels_2"] = zero_list
+                        dataset[user1][user2]["labels_1"] = labels[user1]
+                        dataset[user1][user2]["labels_2"] = labels[user2]
                         dataset[user1][user2]["ged"] = self.my_find_ged(labels[user1], labels[user2], allgraphs[user1], allgraphs[user2])
                         amount_of_graphs += 1
                     except:
                         break
         return dataset, amount_of_graphs, label_amount
 
+    @staticmethod
+    def create_user_graph_and_labels(edgelist):
+        label_list = []
+        edge_list = []
+        intermed = 0
+        both = False
+        for edge in edgelist:
+            if label_list.__contains__(edge[0]):
+                intermed = label_list.index(edge[0])
+                both = True
+            if label_list.__contains__(edge[1]) and both:
+                edge_list.append([intermed, label_list.index(edge[0])])
+                intermed = 0
+                both = False
+                continue
+            if label_list.__contains__(edge[1]):
+                edge_list.append([])
+        print("f")
     @staticmethod
     def make_zero_list(label_list):
         zero_list = []
@@ -81,16 +99,21 @@ class SimGNNDatasetCreator:
                     zero_list.append(labels)
         return zero_list
     @staticmethod
-    def get_new_graph(graph):
+    def get_new_graph(graph, labels):
         edgelist = []
         value = float(graph[2].strip())
-        if value > 3.5:
-            edgelist.append([3, int("2"+graph[0].split(":")[1])])
-        elif value > 2.5:
-            edgelist.append([2, int("2"+graph[0].split(":")[1])])
+        if labels.__contains__(graph[0]):
+            position = labels.index(graph[0])
         else:
-            edgelist.append([1, int("2"+graph[0].split(":")[1])])
-        return edgelist
+            labels.append(graph[0])
+            position = labels.index(graph[0])
+        if value > 3.5:
+            edgelist.append([1, position])
+        elif value > 2.5:
+            edgelist.append([2, position])
+        else:
+            edgelist.append([3, position])
+        return edgelist, labels
 
     @staticmethod
     def my_find_ged(labels1, labels2, graph1, graph2):
