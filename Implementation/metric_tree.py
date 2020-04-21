@@ -23,7 +23,7 @@ def mt_build(dmax, nmax, depth, data):
 
 def mt_search(node, searched, k):
     '''
-    description: This funktion searches an mt
+    description: This function searches an mt
     parameters: node is an mt or submt searched is the element you wish to find entities like
     and k is the number of entities you wish to find
     return: the return is k estimated nearest neighbors
