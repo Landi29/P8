@@ -7,7 +7,7 @@ From the data a weighted graph was created, represented as an edgelist. Each edg
 
 The data will be split in 10 folds using a $80\%/20\%$ split into training- and testset \cite{Ricci2015}. We would like to also add a validation set and the split will therefore be $80\%/10\%/10\%$ or 8 folds/1 fold/1 fold. The splits will be on edge level meaning that training a user will have $80\%$ of their ratings, we will in the validation and test reconstruct or predict the ratings in the set.
 
-We will use root mean square error as seen in \autoref{eq:RMSE}\cite{chai2014root} to find the accuracy of the folds and methods.
+We will use root mean square error as seen in \autoref{eq:RMSE}\cite{chai2014root} to find the accuracy of the methods using different folds for test, training  and validation set.
 
 \begin{equation}\label{eq:RMSE}
 RMSE = \sqrt{\frac{1}{n}\sum^n_{i=1}(y_i - x_i)^2}
