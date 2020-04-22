@@ -1,42 +1,15 @@
 \subsection{Graph Embedding}
 In \cite{8294302} HongYun Cai et al. discuss the different ways of graph embedding. They define a taxonomy for the embedding strategies input and output.
 
-The input taxonomy has four definitions.  
+The input taxonomy has four definitions, consisting of four different graph types. The taxonomy for output has four definitions as well, describing the different embedding strategies. The first kind of embedded output is \textit{Node Embedding}. Here the nodes in the graph are represented as a vector. When doing Node Embedding, two nodes that were similar in the graph should have similar vectors and therefore be able to be identified\cite{8294302}. The second kind of embedding, is \textit{Edge Embedding}. Given a relation between two nodes, a triplet $<h,r,t>$ is created,  where $h$ and $t$ are the head and tail node, and $r$ is the relation. Using Edge Embedding, it is possible, given two of the three components, to predict what the last component should be\cite{8294302}.
 
-\begin{definition}[Homogeneous Graphs] A graph where both nodes and edges belong to a single type respectively, and can be further categorized by either adding weights, directions or both. In Directed and unweighted Graphs, distance between nodes dependent on how many edges they are related by. Two nodes that are related should be more similar than two where only one node is related to the other\cite{8294302}.
-\end{definition}
 
-\begin{definition}[Heterogeneous Graphs] A Heterogeneous Graph is a graph that can have nodes and edges of multiple types\cite{8294302}. 
-\end{definition}
+It is then a relevant question, if Node and Edge embedding can be combined. The result is \textit{Hybrid Embedding}, which spans over a few different embedding methods. One of them is \textit{Substructure Embedding} where nodes and/or edges are embedded and then categorised to represent substructures of a graph. This can then be used to find substructures that are similar to each other\cite{8294302}.
+Adding another layer of abstraction to \textit{Substructure Embedding} we get \textit{Whole-Graph Embedding} which represents the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules\cite{8294302}.
 
-A commen example of Heterogeneous Graphs are Knowledge Graphs where edges and nodes usually represent different relations and entities respectively. For example, a knowledge graph over some film relations could have the entities "Director", "Actor" and "Film" represented as nodes, and the relations "Produced", "Directed" and "Acted-In" represented as edges.
+To embed a graph there are several different techniques and each of them has different advantages and disadvantages.
 
-\begin{definition}[Graph with Auxiliary Information] A graph that contains extra information for a node or relation. 
-\end{definition}
-
-An example could be a graph with the category of nodes called "Book", which contains information about the book and its author. The node in this case would be the name of the book and author could be auxiliary information\cite{8294302}.
-
-\begin{definition}[Graph constructed from non-relational data] Instead of providing the input graph we construct it from non-relational input data, this is usually done when the input data is assumed to be in a low dimensional manifold. In this kind of graph relations can be discovered by using methods like K-Nearest-Neighbours\cite{8294302}.
-\end{definition}
-
-The taxonomy for output has four definitions as well.
-
-\begin{definition}[Node embedding] The act of taking the nodes in the graph and represent them as a vector. When doing this two nodes that were similar in the graph should have similar vectors and therefore be able to be identified\cite{8294302}.
-\end{definition}
-
-\begin{definition}[Edge Embedding] Given a relation between two nodes a triplet is created \textit{<h,r,t>}  where h and t are the head and tail node and r is the relation using this it is possible to given two of the three components to predict what the last component should be\cite{8294302}.
-\end{definition}
-
-\begin{definition}[Hybrid Embedding] Spans over a few different embedding methods like substructure embedding where nodes and/or edges are embedded and then categorised to represent substructures of a graph. This can then be used to find substructures that are similar to each other\cite{8294302}.
-\end{definition}
-
-\begin{definition}[Whole-Graph Embedding] Representing the whole graph as one single vector and is therefore usually only done on small graphs like proteins and molecules\cite{8294302}. 
-%But this is also the hardest one to do as an embedding method wants to be reversible, but this method can forget information because of the sheer amount of information required to be put together.
-\end{definition}
-
-To embed the graph there is several different techniques and each of them has different advantages and disadvantages.
-
-\textit{Matrix Factorization} is a possible way to do graph embedding and is good because it considers the global proximity which will give the analyst a more precise estimation of one vector's distance to all other vectors. The method does have a disadvantage in that it scales linearly and can therefore be quite time consuming\cite{8294302}.
+\textit{Matrix Factorization} is a possible way to do graph embedding and is good because it considers the global proximity which will give the analyst a more precise estimation of one vector's distance to all other vectors. The method does have a disadvantage in that it scales linearly and can therefore be quite time consuming for large data sets\cite{8294302}.
 
 \textit{Deep Learning} is in many cases an effective method due to the relative speed of calculations and the small amount of memory space it uses. There is also some disadvantages for example in how the system trains. It is possible to train the system so it will not need any feature engineering but can also be hit by overfitting and underfitting which can cause large problems for the system\cite{8294302}.
 
@@ -44,6 +17,6 @@ To embed the graph there is several different techniques and each of them has di
 
 \textit{Graph Kernel} starts in a kernel and then walks through a subgraph comparing each kernel that was chosen. This is mostly used in graph embedding and only represent and compare structures that are desired to be compared. But this method have problems with substructures that are not independent and will grow the size exponentially\cite{8294302}.
 
-All these embedding strategies all have applications and can be used for a lot of different classification, clustering and recommendation methods. \textit{Node Embedding} can be used for node classifications for SVM and KNN, node clustering in graphs and node recommendations by finding associations in the graph\cite{8294302}. 
+All these embedding strategies all have applications and can be used for a lot of different classification, clustering and recommendation methods. \textit{Node Embedding} can be used for node classifications for SVM and KNN, node clustering in graphs and node recommendations by finding associations in the graph\cite{8294302}.
 
 \textit{Edge Embedding} is used for triplet classifications. As an example we can find if a relation $a-b$ goes through relation $r$ and finding which kind of link appears between two nodes in a graph. \textit{Hybrid and Whole Graph Embedding} will make it possible to classify graphs in a lower dimension than they originally where and this embedding method is better for visualization of the graph for human consumption\cite{8294302}.
