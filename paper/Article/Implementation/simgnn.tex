@@ -1,6 +1,6 @@
 \subsection{SimGNN Dataset}
 The SimGNN algorithm required some changes to the dataset to make it possible to be run. The SimGNN have a input of a json file containing four different information which are "graph\textunderscore1" an edgelist representation of one graph, "graph\textunderscore2" a edgelist representation of another graph, "label\textunderscore1" the labels used in "graph\textunderscore1", "label\textunderscore2" the labels used in "graph2" and then the Graph Edit Distance score for these two graphs. SimGNN also have no implementation of edge labels so the score could not be added directly to the edges, adding the three new nodes "High", "Medium" and "Low" with the same representation as in the tets and then change the edgelist to include these as a middle node between the user and the movies. 
-So to give an example of the changes made to the dataset we can look at \autoref{lst:Before_Change} we see two graphs as it would look in our dataset. We have the movie nodes id, users id and a edge weight between these two nodes. 
+An example of the changes made to the dataset can be seen on \autoref{lst:Before_Change}, the two graphs are edge lists with movie nodes id, user id and a weighted edge nodes. 
 \begin{figure}
 \begin{lstlisting}
 Graph 1			 Graph 2
