@@ -1,5 +1,5 @@
 \subsection{Metric Tree}
-Because of the datasets size and the linear time it takes to compare one element against all others and the exponential time it would take to compare each element with every other element metric tree approximation can be an option of a stable  classifier. 
+Because of the datasets size and the linear time it takes to compare one element against all others and the exponential time it would take to compare each element with every other element metric tree approximation can be an option of a stable classifier. 
 
 Metric trees is a group of classifiers that include bk-trees, m-trees etc. the implemented metric tree uses the same principles as the ones mentioned. the tree is a collection of nodes bout in a root, the root is itself a node. Each node can be internal or a leaf, if the root is in internal node two random elements in the dataset and splits the dataset around them. the new datasets will be used to create the children of the internal node. An internal node will contain the two elements so that they can be used to search the tree. A leaf contains a bucket of data. The comparisons will still be linear or exponential time dependent on the job but the set of elements smaller and more manageable.
 
