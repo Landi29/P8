@@ -8,10 +8,10 @@ import pathlib
 #Filepaths for movielens datadump
 RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
+MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
 MOVIE_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'movie_nodes.csv'
 USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
-MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'
-GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphs.csv'
+GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
 
 #API-key from OMDB Api (limit: 1000 daily)
 APIKEY = "ad37bdca"
@@ -19,19 +19,33 @@ APIKEY = "ad37bdca"
 
 #Read the ratings csv file one line at a time, only keep the data we need
 #As output we get a csv file where each line corresponds to en edge in the graph (Head,Tail,Weight) (MovieId, UserId, Rating)
-def disc_rating_data():
+def disc_rating_data(inputfile, savepath, number_of_users):
     """Reads file with rating data, changes it into a graph
-    representaition of (Head,Tail,Weight) and writes it into a new file"""
+    representaition of (Head,Tail,Weight) and writes it into a new file
+    
+    Parameters:
+        inputfile (filepath): filepath for the file to read, should be in the form of an edgelist
+        savepath (filepath): filepath where to save the graph, saves as an csv file
+        number_of_users (int): number of users to make a graph from, if given 'None' will use whole dataset
+    """
 
-    with open(RATINGPATH, "r") as fp:
-        nf = open(GRAPH_DATA_PATH, "w+", newline='')
+    with open(inputfile, "r") as fp:
+        nf = open(savepath, "w+", newline='')
         filewriter = csv.writer(nf)
-
+        reader = csv.reader(fp)
+        next(reader)
         #rating is an array of the form [UserID,MovieID,Rating,Timestamp]
-        for rating in csv.reader(fp):
-        
-            filewriter.writerow([rating[1], rating[0], rating[2]])
-
+        if number_of_users is None:
+            print("No number given, discretizing whole dataset")
+            for rating in reader:
+                filewriter.writerow(["M:"+rating[1], "U:"+rating[0], rating[2]])
+        else:
+            print("Discretizing the first "+str(number_of_users)+" users")
+            for rating in reader:
+                if int(rating[0]) <= number_of_users:
+                    filewriter.writerow(["M:"+rating[1], "U:"+rating[0], rating[2]])
+                else:
+                    break
         nf.close()
 
 #Read the movies csv file and take out the information we need, including release year
@@ -107,3 +121,7 @@ def disc_user_data():
                 currentid = rating[0]
                 counter = 1
         nf.close()
+
+
+if __name__ == "__main__":
+    print("Hello")
