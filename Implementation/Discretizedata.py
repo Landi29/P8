@@ -6,6 +6,7 @@ import requests
 import pathlib
 import tqdm
 import numpy as np
+import json
 
 #Filepaths for movielens datadump
 RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
@@ -16,12 +17,9 @@ USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes.csv'
 GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
 
 RATINGPATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'ratings_10m.dat'
-CLEANED_RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings_cleaned.csv'
 GRAPH_DATA_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'graph_10m.csv'
 USER_NODES_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes_10m.csv'
-CLEANED_USER_NODES_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'cleaned_user_nodes.csv'
-CLEANED_GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph_cleaned.csv'
-CLEANED_GRAPH_DATA_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'graph_10m_cleaned.csv'
+FOLDS_JSON = pathlib.Path.cwd() / 'Movielens_data' / 'Folds.txt'
 
 
 #API-key from OMDB Api (limit: 1000 daily)
@@ -238,11 +236,47 @@ def remove_users_from_graph(inputfile, savepath):
                     cut = int(Users_to_remove[index])
         nf.close()
 
+def split_into_folds(inputpath):
+
+    userdict = {}
+    folddict = {}
+
+
+    with open(inputpath, "r") as fp:
+        reader = csv.reader(fp)
+
+        for edge in reader:
+            temp = userdict.get(edge[1], [])
+            temp.append(edge)
+            userdict[edge[1]] = temp
+
+
+    for user in userdict.values():
+        fold = 0
+
+        for rating in user:
+            temp = folddict.get("fold"+str(fold), [])
+            temp.append(rating)
+            folddict["fold"+str(fold)] = temp
+            fold += 1
+            if fold == 10:
+                fold = 0
+            else:
+                continue
+
+    json.dump(folddict,open(FOLDS_JSON, "w"))
+
+    print("done")
+
+
+        
+
+    
+
+            
+
+
 
 
 if __name__ == "__main__":
-    #remove_users_from_graph(RATINGPATH, CLEANED_RATINGPATH)
-    #disc_user_data(CLEANED_RATINGPATH, CLEANED_USER_NODES_PATH)
-    #avg_total_rating(USER_NODES_PATH)
-    #avg_total_rating(CLEANED_USER_NODES_PATH)
-    disc_rating_data(CLEANED_RATINGPATH,CLEANED_GRAPH_DATA_PATH, 500)
+    split_into_folds(GRAPH_DATA_PATH)
