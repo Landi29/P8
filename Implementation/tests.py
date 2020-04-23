@@ -7,6 +7,7 @@ import tet
 import build_tet
 import compare_tet
 import Paths
+import experiment
 
 
 GRAPH_DATA_PATH_TEST = pathlib.Path.cwd() / 'Movielens_data' / 'graphtest.csv'
@@ -586,8 +587,8 @@ class testcompare_tet(unittest.TestCase):
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
 
-        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
-                                user_database=userdatabase)
+        preds =  experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+                                extradata=test_tets, user_database=userdatabase)
         self.assertEqual(preds, [('M:3456', 4.75)])
 
     def test_knn2(self):
@@ -610,8 +611,8 @@ class testcompare_tet(unittest.TestCase):
                         'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
-                                user_database=userdatabase)
+        preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+                                extradata=test_tets,user_database=userdatabase)
         self.assertEqual(preds, [('M:3456', 4.75)])
 
     def test_knn3(self):
@@ -634,9 +635,9 @@ class testcompare_tet(unittest.TestCase):
                         'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        preds = compare_tet.knn(test_tets['U:1'], list(test_tets.values()),
-                                user_database=userdatabase, filterv=3)
-        self.assertEqual(preds, [('M:5678', 3.8928571428571423), ('M:3456', 4.75)])
+        preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+                                extradata=test_tets,user_database=userdatabase, filterv=3)
+        self.assertEqual(preds, [('M:5678', 3.9166666666666665), ('M:3456', 4.75)])
 
 
     def test_pred1(self):
@@ -660,7 +661,7 @@ class testcompare_tet(unittest.TestCase):
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase), [('M:3456', 4.75)])
+        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase), [('M:3456', 4.75)])
 
     def test_pred2(self):
         '''
@@ -683,7 +684,7 @@ class testcompare_tet(unittest.TestCase):
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase),
+        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase),
                          [('M:3456', 4.75), ('M:5678', 3.861570247933884)])
 
     def test_pred3(self):
@@ -707,7 +708,7 @@ class testcompare_tet(unittest.TestCase):
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(compare_tet.pred(test_tets['U:1'], best, userdatabase, 4),
+        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase, 4),
                          [('M:3456', 4.75)])
 
     def test_reasing_sims1(self):
@@ -720,7 +721,7 @@ class testcompare_tet(unittest.TestCase):
         res = [['sam', 1],
                ['ams', 5],
                ['bob', 10]]
-        self.assertEqual(compare_tet.reasing_sims(sims), res)
+        self.assertEqual(experiment.reasing_sims(sims), res)
 
     def test_reasing_sims2(self):
         '''
@@ -734,7 +735,7 @@ class testcompare_tet(unittest.TestCase):
                ['ams', 3],
                ['msa', 5],
                ['bob', 10]]
-        self.assertEqual(compare_tet.reasing_sims(sims), res)
+        self.assertEqual(experiment.reasing_sims(sims), res)
 
     '''
     this can not run on git because of the missing graph.csv file
