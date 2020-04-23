@@ -90,7 +90,8 @@ def build_tets(edges, vmoviedict, user_nodes_path):
     user_dict = userdict(user_nodes_path)
     print("Starting to built TETs")
     for edge in tqdm(edges):
-        edge = edge.strip().split(',')
+        if isinstance(edge, str): 
+            edge = edge.strip().split(',')
         if user_dict.get(edge[1], False):
             temp_tet = tet_find_tree(edge[1], tets)
             temp_tet.addchild(construct_child(edge[0], edge[2], vmoviedict))

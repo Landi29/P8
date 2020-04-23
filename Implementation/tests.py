@@ -589,7 +589,7 @@ class testcompare_tet(unittest.TestCase):
 
         preds =  experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
                                 extradata=test_tets, user_database=userdatabase)
-        self.assertEqual(preds, [('M:3456', 4.75)])
+        self.assertEqual(preds, {'M:3456': 4.75})
 
     def test_knn2(self):
         '''
@@ -613,7 +613,7 @@ class testcompare_tet(unittest.TestCase):
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
                                 extradata=test_tets,user_database=userdatabase)
-        self.assertEqual(preds, [('M:3456', 4.75)])
+        self.assertEqual(preds, {'M:3456': 4.75})
 
     def test_knn3(self):
         '''
@@ -637,7 +637,7 @@ class testcompare_tet(unittest.TestCase):
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
                                 extradata=test_tets,user_database=userdatabase, filterv=3)
-        self.assertEqual(preds, [('M:5678', 3.9166666666666665), ('M:3456', 4.75)])
+        self.assertEqual(preds, {'M:5678': 3.92, 'M:3456': 4.75})
 
 
     def test_pred1(self):
@@ -661,7 +661,7 @@ class testcompare_tet(unittest.TestCase):
                         'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase), [('M:3456', 4.75)])
+        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase), {'M:3456': 4.75})
 
     def test_pred2(self):
         '''
@@ -685,7 +685,7 @@ class testcompare_tet(unittest.TestCase):
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
         self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase),
-                         [('M:3456', 4.75), ('M:5678', 3.861570247933884)])
+                         {'M:3456': 4.75, 'M:5678': 3.86})
 
     def test_pred3(self):
         '''
@@ -709,7 +709,7 @@ class testcompare_tet(unittest.TestCase):
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
         best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
         self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase, 4),
-                         [('M:3456', 4.75)])
+                         {'M:3456': 4.75})
 
     def test_reasing_sims1(self):
         '''

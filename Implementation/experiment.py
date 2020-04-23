@@ -1,10 +1,12 @@
 import compare_tet
 import Paths
 import csv
-from build_tet import load_tets
+from build_tet import build_tets, moviedict
 from tqdm import tqdm
+import math
+import json
 
-def knn(user, others, compare_model, extradata, k=4, user_database=None, filterv=4):
+def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
     '''
     description: this is a simpel implementation of knn finding the k nearest neighbors
                  and making predictions.
@@ -16,14 +18,11 @@ def knn(user, others, compare_model, extradata, k=4, user_database=None, filterv
         others = list(extradata.values())
         user = others[0]
     sims = []
-    if user_database is None:
-        user_database = userdatabase()
     for other in tqdm(others):
         if user != other:
             sims.append([other, comparemethod(user, other, compare_model)])
-    bestk = sorted(sims, key=lambda x: x[-1])[:k]
-    predictions = pred(user, bestk, user_database, filterv)
-    return sorted(predictions, key=lambda x: x[-1])
+    bestk = sorted(sims, key=lambda x: x[1])[:k]
+    return pred(user, bestk, user_database, filterv)
 
 def comparemethod(user, other, method):
     if method == "manhatten_tet":
@@ -71,7 +70,7 @@ def pred(user, others, user_database, filtervalue=None):
         others_average_rating[other[0].getroot()] = average_rating_other_user \
             / (len(user_database[other[0].getroot()].values()))
 
-    predictions = []
+    predictions = {}
     for movie in naighbor_seen:
         sumrating = average_rating_user
         sum_simularity = 0
@@ -85,10 +84,17 @@ def pred(user, others, user_database, filtervalue=None):
                 - others_average_rating[other[0].getroot()])
         if filtervalue is not None:
             if sumrating >= filtervalue:
-                predictions.append((movie, sumrating))
+                predictions[movie] = round(sumrating,2)
         else:
-            predictions.append((movie, sumrating))
+            predictions[movie] = round(sumrating,2)
     return predictions
+
+def root_mean_squre_error(result_predictions, expected_predictions):
+    rmse = 0
+    for key in expected_predictions:
+        rmse += (result_predictions.get(key,0)-expected_predictions[pred])**2
+    return math.sqrt(rmse/len(expected_predictions))
+
 
 def reasing_sims(sims):
     '''
@@ -103,14 +109,14 @@ def reasing_sims(sims):
         sims[-(i+1)][1] = temp
     return sims
 
-def userdatabase():
+def csvuserdatabase(load_path):
     '''
     description: this function construnts a dictionary of users with movies they have seen
                  and the rating given, to use as a moch database over the users
     return: the return is a dictionary of users with movies tey have seen and the rating given
     '''
     users = {}
-    with open(Paths.GRAPH_DATA_PATH, 'r', encoding="utf-8") as read:
+    with open(load_path, 'r', encoding="utf-8") as read:
         graph_data = csv.reader(read)
         for line in graph_data:
             if users.get(line[1], None) is None:
@@ -122,11 +128,33 @@ def userdatabase():
                 user[line[0]] = float(line[2])
     return users
 
+def jsonuserdatabase(load_path, folds):
+    edgelist = []
+    users = {}
+    with open(load_path, 'r', encoding="utf-8") as read:
+        graph_data = json.load(read)
+        for fold in folds:
+            edgelist += graph_data[fold]
+    for edge in tqdm(edgelist):
+        if users.get(edge[1], True):
+            user = {}
+            user[edge[0]] = float(edge[2])
+            users[edge[1]] = user
+        else:
+            user = users[edge[1]]
+            user[edge[0]] = float(edge[2])
+    return users, edgelist
+
 if __name__ == "__main__":
-    users = userdatabase()
-    tets = load_tets(Paths.TETS_PATH)
+    users, graph_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])
+    validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
+    test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
+    tets = build_tets(graph_data, moviedict(Paths.MOVIE_NODES_PATH), Paths.USER_NODES_PATH)
     # models manhatten_tet, GED_tet, manhatten_brute
-    res = knn(list(users.values())[0], list(users.values()), "manhatten_tet", tets, user_database = users)
-    print(res)
+    comparison_method = "manhatten_tet"
+
+    result_predictions = knn(list(users)[0], list(users), comparison_method, tets, users, filterv=None)
+
+    root_mean_squre_error(result_predictions, validation_expected_predictions)
 
     
