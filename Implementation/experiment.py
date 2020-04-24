@@ -1,7 +1,7 @@
 import compare_tet
 import Paths
 import csv
-from build_tet import build_tets, moviedict
+from build_tet import load_tets
 from tqdm import tqdm
 import math
 import json
@@ -92,7 +92,7 @@ def pred(user, others, user_database, filtervalue=None):
 def root_mean_squre_error(result_predictions, expected_predictions):
     rmse = 0
     for key in expected_predictions:
-        rmse += (result_predictions.get(key,0)-expected_predictions[pred])**2
+        rmse += (result_predictions.get(key,0)-expected_predictions[key])**2
     return math.sqrt(rmse/len(expected_predictions))
 
 
@@ -146,15 +146,15 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    users, graph_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])
+    userdatabase = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    tets = load_tets(Paths.TETS_0_7_PATH)
     validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
     test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
-    tets = build_tets(graph_data, moviedict(Paths.MOVIE_NODES_PATH), Paths.USER_NODES_PATH)
-    # models manhatten_tet, GED_tet, manhatten_brute
+    # models: manhatten_tet, GED_tet, manhatten_brute
     comparison_method = "manhatten_tet"
 
-    result_predictions = knn(list(users)[0], list(users), comparison_method, tets, users, filterv=None)
+    result_predictions = knn(list(userdatabase)[0], list(userdatabase), comparison_method, tets, userdatabase, filterv=None)
 
-    root_mean_squre_error(result_predictions, validation_expected_predictions)
-
+    error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(userdatabase)[0]])
+    print('error: ' + str(error))
     
