@@ -14,7 +14,7 @@
 *.cb2
 .*.lb
 
-/Implementation/Movielens_data/ml-1m/*
+/Implementation/Movielens_data/small_graph/*
 ## Ignore the master.pdf file.
 /paper/master.pdf
 ## Intermediate documents:
