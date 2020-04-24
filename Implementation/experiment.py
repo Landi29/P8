@@ -146,15 +146,15 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    userdatabase = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    training_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
     tets = load_tets(Paths.TETS_0_7_PATH)
     validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
     test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
     # models: manhatten_tet, GED_tet, manhatten_brute
     comparison_method = "manhatten_tet"
 
-    result_predictions = knn(list(userdatabase)[0], list(userdatabase), comparison_method, tets, userdatabase, filterv=None)
+    result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
 
-    error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(userdatabase)[0]])
+    error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
     print('error: ' + str(error))
     
