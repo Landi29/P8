@@ -7,7 +7,7 @@ class predictGraph:
         self.trainer = pickle.load(open("simGNN.p", "rb"))
         self.graph = graph
     
-    def predictGraph(user1, user2):
+    def predictGraph(self, user1, user2):
         """
         This function uses our trained neural network (trainer) to predict how similar two
         graphs are.
@@ -20,7 +20,7 @@ class predictGraph:
         print(-math.log(result))
 
 
-    def create_simgnn_file(user1, user2):
+    def create_simgnn_file(self, user1, user2):
         user1_graph = self.graph[user1]
         user2_graph = self.graph[user2]
         return_dict = {}
@@ -34,7 +34,7 @@ class predictGraph:
         return return_dict
 
 
-    def create_SimGNN_graph(user, user_graph):
+    def create_SimGNN_graph(self, user, user_graph):
         labels = []
         graph = []
         labels.append(user)
@@ -50,7 +50,7 @@ class predictGraph:
         return graph, labels
 
 
-    def get_new_graph(graph, labels):
+    def get_new_graph(self, graph, labels):
         edgelist = []
         value = float(graph[2].strip())
         labels.append(graph[0])
