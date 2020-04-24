@@ -2,9 +2,12 @@ import pickle
 import math
 
 class predictGraph:
-    trainer = pickle.load(open("simGNN.p", "rb"))
     
-    def predictGraph(user1, user2, graphs):
+    def __init__(self, graph):
+        self.trainer = pickle.load(open("simGNN.p", "rb"))
+        self.graph = graph
+    
+    def predictGraph(user1, user2):
         """
         This function uses our trained neural network (trainer) to predict how similar two
         graphs are.
@@ -12,14 +15,14 @@ class predictGraph:
         graphs is all the graphs
         Return: A similarity score on how similar user1 and user 2 is.
         """
-        graphDict = create_simgnn_file(user1, user2, graphs)
+        graphDict = create_simgnn_file(user1, user2, self.graph)
         result = trainer.predictionScore(graphDict)
         print(-math.log(result))
 
 
-    def create_simgnn_file(user1, user2, graphs):
-        user1_graph = graphs[user1]
-        user2_graph = graphs[user2]
+    def create_simgnn_file(user1, user2):
+        user1_graph = self.graph[user1]
+        user2_graph = self.graph[user2]
         return_dict = {}
         interm_graph, interm_labels = create_SimGNN_graph(user1, user1_graph)
         return_dict["graph_1"] = interm_graph
