@@ -207,7 +207,6 @@ class SimGNNTrainer(object):
         for graph_pair in batch:
             data = process_pair(graph_pair)
             data = self.transfer_to_torch(data)
-            target = data["target"]
             prediction = self.model(data)
             losses = losses + torch.nn.functional.mse_loss(data["target"], prediction)
         losses.backward(retain_graph=True)
@@ -227,11 +226,11 @@ class SimGNNTrainer(object):
 
         self.model.train()
         epochs = trange(self.args.epochs, leave=True, desc="Epoch")
-        for epoch in epochs:
+        for epoch in range(epochs):
             batches = self.create_batches()
             self.loss_sum = 0
             main_index = 0
-            for index, batch in tqdm(enumerate(batches), total=len(batches), desc="Batches"):
+            for batch in tqdm(enumerate(batches), total=len(batches), desc="Batches"):
                 loss_score = self.process_batch(batch)
                 main_index = main_index + len(batch)
                 self.loss_sum = self.loss_sum + loss_score * len(batch)
@@ -263,7 +262,6 @@ class SimGNNTrainer(object):
         self.model.eval()
         data = t
         data = self.transfer_to_torch(data)
-        target = data["target"]
         prediction = self.model(data)
         return prediction
 
