@@ -5,12 +5,14 @@ from tqdm import tqdm
 import pickle
 def create_graph(data_path):
     graph = networkx.Graph()
+    #with open(data_path, "r") as data:
+        #ratings = [next(data) for x in range(100000)]
     with open(data_path, "r") as data:
-        ratings = [next(data) for x in range(100000)]
+        ratings = data.readlines()
     
     for rating in tqdm(ratings):
         rating_data = rating.split("::")
-        graph.add_edge(int(rating_data[0]), int(rating_data[1]), weight = float(rating_data[2]))
+        graph.add_edge(int("1" + rating_data[0]), int("2" + rating_data[1]), weight = float(rating_data[2]))
     return graph
 
 def print_graph_information(number_of_nodes, number_of_edges):
@@ -20,7 +22,7 @@ def print_graph_information(number_of_nodes, number_of_edges):
     print("Number of edges: {}".format(number_of_edges))
 
 if __name__ == "__main__":
-
+    print("Reading the file: ")
     graph = create_graph(Paths.SMALL_GRAPH_RATINGS_PATH)
     print_graph_information(graph.number_of_nodes(), graph.number_of_edges())
     
