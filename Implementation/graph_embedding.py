@@ -3,6 +3,7 @@ import networkx
 import Paths
 from tqdm import tqdm
 import pickle
+from datetime import datetime
 def create_graph(data_path):
     graph = networkx.Graph()
     #with open(data_path, "r") as data:
@@ -22,6 +23,7 @@ def print_graph_information(number_of_nodes, number_of_edges):
     print("Number of edges: {}".format(number_of_edges))
 
 if __name__ == "__main__":
+    print("Start at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
     print("Reading the file: ")
     graph = create_graph(Paths.SMALL_GRAPH_RATINGS_PATH)
     print_graph_information(graph.number_of_nodes(), graph.number_of_edges())
@@ -35,5 +37,6 @@ if __name__ == "__main__":
     print("Learning embeddings:")
     nv2model = node2vec.fit(window=10, min_count=1)
     print("nv2model is written to disc")
-    with open(Paths.SMALL_NV2_MODEL_PATH, "wb") as disc_file:
+    with open(Paths.SMALL_N2V_MODEL_PATH, "wb") as disc_file:
         pickle.dump(nv2model, disc_file) 
+    print("Finished at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
