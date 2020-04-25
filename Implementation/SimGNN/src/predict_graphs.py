@@ -16,7 +16,7 @@ class predictGraph:
         Return: A similarity score on how similar user1 and user 2 is.
         """
         graphDict = create_simgnn_file(user1, user2, self.graph)
-        result = trainer.predictionScore(graphDict)
+        result = self.trainer.predictionScore(graphDict)
         print(-math.log(result))
 
 
@@ -61,4 +61,4 @@ class predictGraph:
             edgelist.append([2, position])
         else:
             edgelist.append([3, position])
-        return edgelist, labels
+        return edgelist

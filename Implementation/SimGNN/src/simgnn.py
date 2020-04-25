@@ -226,11 +226,11 @@ class SimGNNTrainer(object):
 
         self.model.train()
         epochs = trange(self.args.epochs, leave=True, desc="Epoch")
-        for epoch in range(epochs):
+        for epoch in epochs:
             batches = self.create_batches()
             self.loss_sum = 0
             main_index = 0
-            for batch in tqdm(enumerate(batches), total=len(batches), desc="Batches"):
+            for index, batch in tqdm(enumerate(batches), total=len(batches), desc="Batches"):
                 loss_score = self.process_batch(batch)
                 main_index = main_index + len(batch)
                 self.loss_sum = self.loss_sum + loss_score * len(batch)
