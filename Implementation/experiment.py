@@ -156,5 +156,5 @@ if __name__ == "__main__":
     result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
 
     error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
-    print('error: ' + str(error))
+    print('root mean square error: ' + str(error))
     
