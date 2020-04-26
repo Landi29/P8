@@ -29,6 +29,30 @@ def manhatten_distance(tet1, tet2):
             distance += abs(structure1.get(key, 0) - structure2.get(key, 0))
     return distance
 
+def distance_v2_start(tet1, tet2):
+    distance = 0.0
+    if tet1 != tet2:
+        structure1 = tet1.histogram()
+        structure2 = tet2.histogram()
+        distance = __distance_v2(structure1,structure2)
+    return distance
+
+def __distance_v2(histogram1, histogram2):
+    distance = 0.0
+    if  isinstance(histogram1, str):
+        leaves1 = histogram1.replace('[', '').replace(']', '').split(',')[1:]
+        leaves2 = histogram2.replace('[', '').replace(']', '').split(',')[1:]
+        distance = len(list(set(leaves1).symmetric_difference(set(leaves2))))
+        return distance
+
+    for key1 in histogram1:
+        key1root = key1.replace('[', '').replace(']', '').split(',')[0]
+        for key2 in histogram2:
+            key2root = key2.replace('[', '').replace(']', '').split(',')[0]
+            if key1root == key2root:
+                distance += histogram1[key1] * histogram2[key2] * __distance_v2(key1, key2)
+    return distance
+
 def graph_edit_distance(tet1, tet2):
     '''
     description: this funktion find the grap edit distance by going through the count of children
@@ -158,8 +182,8 @@ def userdatabase():
 
 if __name__ == "__main__":
     TETS = build_tet.load_tets(Paths.TETS_PATH, 1000)
-    GROUPS = build_tet.grouping(TETS)
+    #GROUPS = build_tet.grouping(TETS)
 
-    for predrating in knn(list(TETS.values())[0], list(TETS.values())):
-        print('{} predicted rating: {}'.format(predrating[0], predrating[1]))
+    dis = distance_v2_start(list(TETS.values())[0], list(TETS.values())[1])
+    print('Distance: {}'.format(dis))
     print('\ndone')
