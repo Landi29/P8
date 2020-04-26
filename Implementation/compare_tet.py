@@ -34,23 +34,22 @@ def distance_v2_start(tet1, tet2):
     if tet1 != tet2:
         structure1 = tet1.histogram()
         structure2 = tet2.histogram()
-        distance = __distance_v2(structure1,structure2)
+        distance = distance_v2(structure1,structure2)
     return distance
 
-def __distance_v2(histogram1, histogram2):
+def distance_v2(histogram1, histogram2):
     distance = 0.0
     if  isinstance(histogram1, str):
         leaves1 = histogram1.replace('[', '').replace(']', '').split(',')[1:]
         leaves2 = histogram2.replace('[', '').replace(']', '').split(',')[1:]
-        distance = len(list(set(leaves1).symmetric_difference(set(leaves2))))
-        return distance
+        return len(list(set(leaves1).symmetric_difference(set(leaves2))))
 
     for key1 in histogram1:
         key1root = key1.replace('[', '').replace(']', '').split(',')[0]
         for key2 in histogram2:
             key2root = key2.replace('[', '').replace(']', '').split(',')[0]
             if key1root == key2root:
-                distance += histogram1[key1] * histogram2[key2] * __distance_v2(key1, key2)
+                distance += histogram1[key1] * histogram2[key2] * distance_v2(key1, key2)
     return distance
 
 def graph_edit_distance(tet1, tet2):
