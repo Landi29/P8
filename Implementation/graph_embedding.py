@@ -37,7 +37,8 @@ def create_graph_csv(data_path):
     with open(data_path, "r") as data:
         csvreader = csv.reader(data)
         for edge in csvreader:
-            graph.add_edge(int("1"+ edge[0]), int("2" + edge[1]), weight=float(edge[2]))
+            graph.add_edge(int("1"+ edge[0].replace("M:","1")), 
+                           int("2" + edge[1].replace("U:","2")), weight=float(edge[2]))
     return graph
 
 def print_graph_information(number_of_nodes, number_of_edges):
