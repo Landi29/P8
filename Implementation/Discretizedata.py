@@ -19,7 +19,10 @@ GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
 RATINGPATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'ratings_10m.dat'
 GRAPH_DATA_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'graph_10m.csv'
 USER_NODES_PATH_2 = pathlib.Path.cwd() / 'Movielens_data' / 'user_nodes_10m.csv'
-FOLDS_JSON = pathlib.Path.cwd() / 'Movielens_data' / 'Folds.txt'
+FOLDS_JSON = pathlib.Path.cwd() / 'Movielens_data' / 'Folds.json'
+
+GRAPH_DATA_PATH_3 = pathlib.Path.cwd() / 'Movielens_data' / 'graph_10.csv'
+
 
 
 #API-key from OMDB Api (limit: 1000 daily)
@@ -250,9 +253,9 @@ def split_into_folds(inputpath):
             temp.append(edge)
             userdict[edge[1]] = temp
 
+    fold = 0
 
     for user in userdict.values():
-        fold = 0
 
         for rating in user:
             temp = folddict.get("fold"+str(fold), [])
@@ -261,8 +264,6 @@ def split_into_folds(inputpath):
             fold += 1
             if fold == 10:
                 fold = 0
-            else:
-                continue
 
     json.dump(folddict,open(FOLDS_JSON, "w"))
 
@@ -279,4 +280,15 @@ def split_into_folds(inputpath):
 
 
 if __name__ == "__main__":
-    split_into_folds(GRAPH_DATA_PATH)
+    print("Hello")
+    
+
+#Pick a random user node
+#find the neighbours
+#keep count of nodes in graph
+#find neighbours of neighbours
+#count nodes again
+#repeat until node count <= threshold
+
+#Repeat until no more subgraphs can be made
+
