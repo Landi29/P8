@@ -1,14 +1,13 @@
 """Contains functionality for creating the dataset used in SimGNN"""
 import pathlib
 from tqdm import tqdm
-import json
-#import simgnn.main as main
-#from SimGNN import SimGNN_Trainer
+import jsonimport simgnn.main_SimGNN as SimGNN
 
 class SimGNNDatasetCreator:
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
     GRAPHLIST_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphlists.edgelist'
     JSON_FILE = pathlib.Path.cwd() / 'Movielens_data' / 'training.pkl'
+    graph = "C:/Users/FiercePC/Documents/SimGNN-master/dataset/graph.csv"
 
     def make_dataset(self):
         """
@@ -23,16 +22,21 @@ class SimGNNDatasetCreator:
             amount_of_graphs = 0
             label_amount = 0
             label_list = []
+            label_list.append("High")
+            label_list.append("Medium")
+            label_list.append("Low")
             for lines in tqdm(file):
                 lines_split = lines.split(",")
+                if lines_split[1] == "U:100":
+                    break
                 if lines_split[1] in allgraphs:
                     labels[lines_split[1]].append(lines_split[0])
                     edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
                     allgraphs[lines_split[1]].append(edge[0])
-                    if label_list.__contains__(lines_split[0].split(":")[1]):
+                    if label_list.__contains__(lines_split[0]):
                         continue
                     else:
-                        label_list.append(lines_split[0].split(":")[1])
+                        label_list.append(lines_split[0])
                 else:
                     allgraphs[lines_split[1]] = []
                     labels[lines_split[1]] = []
@@ -46,10 +50,11 @@ class SimGNNDatasetCreator:
                     allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 3])
                     edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
                     allgraphs[lines_split[1]].append(edge[0])
-                    if label_list.__contains__(lines_split[0].split(":")[1]):
+                    label_list.append(lines_split[1])
+                    if label_list.__contains__(lines_split[0]):
                         continue
                     else:
-                        label_list.append(lines_split[0].split(":")[1])
+                        label_list.append(lines_split[0])
             dataset = {}
             #label_list = self.make_zero_list(labels)
             zero_list = []
@@ -68,7 +73,7 @@ class SimGNNDatasetCreator:
                         amount_of_graphs += 1
                     except:
                         break
-        return dataset, amount_of_graphs, label_amount
+        return dataset, amount_of_graphs, label_list
 
     @staticmethod
     def create_user_graph_and_labels(edgelist):
@@ -144,29 +149,11 @@ class SimGNNDatasetCreator:
                 continue
             else:
                 gedscore += 1
-        """for node in similarnodes:
-            i1 = 0.0
-            i2 = 0.0
-            for node1 in graph1:
-                if node1[0] == node:
-                    i1 = float(node1[2].strip())
-                    break
-            for node1 in graph2:
-                if node1[0] == node:
-                    i2 = float(node1[2].strip())
-                    break
-            gedscore += abs(i1-i2)"""
         return gedscore
 
 f = SimGNNDatasetCreator()
-dataset, amount_of_runs, label_amount = f.make_dataset()
-JSON_FILE = pathlib.Path.cwd() / 'Movielens_data'
-x = 1
-while x < 50000:
-    out_file = open("Movielens_data/Training_Data/" + str(x) + ".json", "w")
-    y = x + 1
-    user1 = "U:" + str(x)
-    user2 = "U:" + str(y)
-    json.dump(dataset[user1][user2], out_file)
-    x += 1
-    out_file.close()
+dataset, amount_of_runs, labels = f.make_dataset()
+label_dict = {}
+for label in labels:
+    label_dict[label] = labels.index(label)
+SimGNN.main_SimGNN(dataset, [], amount_of_runs, label_dict)
