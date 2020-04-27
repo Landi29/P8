@@ -30,6 +30,11 @@ def manhatten_distance(tet1, tet2):
     return distance
 
 def distance_v2_start(tet1, tet2):
+    '''
+    description: this function is the starter function for the distance function that takes leaves into account 
+    parameters: tet1 and tet2 are tets.
+    return: the output is a distance between the two tets. A low distance is better than a high.
+    '''
     distance = 0.0
     if tet1 != tet2:
         structure1 = tet1.histogram()
@@ -38,6 +43,11 @@ def distance_v2_start(tet1, tet2):
     return distance
 
 def distance_v2(histogram1, histogram2):
+    '''
+    description: uses the histograms and goes through them to to find leaf level of the tet to decern distance
+    parameters: histogram1 and histogram2 are string histogram descriptions of a tets.
+    return: the output is a distance between the two tets. A low distance is better than a high.
+    '''
     distance = 0.0
     if  isinstance(histogram1, str):
         leaves1 = histogram1.replace('[', '').replace(']', '').split(',')[1:]
