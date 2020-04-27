@@ -3,11 +3,11 @@
 
 
 For each $u$ in the set of all users $U$, we build a TET $T_u$. The root of TET $T_u$ is its corresponding user $u$.
-The user $u$ is a user-node in the graph $G$ if $User(u, \, G) = True$.
+A node $n$ is a user-node in the graph $G$ if $User(n, \, G) = True$.
 
 The feature User is in the boolean domain meaning that this feature will be either true or false(\autoref{Eq:Userdomain}).
 \begin{equation}\label{Eq:Userdomain}
-  User(u)\rightarrow \{True, False\}
+  User(n)\rightarrow \{True, False\}
 \end{equation}
 
 
@@ -15,13 +15,9 @@ Rating is a feature which is either low, medium or high and the original rating 
 The original ratings is a numerical value between 0 and 5, which was then translated into the new form where $low<2.5\leq mid \leq 3.5<high$.
 For each rating, we thus have that:
 \begin{equation}\label{Eq:Ratingdomain}
-  \begin{cases}
-    Rating(u, m) \rightarrow \{Low, Mid, High\}, \quad \text{iff} \ u \ \text{has rated movie} \ m \\
-    Rating(u, m) \rightarrow error, \quad \text{iff} \ u \ \text{has not rated movie} \ m
-
-  \end{cases}
+    Rating(u, m) \rightarrow \{Low, Mid, High\}
 \end{equation}
-
+Note that \autoref{Eq:Ratingdomain} is the case for every rating in $G$. Thus, we do not have to look at whether user $u$ has rated movie $m$. If this was the case, a rating would not exist.
 Each genre in the dataset is a feature in the boolean domain. These features will return a value when given a movie $m$, returning true if $m$ is categorized as the genre, and false otherwise (\autoref{Eq:genredomain}).
 \begin{equation}\label{Eq:genredomain}
 \begin{aligned}
