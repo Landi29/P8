@@ -51,7 +51,7 @@ if __name__ == "__main__":
     print("Generate walks:")
     #node2vec = Node2Vec(graph, dimensions=20, walk_length=16, num_walks=100)
 
-    graphn2v = Node2Vec(graph, dimensions= 20, walk_length=20, num_walks=50, p=1, q=2, workers=4)
+    graphn2v = Node2Vec(graph, dimensions= 20, walk_length=20, num_walks=50, p=1, q=2)
 
     # Learn embeddings 
     print("Learning embeddings:")
