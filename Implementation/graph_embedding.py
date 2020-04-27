@@ -1,9 +1,13 @@
-from node2vec import Node2Vec
-import networkx
-import Paths
-from tqdm import tqdm
+'''
+Module for embedding the movielens dataset with 1 million ratings
+using node2vec.
+'''
 import pickle
 from datetime import datetime
+import networkx
+from tqdm import tqdm
+from node2vec import Node2Vec
+import Paths
 
 def create_graph(data_path):
     '''
@@ -22,7 +26,7 @@ def create_graph(data_path):
     for rating in tqdm(ratings):
         rating_data = rating.split("::")
         graph.add_edge(int("1" + rating_data[0]), int("2" + rating_data[1]),
-        weight=float(rating_data[2]))
+                       weight=float(rating_data[2]))
     return graph
 
 def print_graph_information(number_of_nodes, number_of_edges):
@@ -48,17 +52,17 @@ if __name__ == "__main__":
     print("Reading the file: ")
     GRAPH = create_graph(Paths.SMALL_GRAPH_RATINGS_PATH)
     print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
-    
+
     # Generate walks
     print("Generate walks:")
     #node2vec = Node2Vec(graph, dimensions=20, walk_length=16, num_walks=100)
 
     GRAPH_N2V = Node2Vec(GRAPH, dimensions=20, walk_length=20, num_walks=50, p=1, q=2)
 
-    # Learn embeddings 
+    # Learn embeddings
     print("Learning embeddings:")
     N2V_MODEL = GRAPH_N2V.fit(window=10, min_count=1)
     print("nv2model is written to disc")
     with open(Paths.SMALL_N2V_MODEL_PATH_2, "wb") as disc_file:
-        pickle.dump(N2V_MODEL, disc_file) 
+        pickle.dump(N2V_MODEL, disc_file)
     print("Finished at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
