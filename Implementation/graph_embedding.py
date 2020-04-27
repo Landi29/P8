@@ -8,8 +8,11 @@ import networkx
 from tqdm import tqdm
 from node2vec import Node2Vec
 import Paths
+import pathlib
+import csv
 
-def create_graph(data_path):
+
+def create_graph_dat(data_path):
     '''
     Description
     -----------
@@ -25,8 +28,16 @@ def create_graph(data_path):
 
     for rating in tqdm(ratings):
         rating_data = rating.split("::")
-        graph.add_edge(int("1" + rating_data[0]), int("2" + rating_data[1]),
+        graph.add_edge(int("1" + rating_data[1]), int("2" + rating_data[0]),
                        weight=float(rating_data[2]))
+    return graph
+
+def create_graph_csv(data_path):
+    graph = networkx.Graph()
+    with open(data_path, "r") as data:
+        csvreader = csv.reader(data)
+        for edge in csvreader:
+            graph.add_edge(int("1"+ edge[0]), int("2" + edge[1]), weight=float(edge[2]))
     return graph
 
 def print_graph_information(number_of_nodes, number_of_edges):
@@ -48,10 +59,30 @@ def print_graph_information(number_of_nodes, number_of_edges):
 
 if __name__ == "__main__":
 
+    filename = input("Please specify the name of the file to read from: ")
+    filepath = Paths.SMALL_GRAPH_FOLDER_PATH / filename
     print("Start at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
-    print("Reading the file: ")
-    GRAPH = create_graph(Paths.SMALL_GRAPH_RATINGS_PATH)
-    print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
+    filetype = filename.split(".")[1]
+    SAVE_PATH = None
+
+    if filetype == "dat":
+        print("Reading the file: ")
+        GRAPH = create_graph_dat(filepath)
+        print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
+        SAVE_PATH = Paths.SMALL_N2V_MODEL_PATH_DATFILE
+
+    elif filetype == "csv":
+        fileversion = input("Is the graph with 1 or 2 million ratings?: ")
+        if fileversion == 1: 
+            SAVE_PATH = Paths.SMALL_N2V_MODEL_PATH_1M
+        elif fileversion == 2:
+            SAVE_PATH = Paths.SMALL_N2V_MODEL_PATH_2M
+        else: 
+            print("You did not specify a valid value.")
+        print("Reading the file: ")
+        GRAPH = create_graph_csv(filepath)
+        print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
+        
 
     # Generate walks
     print("Generate walks:")
@@ -63,6 +94,6 @@ if __name__ == "__main__":
     print("Learning embeddings:")
     N2V_MODEL = GRAPH_N2V.fit(window=10, min_count=1)
     print("nv2model is written to disc")
-    with open(Paths.SMALL_N2V_MODEL_PATH_2, "wb") as disc_file:
+    with open(SAVE_PATH, "wb") as disc_file:
         pickle.dump(N2V_MODEL, disc_file)
     print("Finished at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
