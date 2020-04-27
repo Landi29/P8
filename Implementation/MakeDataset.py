@@ -1,7 +1,8 @@
 """Contains functionality for creating the dataset used in SimGNN"""
 import pathlib
 from tqdm import tqdm
-import jsonimport simgnn.main_SimGNN as SimGNN
+import json
+import simgnn.main_SimGNN as SimGNN
 
 class SimGNNDatasetCreator:
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
