@@ -1,11 +1,15 @@
 \subsection{TET Features}
-The TET that is built will be rooted in user U.
-U is a user-node in the graph if $User(U) = True$. 
+% Indledning:
+
+
+For each $u$ in the set of all users $U$, we build a TET $T_u$. The root of TET $T_u$ is its corresponding user $u$.
+The user $u$ is a user-node in the graph $G$ if $User(u, \, G) = True$.
 
 The feature User is in the boolean domain meaning that this feature will be either true or false(\autoref{Eq:Userdomain}).
 \begin{equation}\label{Eq:Userdomain}
-User(U)\rightarrow \{True, False\}
+  User(u)\rightarrow \{True, False\}
 \end{equation}
+
 
 Rating is a feature which is either low, medium or high and the original rating has been split into these three categories.
 The original ratings is a numerical value between 0 and 5, which was then translated into the new form where $low<2.5\leq mid \leq 3.5<high$(\autoref{Eq:Ratingdomain}).
@@ -38,10 +42,10 @@ Rating(U,M)& \longrightarrow Action(M) \\
 Rating(U,M)& \longrightarrow Comedy(M)\\
 & \vdots \\
 Rating(U,M)& \longrightarrow Western(M)
-\end{aligned}	
+\end{aligned}
 \end{equation}
 
-All of these functions has a been intended to work as if they were programmed in a logical paradigm. 
+All of these functions has a been intended to work as if they were programmed in a logical paradigm.
 
 With the functions that can give a boolean result such as User(U) or any of the genres for example Action(M) we are only interested in True values. The tree will therefore end up having the form seen in \autoref{fig:Tetekempel}
 
@@ -51,7 +55,7 @@ With the functions that can give a boolean result such as User(U) or any of the 
     \input{Article/figures/TET_ilustration.tex}
     \end{adjustbox}
     \caption{caption}
-    \label{fig:Tetekempel}	
+    \label{fig:Tetekempel}
 \end{figure}
 
 %The value of a TET T(X) for a user U will be denoted as V(T(U)). If the node U is not a user or is not part of domain, the value for the tree default to false.\todo{this part has to be more precise and telling look at bottom of p.39 in tet article}
@@ -69,5 +73,5 @@ The tree can also be represented as \autoref{Eq:TETvector}
 
 This tells that the tree T(U) has 2 movies whith low rating and the genres action, casual, and romance, a movie rated low that has action and horror. there is a movire rated in the mid range with comedy and romance and a movie thas highly rated with adventure and romance.
 
-Whith this structure we have a representetation of an users preferences and subgraph in a dataset. 
+Whith this structure we have a representetation of an users preferences and subgraph in a dataset.
 The structures can be compared to find simulareties and thereby make more trustworty recomendation to an user.
