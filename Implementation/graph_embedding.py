@@ -73,9 +73,9 @@ if __name__ == "__main__":
 
     elif filetype == "csv":
         fileversion = input("Is the graph with 1 or 2 million ratings?: ")
-        if fileversion == 1: 
+        if fileversion == "1": 
             SAVE_PATH = Paths.SMALL_N2V_MODEL_PATH_1M
-        elif fileversion == 2:
+        elif fileversion == "2":
             SAVE_PATH = Paths.SMALL_N2V_MODEL_PATH_2M
         else: 
             print("You did not specify a valid value.")
