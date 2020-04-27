@@ -6,8 +6,8 @@ import random
 import numpy as np
 from tqdm import tqdm, trange
 from torch_geometric.nn import GCNConv
-from src.layers import AttentionModule, TenorNetworkModule
-from src.utils import process_pair, calculate_loss, calculate_normalized_ged
+from simgnn.layers import AttentionModule, TenorNetworkModule
+from simgnn.utils import process_pair, calculate_loss, calculate_normalized_ged
 
 class SimGNN(torch.nn.Module):
     """

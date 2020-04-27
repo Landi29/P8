@@ -23,7 +23,7 @@ class SimGNNDatasetCreator:
             label_list.append("Low")
             for lines in tqdm(file):
                 lines_split = lines.split(",")
-                if lines_split[1] == "U:100":
+                if lines_split[1] == "U:50":
                     break
                 if lines_split[1] in allgraphs:
                     labels[lines_split[1]].append(lines_split[0])
