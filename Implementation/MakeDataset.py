@@ -1,14 +1,10 @@
 """Contains functionality for creating the dataset used in SimGNN"""
 import pathlib
 from tqdm import tqdm
-import json
 import simgnn.main_SimGNN as SimGNN
 
 class SimGNNDatasetCreator:
     GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-    GRAPHLIST_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graphlists.edgelist'
-    JSON_FILE = pathlib.Path.cwd() / 'Movielens_data' / 'training.pkl'
-    graph = "C:/Users/FiercePC/Documents/SimGNN-master/dataset/graph.csv"
 
     def make_dataset(self):
         """
@@ -21,7 +17,6 @@ class SimGNNDatasetCreator:
             labels = {}
             allgraphs = {}
             amount_of_graphs = 0
-            label_amount = 0
             label_list = []
             label_list.append("High")
             label_list.append("Medium")
