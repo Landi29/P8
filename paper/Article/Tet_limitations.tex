@@ -17,7 +17,7 @@ For each rating, we thus have that:
 \begin{equation}\label{Eq:Ratingdomain}
     Rating(u, m) \rightarrow \{Low, Mid, High\}
 \end{equation}
-Note that \autoref{Eq:Ratingdomain} is the case for every rating in $G$. Thus, we do not have to look at whether user $u$ has rated movie $m$. If this was the case, a rating would not exist.
+Note that \autoref{Eq:Ratingdomain} is the case for every rating in $G$.
 Each genre in the dataset is a feature in the boolean domain. These features will return a value when given a movie $m$, returning true if $m$ is categorized as the genre, and false otherwise (\autoref{Eq:genredomain}).
 \begin{equation}\label{Eq:genredomain}
 \begin{aligned}
@@ -35,8 +35,6 @@ User(u) \stackrel{m}{\longrightarrow} Rating(u,m) \longrightarrow Genre(m)
 
 The TET will represent a neighbourhood of the graph with a User as the root.
 
-% If Rating(u,m) \ rightarrow \{Low, Mid, High\}, how come Rating(u,m)& \longrightarrow Action(m) \\
-% This tries to explaine what is written in equation 11, but it is not mathematically correct.
 The sub-trees are themselves TETs as shown in \autoref{Eq:subtetstructure}.
 \begin{equation}\label{Eq:subtetstructure}
 \begin{aligned}
