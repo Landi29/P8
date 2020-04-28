@@ -33,6 +33,15 @@ def create_graph_dat(data_path):
     return graph
 
 def create_graph_csv(data_path):
+    '''
+    Description
+    -----------
+    Create a graph based on the csv files. 
+
+    Parameters
+    ----------
+    `data_path`: File path to the graph data.
+    '''
     graph = networkx.Graph()
     with open(data_path, "r") as data:
         csvreader = csv.reader(data)
@@ -66,6 +75,8 @@ if __name__ == "__main__":
     filetype = filename.split(".")[1]
     SAVE_PATH = None
 
+    # We check which file we want to run, in order to minimize the amount of times,
+    # we have to edit the code. 
     if filetype == "dat":
         print("Reading the file: ")
         GRAPH = create_graph_dat(filepath)
