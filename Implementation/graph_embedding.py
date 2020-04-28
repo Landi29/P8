@@ -68,7 +68,7 @@ if __name__ == "__main__":
     filepath = Paths.EXPERIMENT_DATA_PATH / filename
     file_data = filename.split(".")
     filetype = file_data[1]
-    OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / file_data[0] + '.pkl'
+    OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / (file_data[0] + '.pkl')
 
     if filetype == "csv":
         print("Start at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
