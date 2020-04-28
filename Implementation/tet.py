@@ -21,11 +21,22 @@ class TET:
             return True
         return False
 
+    def isleaf(self):
+        return self._children is None
+    
+    def isoverleaf(self):
+        return self._children[0].isleaf()
+
     def getchildren(self):
         '''
         gets a list of children to the root
         '''
         return self._children
+    
+    def getchildrenwithkey(self,key):
+        for child in self._children:
+            if child.tostring() == key:
+                return child
 
     def addchild(self, child):
         '''

@@ -62,6 +62,49 @@ def distance_v2(histogram1, histogram2):
                 distance += histogram1[key1] * histogram2[key2] * distance_v2(key1, key2)
     return distance
 
+def distance_v3(tet1, tet2):
+    '''
+    description: uses the histograms and goes through them to to find leaf level of the tet to decern distance
+    parameters: histogram1 and histogram2 are string histogram descriptions of a tets.
+    return: the output is a distance between the two tets. A low distance is better than a high.
+    '''
+    
+    if tet1 == tet2:
+        return 0
+    
+    histogram1 = tet1.histogram()
+    histogram2 = tet2.histogram() 
+    distance = 0.0
+    for key1 in histogram1:
+        histogramsplit1 = key1.replace('[', '').replace(']', '').split(',')
+        for key2 in histogram2:
+            histogramsplit2 = key2.replace('[', '').replace(']', '').split(',')
+            if tet1.getchildrenwithkey(key1).isoverleaf():
+                distance += histogram1[key1] * histogram2[key2] * (low_mid_high_dif(histogramsplit1[0], histogramsplit2[0]) + leaf_distance_v3(histogramsplit1[1:], histogramsplit2[1:]))
+            else:
+                distance += histogram1[key1] * histogram2[key2] * (low_mid_high_dif(histogramsplit1[0], histogramsplit2[0]) + distance_v3(tet1.getchildrenwithkey(key1), tet2.getchildrenwithkey(key2)))
+    return distance
+
+def leaf_distance_v3(leaves1, leaves2):
+    '''
+    description: uses the histograms and goes through them to to find leaf level of the tet to decern distance
+    parameters: histogram1 and histogram2 are string histogram descriptions of a tets.
+    return: the output is a distance between the two tets. A low distance is better than a high.
+    '''
+    if leaves1 == leaves2:
+        return 0
+    
+    return len(list(set(leaves1).symmetric_difference(set(leaves2))))
+
+def low_mid_high_dif(rating1, rating2):
+    if rating1==rating2:
+        return 0
+    elif  (rating1 == 'low' and rating2 == 'high') or (rating1 == 'high' and rating2 == 'low'):
+        return 2
+    else:
+        return 1
+
+
 def graph_edit_distance(tet1, tet2):
     '''
     description: this funktion find the grap edit distance by going through the count of children
@@ -96,6 +139,6 @@ if __name__ == "__main__":
     TETS = build_tet.load_tets(Paths.TETS_PATH, 1000)
     #GROUPS = build_tet.grouping(TETS)
 
-    dis = distance_v2_start(list(TETS.values())[0], list(TETS.values())[1])
+    dis = distance_v3(list(TETS.values())[0], list(TETS.values())[1])
     print('Distance: {}'.format(dis))
     print('\ndone')

@@ -5,6 +5,8 @@ from build_tet import load_tets
 from tqdm import tqdm
 import math
 import json
+import metric_tree
+import pickle
 
 def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
     '''
@@ -31,6 +33,10 @@ def comparemethod(user, other, method):
         return compare_tet.graph_edit_distance(user, other)
     elif method == "manhatten_brute":
         return manhatten_bruteforce(user, other)
+    elif method == "distancev2_tet":
+        return compare_tet.distance_v2_start(user, other)
+    elif method == "distancev3_tet":
+        return compare_tet.distance_v3(user, other)
     else:
         print("missing method")
 
@@ -146,15 +152,64 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    training_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    #training_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    
     tets = load_tets(Paths.TETS_0_7_PATH)
-    validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
-    test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
-    # models: manhatten_tet, GED_tet, manhatten_brute
-    comparison_method = "manhatten_tet"
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_0_7_PATH, "wb"))
+    print(0)
 
-    result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
+    tets = load_tets(Paths.TETS_1_8_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_1_8_PATH, "wb"))
+    print(1)
 
-    error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
-    print('root mean square error: ' + str(error))
+    tets = load_tets(Paths.TETS_2_9_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_2_9_PATH, "wb"))
+    print(2)
+
+    tets = load_tets(Paths.TETS_3_0_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_3_0_PATH, "wb"))
+    print(3)
+
+    tets = load_tets(Paths.TETS_4_1_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_4_1_PATH, "wb"))
+    print(4)
+    tets = load_tets(Paths.TETS_5_2_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_5_2_PATH, "wb"))
+    print(5)
+
+    tets = load_tets(Paths.TETS_6_3_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_6_3_PATH, "wb"))
+    print(6)
+
+    tets = load_tets(Paths.TETS_7_4_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_7_4_PATH, "wb"))
+    print(7)
+
+    tets = load_tets(Paths.TETS_8_5_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_8_5_PATH, "wb"))
+    print(8)
+
+    tets = load_tets(Paths.TETS_9_6_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
+    pickle.dump(tet_classifier, open(Paths.TETSmt_9_6_PATH, "wb"))
+    print(9)
+
+    #validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
+    #test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
+    # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
+    #comparison_method = "distancev3_tet"
+    
+    #result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, metric_tree.mt_search(tet_classifier, tets[list(training_data)[0]]), training_data, filterv=None)
+
+    #error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
+    #print('root mean square error: ' + str(error))
     

@@ -1,9 +1,9 @@
 import random
 import pickle
-from compare_tet import graph_edit_distance as dist
+from compare_tet import distance_v2_start as dist
 from build_tet import load_tets
 import Paths
-
+from tqdm import tqdm
 
 def mt_build(dmax, nmax, depth, data):
     '''
@@ -12,6 +12,7 @@ def mt_build(dmax, nmax, depth, data):
     in a bucket, depth is the current depth and data is the data that is being categorized in the mt
     return: the return is the full mt
     '''
+    print("building at " + str(depth))
     node = MTnode()
     if depth == dmax or len(data) <= nmax:
         node.bucket = data
@@ -21,19 +22,19 @@ def mt_build(dmax, nmax, depth, data):
     node.left = mt_build(dmax, nmax, depth+1, data1)
     node.right = mt_build(dmax, nmax, depth+1, data2)
 
-def mt_search(node, searched, k):
+def mt_search(node, searched):
     '''
     description: This function searches an mt
-    parameters: node is an mt or submt searched is the element you wish to find entities like
+    parameters: node is an mt or submt, searched is the element you wish to find entities like
     and k is the number of entities you wish to find
-    return: the return is k estimated nearest neighbors
+    return: the return is the estimated nearest bucket
     '''
     if node.isleaf():
-        return sorted(node.bucket, key=lambda x: dist(x, searched))[:k]
+        return node.bucket
     if dist(searched, node.z1) <= dist(searched, node.z2):
-        return mt_search(node.left, searched, k)
+        return mt_search(node.left, searched)
     else:
-        return mt_search(node.right, searched, k)
+        return mt_search(node.right, searched)
 
 def get_random_pair(data):
     '''
@@ -57,7 +58,7 @@ def split_data(masterdata, splitpoint1, splitpoint2):
     '''
     data1 = []
     data2 = []
-    for data in masterdata:
+    for data in tqdm(masterdata):
         if dist(data, splitpoint1) <= dist(data, splitpoint2):
             data1.append(data)
         else:
