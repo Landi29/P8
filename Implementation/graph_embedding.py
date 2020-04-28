@@ -77,6 +77,7 @@ if __name__ == "__main__":
         print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
     elif filetype == "json":
         folds_to_train = input("Enter the amount of folds you want for training the model: ")
+        folds_to_train = int(folds_to_train)
         print("Start at: {}".format(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
         print("Reading the file: ")
         GRAPH = create_graph_from_folds(filepath, folds_to_train)
