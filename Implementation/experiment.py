@@ -1,7 +1,7 @@
 import compare_tet
 import Paths
 import csv
-from build_tet import load_tets
+from build_tet import load_tets, build_tets, save_tets, moviedict
 from tqdm import tqdm
 import math
 import json
@@ -152,8 +152,8 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    #training_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
-    
+    training_data = jsonuserdatabase(Paths.Folds_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[1]
+    build_tets(training_data, vmoviedict = moviedict(Paths.MOVIE_NODES_PATH))
     tets = load_tets(Paths.TETS_0_7_PATH)
     tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 10000, depth = 0, data=list(tets.values()))
     pickle.dump(tet_classifier, open(Paths.TETSmt_0_7_PATH, "wb"))
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
     #comparison_method = "distancev3_tet"
     
-    #result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, metric_tree.mt_search(tet_classifier, tets[list(training_data)[0]]), training_data, filterv=None)
+    #result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
 
     #error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
     #print('root mean square error: ' + str(error))

@@ -1,6 +1,6 @@
 import random
 import pickle
-from compare_tet import distance_v2_start as dist
+from compare_tet import distance_v3 as dist
 from build_tet import load_tets
 import Paths
 from tqdm import tqdm

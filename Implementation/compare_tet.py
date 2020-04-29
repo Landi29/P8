@@ -79,10 +79,7 @@ def distance_v3(tet1, tet2):
         histogramsplit1 = key1.replace('[', '').replace(']', '').split(',')
         for key2 in histogram2:
             histogramsplit2 = key2.replace('[', '').replace(']', '').split(',')
-            if tet1.getchildrenwithkey(key1).isoverleaf():
-                distance += histogram1[key1] * histogram2[key2] * (low_mid_high_dif(histogramsplit1[0], histogramsplit2[0]) + leaf_distance_v3(histogramsplit1[1:], histogramsplit2[1:]))
-            else:
-                distance += histogram1[key1] * histogram2[key2] * (low_mid_high_dif(histogramsplit1[0], histogramsplit2[0]) + distance_v3(tet1.getchildrenwithkey(key1), tet2.getchildrenwithkey(key2)))
+            distance += histogram1[key1] * histogram2[key2] * (low_mid_high_dif(histogramsplit1[0], histogramsplit2[0]) + leaf_distance_v3(histogramsplit1[1:], histogramsplit2[1:]))
     return distance
 
 def leaf_distance_v3(leaves1, leaves2):
@@ -91,9 +88,6 @@ def leaf_distance_v3(leaves1, leaves2):
     parameters: histogram1 and histogram2 are string histogram descriptions of a tets.
     return: the output is a distance between the two tets. A low distance is better than a high.
     '''
-    if leaves1 == leaves2:
-        return 0
-    
     return len(list(set(leaves1).symmetric_difference(set(leaves2))))
 
 def low_mid_high_dif(rating1, rating2):
