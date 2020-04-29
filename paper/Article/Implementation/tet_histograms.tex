@@ -11,7 +11,7 @@
 	
 	By comparing the key for each level in the tree, you can find the structural difference, for example if comparing two TET we know that if the users in the TETs are the same $User(u) == User(u')$ then we work on the same tree and the distance is $0$. The next level is the rating level for \autoref{fig:Tetekempel} this levels histogram would be represented as \autoref{fig:Tethistogram}, on this level we compare low, medium and high by assigning them a numeric value.
 	
-	On the genre level of the TET structure we find the difference between we see in \autoref{fig:Tethistogram} that $low\{(a:t)(c:t)(r:t)\}$ at this level we have $(a:t)(c:t)(r:t)$ we can use manhatten distance at this level by considering it as a vector there comparison with another histogram with less true genre features than the other at this level can the be compared as seen in \autoref{Eq:manhattencomparason}\cite{singh2013k}.
+	On the genre level of the TET structure we find the difference between what we see in \autoref{fig:Tethistogram} which is $low\{(a:t)(c:t)(r:t)\}$ which on this level would be represented as $(a:t)(c:t)(r:t)$ we can use manhatten distance at this level by considering it as a vector that, with another histogram with less true genre features than the other at this level, can the be compared as seen in \autoref{Eq:manhattencomparason}\cite{singh2013k}.
 	
 	When comparing two histograms, one histogram might have some elements that the other does not have. For any missing element in a histogram we add the value $0$, and we are thereby able to calculate distance for the missing element.
 	
