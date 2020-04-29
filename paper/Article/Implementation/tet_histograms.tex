@@ -27,10 +27,10 @@
 	\end{bmatrix})= |x_{1.1} - x_{2.1}| + |x_{1.2} - x_{2.2}| + |x_{1.3} - 0|
 	\end{equation}
 	
-	The general formula for these comparisons can be seen in \autoref{eq:compare_tet} and \autoref{Eq:manhattencomparason}
+	The general formula for these comparisons can be seen in \autoref{Eq:manhattencomparason} and \autoref{eq:compare_tet}
 	\begin{equation}\label{eq:compare_tet}
 	\begin{split}
-	D(h,h') = \sum_{i=1}^{max(|h|,|h'|)} & (D(h^{\downarrow}, h'^{\downarrow})+ D(h_key, h'_key))  \\
+	D(h,h') = \sum_{i=1}^{max(|h|,|h'|)} & (D(h^{\downarrow}, h'^{\downarrow})+ D(h_{key0}, h'_{key}))  \\
 	& * distribution(h) * distribution (h')
 	\end{split}
 	\end{equation}
