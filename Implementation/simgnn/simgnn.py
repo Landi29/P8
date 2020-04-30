@@ -2,7 +2,6 @@
 
 import glob
 import torch
-import random
 import numpy as np
 from tqdm import tqdm, trange
 from torch_geometric.nn import GCNConv
@@ -117,7 +116,7 @@ class SimGNNTrainer(object):
     """
     SimGNN model trainer.
     """
-    def __init__(self, args, number_of_graphs, labels):
+    def __init__(self, args, labels):
         """
         :param args: Arguments object.
         """
@@ -222,7 +221,7 @@ class SimGNNTrainer(object):
         loss = losses.item()
         return loss
 
-    def fit(self, training_graphs):
+    def fit(self):
         """
         Fitting a model.
         """
@@ -254,12 +253,14 @@ class SimGNNTrainer(object):
         self.scores = []
         self.ground_truth = []
         for graph_pair in tqdm(self.testing_graphs):
-            self.ground_truth.\
-            append(calculate_normalized_ged(data))
-            data = self.transfer_to_torch(data)
-            target = data["target"]
-            prediction = self.model(data)
-            self.scores.append(calculate_loss(prediction, target))
+            for graph_pair_two in self.testing_graphs[graph_pair]:
+                data = self.testing_graphs[graph_pair][graph_pair_two]
+                self.ground_truth.\
+                append(calculate_normalized_ged(data))
+                data = self.transfer_to_torch(data)
+                target = data["target"]
+                prediction = self.model(data)
+                self.scores.append(calculate_loss(prediction, target))
         self.print_evaluation()
 
     def print_evaluation(self):
