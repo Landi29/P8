@@ -163,6 +163,7 @@ if __name__ == "__main__":
     
     result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
 
-    error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-    print('root mean square error: ' + str(error))
-    
+    verror = root_mean_squre_error(result_predictions, validation_expected_predictions)
+    terror = root_mean_squre_error(result_predictions, validation_expected_predictions)
+    print('validation root mean square error: ' + str(verror))
+    print('test root mean square error: ' + str(verror))
