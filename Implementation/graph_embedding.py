@@ -79,7 +79,7 @@ if __name__ == "__main__":
     iteration = 1
     for list_of_folds in fold_keys:
         print("Iteration {} start at: {}".format(str(iteration),
-                                                 datetime.now().strftime("%d-%m-%Y %H:%M:%S") ))
+                                                 datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n"))
 
         OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / (file_data[0] + '_' + str(iteration)
                     + '.pkl')
@@ -98,5 +98,5 @@ if __name__ == "__main__":
             pickle.dump(N2V_MODEL, disc_file)
         print("nv2model is written to disc")
         print("Iteration {} finished at: {}".format(iteration, 
-                                                    datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
+                                                    datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n"))
         iteration += 1
