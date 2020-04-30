@@ -152,83 +152,17 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_0_7_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_0_7_100k_PATH, "wb"))
-    print(0)
+    training_data = jsonuserdatabase(Paths.Folds_1m_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    tets = load_tets(Paths.TETS_0_7_100k_PATH)
+    tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
 
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7','fold8'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_1_8_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_1_8_100k_PATH, "wb"))
-    print(1)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8','fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_2_9_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_2_9_100k_PATH, "wb"))
-    print(2)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_3_0_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_3_0_100k_PATH, "wb"))
-    print(3)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_4_1_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_4_1_100k_PATH, "wb"))
-    print(4)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_5_2_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_5_2_100k_PATH, "wb"))
-    print(5)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold6', 'fold7', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_6_3_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_6_3_100k_PATH, "wb"))
-    print(6)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold7', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_7_4_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_7_4_100k_PATH, "wb"))
-    print(7)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold8', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_8_5_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_8_5_100k_PATH, "wb"))
-    print(8)
-
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold9'])[1]
-    tets = build_tets(training_data, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-    save_tets(tets, Paths.TETS_9_6_100k_PATH)
-    tet_classifier = metric_tree.mt_build(dmax = 5, nmax= 100, depth = 0, data=list(tets.values()))
-    pickle.dump(tet_classifier, open(Paths.TETSmt_9_6_100k_PATH, "wb"))
-    print(9)
-
-    #validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
-    #test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
+    validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
+    test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
     # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-    #comparison_method = "distancev3_tet"
+    comparison_method = "distancev3_tet"
     
-    #result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
+    result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
 
-    #error = root_mean_squre_error(result_predictions, validation_expected_predictions[list(training_data)[0]])
-    #print('root mean square error: ' + str(error))
+    error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+    print('root mean square error: ' + str(error))
     

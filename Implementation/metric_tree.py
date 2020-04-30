@@ -42,11 +42,11 @@ def get_random_pair(data):
     parameters: data is the entities you want to find two random of
     return: the return is two entities from data
     '''
-    random1 = random.randint(0, len(data))
-    random2 = random.randint(0, len(data))
+    random1 = random.randint(0, len(data)-1)
+    random2 = random.randint(0, len(data)-1)
     while random1 == random2:
-        random1 = random.randint(0, len(data))
-        random2 = random.randint(0, len(data))
+        random1 = random.randint(0, len(data)-1)
+        random2 = random.randint(0, len(data)-1)
     return data[random1], data[random2]
 
 def split_data(masterdata, splitpoint1, splitpoint2):
