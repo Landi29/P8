@@ -21,7 +21,7 @@ def parameter_parser(training, test):
 
     parser.add_argument("--epochs",
                         type=int,
-                        default=5,
+                        default=1,
 	                help="Number of training epochs. Default is 5.")
 
     parser.add_argument("--filters-1",

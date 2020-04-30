@@ -28,8 +28,10 @@ def main_SimGNN(training, test, labels):
     pickle.dump(trainer, open("simGNN.p", "wb"))
 
 if __name__ == "__main__":
+    with open("Movielens_data/SimGNN/2_to_9.json", "r") as file:
+       training = json.load(file)
     with open("Movielens_data/SimGNN/fold0.json", "r") as file:
-        training = json.load(file)
+        test = json.load(file)
     with open("Movielens_data/SimGNN/Label_list.json", "r") as file:
         labels = json.load(file)
-    main_SimGNN(training, [], labels)
+    main_SimGNN(training, test, labels)
