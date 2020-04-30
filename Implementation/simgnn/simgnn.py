@@ -213,7 +213,6 @@ class SimGNNTrainer(object):
         losses = 0
         for data in batch:
             data = self.transfer_to_torch(data)
-            target = data["target"]
             prediction = self.model(data)
             losses = losses + torch.nn.functional.mse_loss(data["target"], prediction)
         losses.backward(retain_graph=True)
@@ -262,6 +261,17 @@ class SimGNNTrainer(object):
                 prediction = self.model(data)
                 self.scores.append(calculate_loss(prediction, target))
         self.print_evaluation()
+
+    def predictionScore(self, graph_pairs):
+        """
+        Scoring on the test set.
+        """
+        print("\n\nModel evaluation.\n")
+        self.model.eval()
+        data = graph_pairs
+        data = self.transfer_to_torch(data)
+        prediction = self.model(data)
+        return prediction
 
     def print_evaluation(self):
         """

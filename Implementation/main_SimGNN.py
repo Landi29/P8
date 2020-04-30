@@ -6,6 +6,7 @@ from simgnn.param_parser import parameter_parser
 import torch
 import json
 import torch.multiprocessing as mp
+import pickle
 
 def main_SimGNN(training, test, labels):
     """
@@ -24,6 +25,7 @@ def main_SimGNN(training, test, labels):
     #    p.join()
     trainer.fit()
     trainer.score()
+    pickle.dump(trainer, open("simGNN.p", "wb"))
 
 if __name__ == "__main__":
     with open("Movielens_data/SimGNN/fold0.json", "r") as file:
