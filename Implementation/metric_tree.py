@@ -12,7 +12,6 @@ def mt_build(dmax, nmax, depth, data):
     in a bucket, depth is the current depth and data is the data that is being categorized in the mt
     return: the return is the full mt
     '''
-    print("building at " + str(depth))
     node = MTnode()
     if depth == dmax or len(data) <= nmax:
         node.bucket = data
@@ -21,6 +20,7 @@ def mt_build(dmax, nmax, depth, data):
     data1, data2 = split_data(data, node.split_point1, node.split_point2)
     node.left = mt_build(dmax, nmax, depth+1, data1)
     node.right = mt_build(dmax, nmax, depth+1, data2)
+    return node
 
 def mt_search(node, searched):
     '''
@@ -58,7 +58,7 @@ def split_data(masterdata, splitpoint1, splitpoint2):
     '''
     data1 = []
     data2 = []
-    for data in tqdm(masterdata):
+    for data in masterdata:
         if dist(data, splitpoint1) <= dist(data, splitpoint2):
             data1.append(data)
         else:

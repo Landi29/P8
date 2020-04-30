@@ -29,7 +29,7 @@ def moviedict(movie_nodes_path):
     with open(movie_nodes_path, 'r', encoding="utf-8") as movie_nodes_file:
         for movie in csv.reader(movie_nodes_file):
             movie[3] = movie[3].split('|')
-            movie_dict['M:'+movie[0]] = movie
+            movie_dict['M:'+ movie[0]] = movie
     return movie_dict
 
 def userdict(user_nodes_path):
@@ -44,7 +44,7 @@ def userdict(user_nodes_path):
         user_nodes = user_nodes_file.readlines()
         for user in user_nodes:
             user = user.strip().split(',')
-            user_dict['U:'+ user[0]] = True
+            user_dict[user[0]] = True
     return user_dict
 
 def tet_find_tree(user, tets):
