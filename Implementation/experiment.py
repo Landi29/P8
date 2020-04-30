@@ -7,6 +7,7 @@ import math
 import json
 import metric_tree
 import pickle
+from datetime import datetime
 
 def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
     '''
@@ -20,7 +21,7 @@ def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
         others = list(extradata.values())
         user = others[0]
     sims = []
-    for other in tqdm(others):
+    for other in others:
         if user != other:
             sims.append([other, comparemethod(user, other, compare_model)])
     bestk = sorted(sims, key=lambda x: x[1])[:k]
@@ -97,9 +98,13 @@ def pred(user, others, user_database, filtervalue=None):
 
 def root_mean_squre_error(result_predictions, expected_predictions):
     rmse = 0
+    T = 0
     for key in expected_predictions:
-        rmse += (result_predictions.get(key,0)-expected_predictions[key])**2
-    return math.sqrt(rmse/len(expected_predictions))
+        if result_predictions.get(key, False):
+            for expected_prediction in expected_predictions[key]:
+                rmse += (result_predictions[key].get(key,0)-expected_predictions[key][expected_prediction])**2
+                T += 1
+    return math.sqrt(rmse/T)
 
 
 def reasing_sims(sims):
@@ -152,18 +157,28 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    training_data = jsonuserdatabase(Paths.Folds_1m_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
     tets = load_tets(Paths.TETS_0_7_100k_PATH)
     tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
 
-    validation_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold8'])[0]
-    test_expected_predictions = jsonuserdatabase(Paths.Folds_PATH, ['fold9'])[0]
+    validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold8'])[0]
+    test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold9'])[0]
     # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
     comparison_method = "distancev3_tet"
     
-    result_predictions = knn(list(training_data)[0], list(training_data), comparison_method, tets, training_data, filterv=None)
+    result_predictions = {}
 
-    verror = root_mean_squre_error(result_predictions, validation_expected_predictions)
-    terror = root_mean_squre_error(result_predictions, validation_expected_predictions)
-    print('validation root mean square error: ' + str(verror))
-    print('test root mean square error: ' + str(verror))
+    start = datetime.now()
+    for person in tqdm(list(training_data)[:5]):
+        result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=None)
+    finished = datetime.now()
+
+    v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+    t_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+    print('validation root mean square error: ' + str(v_error))
+    print('test root mean square error: ' + str(t_error))
+    
+    with open("experiment_resultat_100k.csv", "a", newline='', encoding='utf-8') as write:
+        filewriter = csv.writer(write)
+        filewriter.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        filewriter.writerow(['fold 0-7 100k', v_error, t_error, finished - start])
