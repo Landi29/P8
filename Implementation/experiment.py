@@ -157,7 +157,8 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7'])[0]
+    folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9']
+    training_data = jsonuserdatabase(Paths.Folds_100k_PATH, folds[0:-2])[0]
     tets = load_tets(Paths.TETS_0_7_100k_PATH)
     tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
 
@@ -169,7 +170,7 @@ if __name__ == "__main__":
     result_predictions = {}
 
     start = datetime.now()
-    for person in tqdm(list(training_data)[:5]):
+    for person in tqdm(list(training_data)):
         result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=None)
     finished = datetime.now()
 
