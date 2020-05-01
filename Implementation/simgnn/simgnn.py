@@ -133,22 +133,6 @@ class SimGNNTrainer(object):
         """
         self.model = SimGNN(self.args, self.number_of_labels)
 
-    def initial_label_enumeration(self):
-        """
-        Collecting the unique node idsentifiers.
-        """
-        print("\nEnumerating unique labels.\n")
-        self.training_graphs = glob.glob(self.args.training_graphs + "*.json")
-        self.testing_graphs = glob.glob(self.args.testing_graphs + "*.json")
-        graph_pairs = self.training_graphs + self.testing_graphs
-        self.global_labels = set()
-        for graph_pair in tqdm(graph_pairs):
-            self.global_labels = self.global_labels.union(set(data["labels_1"]))
-            self.global_labels = self.global_labels.union(set(data["labels_2"]))
-        self.global_labels = list(self.global_labels)
-        self.global_labels = {val:index for index, val in enumerate(self.global_labels)}
-        self.number_of_labels = len(self.global_labels)
-
     def create_batches(self):
         """
         Creating batches from the training graph list.
