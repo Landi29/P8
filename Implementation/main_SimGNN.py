@@ -14,7 +14,6 @@ def main_SimGNN(training, test, labels):
     Fitting and scoring a SimGNN model.
     """
     args = parameter_parser(training, test)
-    tab_printer(args)
     f = 4
     trainer = SimGNNTrainer(args, labels)
     processes = []

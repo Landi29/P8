@@ -209,7 +209,6 @@ class SimGNNTrainer(object):
         Fitting a model.
         """
         print("\nModel training.\n")
-        self.training_graphs = training_graphs
         self.optimizer = torch.optim.Adam(self.model.parameters(),
                                           lr=self.args.learning_rate,
                                           weight_decay=self.args.weight_decay)
