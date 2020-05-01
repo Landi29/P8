@@ -421,3 +421,6 @@ dmypy.json
 #ignoring csv files
 /Implementation/Movielens_data/*.csv
 /Implementation/Movielens_data/*.edgelist
+# Ignore json and rar files:
+*.json
+*.rar
