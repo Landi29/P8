@@ -420,3 +420,6 @@ dmypy.json
 
 #ignoring csv files
 /Implementation/Movielens_data/*.csv
+*.json
+
+*.rar
