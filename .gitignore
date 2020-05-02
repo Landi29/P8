@@ -422,3 +422,5 @@ dmypy.json
 /Implementation/Movielens_data/*.csv
 /Implementation/Movielens_data/*.edgelist
 /Implementation/Movielens_data/*.dat
+/Implementation/Movielens_data/*.data
+/Implementation/Movielens_data/*.json
