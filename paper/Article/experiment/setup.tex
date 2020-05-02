@@ -1,0 +1,43 @@
+\subsection{Setup}
+In this experiment we test the reliability of the TET compared to the embedding, SimGNN and a bruteforce methods. 
+
+For our experiments we use the MovieLens dataset provided by grouplens\cite{Grouplensdata}. The data is taken from MovieLens, a movie recommendation website. The dataset we use contains $25000095$ movie ratings, given by $162541$ users, applied to $62423$ movies. All users have rated at least $20$ movies and each user and movie is represented by an Id. The data was generated between January 09, 1995 and November 21, 2019. For the users no additional information is available, other than what can be inferred from the rating data. For the movies we have additional information such as Movie Title, Release year, Genres and genome-tags.
+
+
+
+We create a weighted graph from the data, represented as an edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U on userid and M on movieid respectively, to differentiate them.
+
+The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80\%/20\%$ split into training- and testset \cite{Ricci2015}. We would like to also add a validation set and the split will therefore be $80\%/10\%/10\%$ or 8 folds/1 fold/1 fold. The splits will be on edge level meaning that training a user will have $80\%$ of their ratings. We will in the validation and test reconstruct or predict the ratings in the set.
+
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/tenfold.tex}
+	\end{adjustbox}
+	\caption{10 fold example}
+	\label{fig:tenfold}
+\end{figure}
+
+We will use root mean square error as seen in \autoref{eq:RMSE}\cite{chai2014root} to find the accuracy of the methods using different folds for test, training  and validation set.
+
+\begin{equation}\label{eq:RMSE}
+RMSE = \sqrt{\frac{1}{n}\sum^n_{i=1}(y_i - x_i)^2}
+\end{equation}
+
+A low RMSE is better than a higher RMSE, and a low RMSE is equivalent to a high accuracy.
+
+% There are subtleties that we need to take care of and explain.
+	% Do we devide the data on the node level or the edge level?
+	% This determines what would we be testing?
+	% Lars: i would like to divide on edge level and test on the ability to construct or reconstruct edges between movies and users. We could do the same with list and try to reconstruct the list of bedst movies for a user
+% Leave-one-out method
+% Splitting the data into folds
+	% Lars: i think we should make 20 folds this would allow us to take the standart 70/30 model for splitting training and test and addabt it to a 70/15/15 for training, validation and test.
+% Recommender Systems handbook. Read the chapter on evaulating recommender systems.
+% Before the experiment: 
+	% what is the **Hypothesis**?
+	% what is our **Variables**?
+	% can the conclutiuon be **Generalized**?
+% Offline experiments:
+	% what is the **dataset**?
+	% what kind of **behavior** does it simulate?

@@ -1,0 +1,31 @@
+\subsection{SimGNN Dataset}
+The SimGNN algorithm required some changes to the dataset to make it possible to be run. The SimGNN have a input of a json file containing four different information which are "graph\textunderscore1" an edgelist representation of one graph, "graph\textunderscore2" a edgelist representation of another graph, "label\textunderscore1" the labels used in "graph\textunderscore1", "label\textunderscore2" the labels used in "graph2" and then the Graph Edit Distance score for these two graphs. SimGNN also have no implementation of edge labels so the score could not be added directly to the edges, adding the three new nodes "High", "Medium" and "Low" with the same representation as in the tets and then change the edgelist to include these as a middle node between the user and the movies. 
+An example of the changes made to the dataset can be seen on \autoref{lst:Before_Change}, the two graphs are edge lists with movie nodes id, user id and a weighted edge nodes. 
+\begin{figure}
+\begin{lstlisting}
+Graph 1			 Graph 2
+M:296,U:1,5.0		 M:1,U:2,3.5
+M:306,U:1,3.5		 M:110,U:2,5.0
+M:307,U:1,5.0		 M:260,U:2,5.0
+M:2011,U:1,2.5 		 M:261,U:2,0.5
+M:7318,U:1,2.0		 M:653,U:2,3.0
+\end{lstlisting}
+\caption{Before Change}
+\label{lst:Before_Change}
+\end{figure}
+On \autoref{lst:After_Change} is shown how the data have to be as input for SimGNN. The edgelist is changed to go from 0 to number of nodes, and can be used to find their labels in the label list. So we for example see "0" in our edgelist and we know, that the label of the node is in position 0 of our label list.
+\begin{figure}
+\begin{lstlisting}
+graph_1:[[0, 1], [0, 2], [0, 3], [1, 4], 
+[1, 5], [1, 6], [2, 7], [3, 8]]
+labels_1:["U:1", "High", "Medium", "Low", "M:296", 
+"M:306", "M:307", "M:2011", "M:7318"]
+graph_2:[[0, 1], [0, 2], [0, 3], [1, 4], 
+[1, 5], [1, 6], [3, 7], [2, 8]]
+labels_2:["U:1", "High", "Medium", "Low", "M:1",
+"M:110", "M:260", "M:261", "M:653"]
+ged:10
+\end{lstlisting}
+\caption{After Change}
+\label{lst:After_Change}
+\end{figure}

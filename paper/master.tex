@@ -55,6 +55,20 @@
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
 
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12}{17}\sffamily\bfseries}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+{\normalfont\fontsize{10}{17}\sffamily}
+{\thesubsection}
+{1em}
+{}
+
 \makeatletter
 \def\endthebibliography{%
 	\def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
@@ -122,6 +136,7 @@
 \ifCLASSINFOpdf
   \usepackage[pdftex]{graphicx}
   \usepackage{tikz}
+  \usepackage{pgfplots}
   \usepackage{adjustbox}
   %\usepackage{subcaption}
   \usepackage{subfig}
