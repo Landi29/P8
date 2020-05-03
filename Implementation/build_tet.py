@@ -26,7 +26,7 @@ def moviedict(movie_nodes_path):
     return: this function returns a dictionary of movies
     '''
     movie_dict = {}
-    with open(movie_nodes_path, 'r') as movie_nodes_file:
+    with open(movie_nodes_path, 'r', encoding="utf-8") as movie_nodes_file:
         for movie in csv.reader(movie_nodes_file):
             movie[3] = movie[3].split('|')
             movie_dict['M:'+ movie[0]] = movie

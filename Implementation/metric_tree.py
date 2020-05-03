@@ -14,7 +14,7 @@ def mt_build(dmax, nmax, depth, data):
     '''
     node = MTnode()
     if depth == dmax or len(data) <= nmax:
-        node.bucket = data
+        node.bucket = {i.getroot() : i for i in data}
         return node
     node.split_point1, node.split_point2 = get_random_pair(data)
     data1, data2 = split_data(data, node.split_point1, node.split_point2)
@@ -30,7 +30,7 @@ def mt_search(node, searched):
     return: the return is the estimated nearest bucket
     '''
     if node.isleaf():
-        return {i.getroot() : i for i in node.bucket}
+        return node.bucket
     if dist(searched, node.split_point1) <= dist(searched, node.split_point2):
         return mt_search(node.left, searched)
     else:
