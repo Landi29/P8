@@ -30,8 +30,8 @@ def mt_search(node, searched):
     return: the return is the estimated nearest bucket
     '''
     if node.isleaf():
-        return node.bucket
-    if dist(searched, node.z1) <= dist(searched, node.z2):
+        return {i.getroot() : i for i in node.bucket}
+    if dist(searched, node.split_point1) <= dist(searched, node.split_point2):
         return mt_search(node.left, searched)
     else:
         return mt_search(node.right, searched)
