@@ -418,8 +418,8 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
-#ignoring csv files
-/Implementation/Movielens_data/*.csv
+# Ignore all the files in the Movielens_data folder:
+/Implementation/Movielens_data/*
+# Ignore json and rar files:
 *.json
-
 *.rar
