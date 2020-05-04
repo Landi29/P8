@@ -308,7 +308,7 @@ if __name__ == "__main__":
         
 
 
-        '''training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
+        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
         tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
         save_tets(tets, Paths.TETS_5_2_100k_PATH)
         
@@ -449,4 +449,4 @@ if __name__ == "__main__":
         print('test root mean square error: ' + str(t_error))
         print('experiment time: ' + str(finished - start))
 
-        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])'''
+        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])
