@@ -1,15 +1,15 @@
 """Contains functionality for creating the dataset used in SimGNN"""
-import pathlib
 from tqdm import tqdm
-#import simgnn.main_SimGNN as SimGNN
 import json
+import Paths
 
 class SimGNNDatasetCreator:
-    GRAPH_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph.csv'
-    FOLDS_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'Folds_100k.json'
-    SIMGNN_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'SimGNN'
     def make_dataset_fold(self):
-        with open(self.FOLDS_DATA_PATH, "r") as file:
+        """
+        Takes the list of folds and creates the dataset for SimGNN.
+        Will create the files so SimGNN can run on them.
+        """
+        with open(Paths.FOLDS_DATA_PATH, "r") as file:
             folds = json.load(file)
             label_list = []
             fold_list = []
@@ -31,27 +31,36 @@ class SimGNNDatasetCreator:
                         if currentfold_val > 9:
                             currentfold_val = 0
                 dataset, label_list = self.make_dataset(fold_list, label_list)
-                with open("Movielens_data/SimGNN/" + str(start_val) + "_to_" + str(end_val) + ".json", "w") as f:
+                with open(Paths.SIMGNN_DATA_PATH/str(start_val) + "_to_" + str(end_val) + ".json", "w") as f:
                     json.dump(dataset, f)
                 fold_list = []
                 start_val = start_val + 1 if start_val < 9 else 0
                 end_val = end_val + 1 if end_val < 9 else 0
                 currentfold_val = start_val
-            with open("Movielens_data/SimGNN/Label_list.json", "w") as f:
-                json.dump(label_list, f)
+            label_list = self.make_single_fold_set(label_list)
+            label_dict = {}
+            for labels in label_list:
+                label_dict[labels] = label_list.index(labels)
+            with open("Movielens_data/SimGNN/label_list.json", "w") as file:
+                json.dump(label_dict, file)
 
-    def make_single_fold_set(self):
-        labels = []
-        with open("Movielens_data/SimGNN/Label_list.json", "r") as file:
-            labels = json.load(file)
-        with open(self.FOLDS_DATA_PATH, "r") as file:
+    def make_single_fold_set(self, labels):
+        """
+        Will take the folds file and create the SimGNN dataset from each individual fold to use for test.
+
+        Parameters:
+        labels (List): A list of labels of every node seen so far
+
+        Returns:
+        labels (List): Contains all labels seen after running through each individual fold.
+        """
+        with open(Paths.FOLDS_DATA_PATH, "r") as file:
             folds = json.load(file)
         for fold in folds:
             dataset, labels = self.make_dataset(folds[fold], labels)
             with open("Movielens_data/SimGNN/" + fold + ".json", "w") as file:
                 json.dump(dataset, file)
-        with open("Movielens_data/SimGNN/Label_list.json", "w") as file:
-            json.dump(labels, file)
+        return labels
 
 
 
@@ -59,44 +68,45 @@ class SimGNNDatasetCreator:
         """
         Will from the graph.csv file which contains an edgelist create every user graph
         It will then use these values to create the dataset used for SimGNN.
-        Currently the amount of data entries per user is set to 5
+
+        Parameters:
+        graph (list): List of all edges in the graph.
+        label_list (list): A list of already seen labels.
+
+        Return:
+        dataset (Dictionary): A dictionary containing each graph pair.
+        label_list (list): A list of all seen labels.
         """
         labels = {}
         allgraphs = {}
-        amount_of_graphs = 0
         for lines in tqdm(graphs):
-            lines_split = lines
-            #if lines_split[1] == "U:50":
-            #    break
-            if lines_split[1] in allgraphs:
-                labels[lines_split[1]].append(lines_split[0])
-                edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
-                allgraphs[lines_split[1]].append(edge[0])
-                if label_list.__contains__(lines_split[0]):
+            if lines[1] in allgraphs:
+                labels[lines[1]].append(lines[0])
+                edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
+                allgraphs[lines[1]].append(edge[0])
+                if label_list.__contains__(lines[0]):
                     continue
                 else:
-                    label_list.append(lines_split[0])
+                    label_list.append(lines[0])
             else:
-                allgraphs[lines_split[1]] = []
-                labels[lines_split[1]] = []
-                labels[lines_split[1]].append(lines_split[1])
-                labels[lines_split[1]].append("High")
-                labels[lines_split[1]].append("Medium")
-                labels[lines_split[1]].append("Low")
-                labels[lines_split[1]].append(lines_split[0])
-                allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 1])
-                allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 2])
-                allgraphs[lines_split[1]].append([labels[lines_split[1]].index(lines_split[1]), 3])
-                edge, labels[lines_split[1]] = self.get_new_graph(lines_split, labels[lines_split[1]])
-                allgraphs[lines_split[1]].append(edge[0])
-                label_list.append(lines_split[1])
-                if label_list.__contains__(lines_split[0]):
+                allgraphs[lines[1]] = []
+                labels[lines[1]] = []
+                labels[lines[1]].append(lines[1])
+                labels[lines[1]].append("High")
+                labels[lines[1]].append("Medium")
+                labels[lines[1]].append("Low")
+                labels[lines[1]].append(lines[0])
+                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 1])
+                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 2])
+                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 3])
+                edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
+                allgraphs[lines[1]].append(edge[0])
+                label_list.append(lines[1])
+                if label_list.__contains__(lines[0]):
                     continue
                 else:
-                    label_list.append(lines_split[0])
+                    label_list.append(lines[0])
         dataset = {}
-        #label_list = self.make_zero_list(labels)
-        zero_list = []
         for x in tqdm(range(1, allgraphs.__len__())):
             user1 = "U:" + str(x)
             dataset[user1] = {}
@@ -108,50 +118,31 @@ class SimGNNDatasetCreator:
                     dataset[user1][user2]["graph_2"] = allgraphs[user2]
                     dataset[user1][user2]["labels_1"] = labels[user1]
                     dataset[user1][user2]["labels_2"] = labels[user2]
-                    dataset[user1][user2]["ged"] = self.my_find_ged(labels[user1], labels[user2], allgraphs[user1], allgraphs[user2])
-                    amount_of_graphs += 1
+                    dataset[user1][user2]["ged"] = self.my_find_ged(labels[user1], labels[user2])
                 except:
                     break
         return dataset, label_list
 
     @staticmethod
-    def create_user_graph_and_labels(edgelist):
-        label_list = []
-        edge_list = []
-        intermed = 0
-        both = False
-        for edge in edgelist:
-            if label_list.__contains__(edge[0]):
-                intermed = label_list.index(edge[0])
-                both = True
-            if label_list.__contains__(edge[1]) and both:
-                edge_list.append([intermed, label_list.index(edge[0])])
-                intermed = 0
-                both = False
-                continue
-            if label_list.__contains__(edge[1]):
-                edge_list.append([])
+    def get_new_graph(edge, labels):
+        """
+        Takes a edge and its labels to create a new edge containing high, medium or low.
 
-    @staticmethod
-    def make_zero_list(label_list):
-        zero_list = []
-        for user in tqdm(label_list):
-            for labels in label_list[user]:
-                if zero_list.__contains__(labels):
-                    continue
-                else:
-                    zero_list.append(labels)
-        return zero_list
+        Parameters:
+        edge (list): Edge of type [MovieNode, UserNode, Rating]
+        labels (list): List of labels in current graph
 
-    @staticmethod
-    def get_new_graph(graph, labels):
+        Returns:
+        edgelist (list): New edge containing 1,2 or 3 representing high, medium and low and a movie.
+        labels (list): The list of labels containing the new movie too.
+        """
         edgelist = []
-        value = float(graph[2].strip())
-        if labels.__contains__(graph[0]):
-            position = labels.index(graph[0])
+        value = float(edge[2].strip())
+        if labels.__contains__(edge[0]):
+            position = labels.index(edge[0])
         else:
-            labels.append(graph[0])
-            position = labels.index(graph[0])
+            labels.append(edge[0])
+            position = labels.index(edge[0])
         if value > 3.5:
             edgelist.append([1, position])
         elif value > 2.5:
@@ -161,9 +152,9 @@ class SimGNNDatasetCreator:
         return edgelist, labels
 
     @staticmethod
-    def my_find_ged(labels1, labels2, graph1, graph2):
+    def my_find_ged(labels1, labels2):
         """
-        Given 2 users labels and graphs this function finds their Graph Edit Distance aka. how many changes is required
+        Given 2 users labels this function finds their Graph Edit Distance aka. how many changes is required
         to make graph 1 look like graph 2.
 
         Parameters:
@@ -190,24 +181,3 @@ class SimGNNDatasetCreator:
                 gedscore += 1
         return gedscore
 
-f = SimGNNDatasetCreator()
-#f.make_dataset_fold()
-#f.make_single_fold_set()
-with open("Movielens_data/SimGNN/Label_list.json", "r") as file:
-    labels = json.load(file)
-label_dict = {}
-for label in labels:
-    label_dict[label] = labels.index(label)
-with open("Movielens_data/SimGNN/Label_list.json", "w") as file:
-    json.dump(label_dict, file)
-dataset, labels = f.make_dataset()
-test = {}
-x = 0
-for data in dataset:
-    if x == 1000:
-        break
-    test[data] = {}
-    for f in dataset[data]:
-        test[data][f] = dataset[data][f]
-    x += 1
-#SimGNN.main_SimGNN(dataset, test, label_dict)
