@@ -1,5 +1,5 @@
 \subsection{SimGNN Dataset}
-The SimGNN algorithm required some changes to the dataset to make it possible to be run. The SimGNN have a input of a json file containing four different information which are "graph\textunderscore1" an edgelist representation of one graph, "graph\textunderscore2" a edgelist representation of another graph, "label\textunderscore1" the labels used in "graph\textunderscore1", "label\textunderscore2" the labels used in "graph2" and then the Graph Edit Distance score for these two graphs. SimGNN also have no implementation of edge labels so the score could not be added directly to the edges, adding the three new nodes "High", "Medium" and "Low" with the same representation as in the tets and then change the edgelist to include these as a middle node between the user and the movies. 
+To be able to run the SimGNN algorithm, we had to do some changes to our dataset. The SimGNN algorithm have a input of a json file containing four different information which are the edgelist of each of the two graphs, a list of labels for each of the graphs and then the grath edit distance between them. SimGNN also have no implementation of edge labels so the score could not be added directly to the edges, adding the three new nodes "High", "Medium" and "Low" with the same representation as in the tets and then change the edgelist to include these as a middle node between the user and the movies. 
 An example of the changes made to the dataset can be seen on \autoref{lst:Before_Change}, the two graphs are edge lists with movie nodes id, user id and a weighted edge nodes. 
 \begin{figure}
 \begin{lstlisting}
@@ -13,7 +13,7 @@ M:7318,U:1,2.0		 M:653,U:2,3.0
 \caption{Before Change}
 \label{lst:Before_Change}
 \end{figure}
-On \autoref{lst:After_Change} is shown how the data have to be as input for SimGNN. The edgelist is changed to go from 0 to number of nodes, and can be used to find their labels in the label list. So we for example see "0" in our edgelist and we know, that the label of the node is in position 0 of our label list.
+On \autoref{lst:After_Change} we see how the data would be represented to the SimGNN algorithm. We have the two edgelists, which contains the edges in the graph, and we see that the values used in the edgelist are related to the index of the node in the labels. For example if we look at graph\underscore1 we have an edge [0, 1] which means there is a edge between index 0 in the label list (U:1) and index 1 in the label list (High).
 \begin{figure}
 \begin{lstlisting}
 graph_1:[[0, 1], [0, 2], [0, 3], [1, 4], 
