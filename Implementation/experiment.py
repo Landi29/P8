@@ -170,7 +170,7 @@ if __name__ == "__main__":
         #metric_tree.mt_search(tet_classifier, tets[person])
         
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
-        test_expected_predicts = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
+        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
         comparison_method = "distancev3_tet"
         
@@ -181,7 +181,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(1)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -210,7 +210,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(1)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -239,7 +239,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(2)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -269,7 +269,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(3)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -298,7 +298,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(4)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -308,7 +308,7 @@ if __name__ == "__main__":
         
 
 
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
+        '''training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
         tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
         save_tets(tets, Paths.TETS_5_2_100k_PATH)
         
@@ -327,7 +327,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(5)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -356,7 +356,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(6)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -385,7 +385,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(7)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -414,7 +414,7 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(8)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
@@ -443,10 +443,10 @@ if __name__ == "__main__":
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predicts)
+        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
         print(9)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
         print('experiment time: ' + str(finished - start))
 
-        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])
+        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])'''
