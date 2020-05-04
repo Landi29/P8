@@ -30,14 +30,8 @@ pred(u,p,N) = \overline{r_u}+\sum_{n \in N}w(u,n, N)(r_{n,p}-\overline{r_n})
 w(u,n, N)=sim(u,n)/\sum_{n' \in N} sim(u,n')
 \end{equation}
 
-\todo{Write where}
-%\begin{labeling}{where}
-%	\item[$u$] A user
-%	\item[$p$] A product
-%	\item[$N$] The set of u's nearest neighbors
-%	\item[$\overline{r_u}$] The average rating of user u
-%	\item[$r_{b,p}$] The rating given by user b to product 
-%\end{labeling}
+In \autoref{eq:pred} $u$ and $p$ is the user and product to calculate a rating between, $N$ is the set of nearest neighbors. $\overline{r_a}$ is the average rating for a user and $r_{b,p}$ is the rating given by user $b$ to product $p$.
+Additionally in \autoref{eq:W} $n$ is a neighboring user to $u$.
 
 The ratings that are missing should be found in the set of the validation fold and test folds.
 
