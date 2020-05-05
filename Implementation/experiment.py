@@ -218,7 +218,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -247,7 +247,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -276,7 +276,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -306,7 +306,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -335,7 +335,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -365,7 +365,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -394,7 +394,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -423,7 +423,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -452,7 +452,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -481,7 +481,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -510,7 +510,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -539,7 +539,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, filterv=10)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
