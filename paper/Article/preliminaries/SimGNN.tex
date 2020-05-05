@@ -20,7 +20,8 @@ h= \sum^N_{n=1} \sigma(u^T_nc)u_n=\sum^N_{n=1}\sigma(u^T_ntanh((\frac{1}{N}\sum_
 
 The idea behind this mechanism in equation \ref{Eq:Att} is that when creating a graph embedding $h$ we compute a global graph context $c$ which is done by taking the average of all the node-level embedding and feeding them into a nonlinear transformation function. This means that the global context $c=tanh((\frac{1}{N}\sum_{m=1}^Nu_m)W_2)$ where $W_2$ is a learning matrix. Once $c$ has been computed we can compute the attention weight for each node $n$. The idea is that nodes which are similar to the global context should receive higher attention weights. To ensure that the attention weights are in a range of 0 and 1 a sigmoid activation function $\sigma$ is being used\cite{Bai2018}.
 
-The graph-level embeddings are then fed into a Neural Tensor Network to model their relation with each other, the equation for this can be seen below:
+The graph-level embeddings are then fed into a Neural Tensor Network to model their relation with each other, seen in \autoref{Eq:NTN}.
+
 
 \begin{equation}\label{Eq:NTN}
 g(h_i,h_j) = f_3(h_i^TW_3^{[1:K]}h_j+V\begin{bmatrix}h_i \\ h_j \end{bmatrix} + b_3)
@@ -31,6 +32,5 @@ What happens in equation \ref{Eq:NTN} is that $h_i$ and $h_j$ are the two graph-
 Besides computing a course comparison between the two graphs which is what was done in the first strategy, SimGNN also allows for supplementing with a finer node level comparison which is what the second strategy does.
 
 The second strategy utilizes the same node-level embedding computed by the GCN algorithm as the first strategy and then a set of pairwise interaction score are computed by $S = \sigma(U_iU_j^T)$ where $U_i$ and $U_j$ are node embedding for the two graphs. $S$ is also called a pairwise similarity matrix. In the case where one graph has less nodes than the other a set of fakes node are padded on. Once the $S$ has been computed we extract histogram features $hist(S)$. These histogram features are then normalized and concatenated with the graph-level interaction scores computed in the first strategy and then fed into a feed-forward neural network\cite{Bai2018}.
-
 
 
