@@ -18,7 +18,7 @@ The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80
 	\label{fig:tenfold}
 \end{figure}
 
-These split will then be used to building the TETs and the embedding and training SimGNN.
+These split will then be used for building the TETs, embedding nodes and training SimGNN.
 
 When these models have been build and trained we will use them to find k nearest neighbors according to each model. With these neighbors we are able to make a prediction on the rating between movies and a user. For the predictions we will use the folded graphs adjacency matrix. We use \autoref{eq:pred} to calculate a predicted rating in the for ratings that are missing in the adjacency matrix.
 
