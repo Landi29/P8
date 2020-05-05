@@ -7,7 +7,8 @@
 * A lot of the feedback is simply confussions
 * The storyline is a bit missing
 * The "røde tråd" is missing
-* Remember to mentions the performance improvements we did in the appendix or the main report depending on the storyline
+* Remember to mention the performance improvements we did in the appendix or the main report depending on the storyline
+
 * The experiment setup section has a bit of ambiguity that should be expanded on.
   * Do we take an existing node or do we take a pair and see if there is an edge between them?
   * Right now the experiments setup is a bit confusing to read though
