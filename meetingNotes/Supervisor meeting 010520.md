@@ -11,7 +11,8 @@
 
 * The experiment setup section has a bit of ambiguity that should be expanded on.
   * Do we take an existing node or do we take a pair and see if there is an edge between them?
-  * Right now the experiments setup is a bit confusing to read though
+  * Right now the experiments setup is a bit confusing to read through
+
   * Should be made more precise and have results added to it 
 * 
 
