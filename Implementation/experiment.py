@@ -265,7 +265,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -289,7 +289,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -312,7 +312,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -336,7 +336,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -359,7 +359,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -382,7 +382,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -405,7 +405,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -428,7 +428,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -451,7 +451,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
@@ -474,7 +474,7 @@ if __name__ == "__main__":
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
+        comparison_method = "manhatten_brute"
         
         result_predictions = {}
         start = datetime.now()
