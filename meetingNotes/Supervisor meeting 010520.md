@@ -4,7 +4,6 @@
 
 * We should highlight SimGNN in the report and expand on it 
 * We can leave the methods that we don't use as short descriptions
-* A lot of the feedback is simply confussions
 * The storyline is a bit missing
 * The "røde tråd" is missing
 * Remember to mention the performance improvements we did in the appendix or the main report depending on the storyline
