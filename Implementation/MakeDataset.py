@@ -13,9 +13,7 @@ class SimGNNDatasetCreator:
             folds = json.load(file)
             label_list = []
             fold_list = []
-            label_list.append("High")
-            label_list.append("Medium")
-            label_list.append("Low")
+            label_list.extend("High", "Medium", "Low")
             start_val = 0
             end_val = 7
             currentfold_val = start_val
@@ -39,8 +37,8 @@ class SimGNNDatasetCreator:
                 currentfold_val = start_val
             label_list = self.make_single_fold_set(label_list)
             label_dict = {}
-            for labels in label_list:
-                label_dict[labels] = label_list.index(labels)
+            for label in label_list:
+                label_dict[label] = label_list.index(label)
             with open("Movielens_data/SimGNN/label_list.json", "w") as file:
                 json.dump(label_dict, file)
 
@@ -91,11 +89,7 @@ class SimGNNDatasetCreator:
             else:
                 allgraphs[lines[1]] = []
                 labels[lines[1]] = []
-                labels[lines[1]].append(lines[1])
-                labels[lines[1]].append("High")
-                labels[lines[1]].append("Medium")
-                labels[lines[1]].append("Low")
-                labels[lines[1]].append(lines[0])
+                labels[lines[1]].append(lines[1], "High", "Medium", "Low", lines[0])
                 allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 1])
                 allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 2])
                 allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 3])
@@ -118,7 +112,7 @@ class SimGNNDatasetCreator:
                     dataset[user1][user2]["graph_2"] = allgraphs[user2]
                     dataset[user1][user2]["labels_1"] = labels[user1]
                     dataset[user1][user2]["labels_2"] = labels[user2]
-                    dataset[user1][user2]["ged"] = self.my_find_ged(labels[user1], labels[user2])
+                    dataset[user1][user2]["ged"] = self.find_ged(labels[user1], labels[user2])
                 except:
                     break
         return dataset, label_list
@@ -152,7 +146,7 @@ class SimGNNDatasetCreator:
         return edgelist, labels
 
     @staticmethod
-    def my_find_ged(labels1, labels2):
+    def find_ged(labels1, labels2):
         """
         Given 2 users labels this function finds their Graph Edit Distance aka. how many changes is required
         to make graph 1 look like graph 2.
