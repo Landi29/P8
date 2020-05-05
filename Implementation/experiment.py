@@ -204,7 +204,7 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    with open("experiment_resultat_100k_tet.csv", "w", newline='', encoding='utf-8') as write:
+    with open("experiment_resultat_100k_brute.csv", "w", newline='', encoding='utf-8') as write:
         filewriter = csv.writer(write)
         folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9']
         # brute experiment
@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
         t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(1)
+        print(0)
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
         print('experiment time: ' + str(finished - start))
@@ -262,12 +262,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:-2])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_0_7_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_9_6_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -276,7 +270,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -292,12 +286,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[1:-1])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_1_8_100k_PATH)
-
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_1_8_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -306,7 +294,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -321,12 +309,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[2:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_2_9_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_2_9_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -335,7 +317,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -351,12 +333,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:1] + folds[3:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_0_7_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_3_0_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -365,7 +341,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -380,12 +356,6 @@ if __name__ == "__main__":
         
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:2] + folds[4:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_4_1_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_4_1_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -394,7 +364,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -409,12 +379,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_5_2_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_5_2_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -423,7 +387,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -438,12 +402,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:4] + folds[6:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_6_3_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_6_3_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -452,7 +410,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -467,12 +425,6 @@ if __name__ == "__main__":
         
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:5] + folds[7:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_7_4_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_7_4_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -481,7 +433,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -496,12 +448,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:6] + folds[8:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_8_5_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_8_5_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -510,7 +456,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -525,12 +471,6 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:7] + folds[9:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_9_6_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_8_5_100k.p", "wb"))
-
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
@@ -539,7 +479,7 @@ if __name__ == "__main__":
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
