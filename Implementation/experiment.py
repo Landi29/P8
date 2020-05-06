@@ -8,7 +8,6 @@ import compare_tet
 from build_tet import load_tets, build_tets, save_tets, moviedict
 import metric_tree
 import Paths
-import tet
 
 def knn(user, others, compare_model, extradata, user_database, k=4, item=None, filterv=None):
     '''
@@ -45,28 +44,43 @@ def knn(user, others, compare_model, extradata, user_database, k=4, item=None, f
         usertet = extradata[user]
         for other in others:
             if usertet != other:
-                sims.append([other.getroot(), 1/(1 + comparemethod(usertet, other, compare_model))])
+                sims.append([other.getroot(), 1/(1 + tet_compare_method(usertet, other,
+                                                                        compare_model))])
         best_k = sorted(sims, key=lambda x: x[1], reverse=True)[:k]
     else:
         print("missing method knn classification")
 
     return pred(user, best_k, user_database, item, filterv)
 
-def comparemethod(user, other, method):
+def tet_compare_method(user, other, method):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
+    returnmethod = None
+
     if method == "manhatten_tet":
-        return compare_tet.manhatten_distance(user, other)
+        returnmethod = compare_tet.manhatten_distance(user, other)
     elif method == "GED_tet":
-        return compare_tet.graph_edit_distance(user, other)
+        returnmethod = compare_tet.graph_edit_distance(user, other)
     elif method == "distancev2_tet":
-        return compare_tet.distance_v2_start(user, other)
+        returnmethod = compare_tet.distance_v2_start(user, other)
     elif method == "distancev3_tet":
-        return compare_tet.distance_v3(user, other)
+        returnmethod = compare_tet.distance_v3(user, other)
     else:
         print("missing method for tet compareson")
         return ValueError("missing method for tet compareson")
 
+    return returnmethod
+
 def manhatten_bruteforce(user, other):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     distance = 0.0
     if user != other:
@@ -113,6 +127,11 @@ def pred(user, others, user_database, item=None, filtervalue=None):
     return predictions
 
 def root_mean_squre_error(result_predictions, expected_predictions):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     rmse = 0
     total = 0
@@ -125,10 +144,20 @@ def root_mean_squre_error(result_predictions, expected_predictions):
     return math.sqrt(rmse/total)
 
 def average_rating(user):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     return sum(user.values()) / len(user)
 
 def find_and_add_differences(list1, dict1, rlist):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     for movie in dict1:
         if movie not in rlist and movie not in list1:
@@ -136,6 +165,11 @@ def find_and_add_differences(list1, dict1, rlist):
     return rlist
 
 def sum_similarities(similarities, film, database):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     rsum = 0
     for sim in similarities:
@@ -144,6 +178,11 @@ def sum_similarities(similarities, film, database):
     return rsum
 
 def rating_infuence(others, movie, sum_simularity, database, others_average_rating):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     infuence = 0
     for other in others:
@@ -172,6 +211,11 @@ def csvuserdatabase(load_path):
     return users
 
 def jsonuserdatabase(load_path, folds):
+    '''
+    description:
+    parameters:
+    return:
+    '''
     # TODO add function description
     edgelist = []
     users = {}
@@ -215,18 +259,18 @@ if __name__ == "__main__":
         print('test root mean square error: ' + str(T_ERROR))
         print('experiment time: ' + str(FINISHED - START))
         FILE_WRITER.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
-        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])'''
+        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])
 
 
         # tet experiment
-        '''TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:7] + FOLDS[9:])
-        tets = build_tets(EDGELIST, moviedict(Paths.MOVIE_NODES_100k_PATH),
+        TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:7] + FOLDS[9:])
+        TETS = build_tets(EDGELIST, moviedict(Paths.MOVIE_NODES_100k_PATH),
                           Paths.USER_NODES_100k_PATH)
-        save_tets(tets, Paths.TETS_9_6_100k_PATH)
+        save_tets(TETS, Paths.TETS_9_6_100k_PATH)
 
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
-        #                                      data=list(tets.values()))
-        #pickle.dump(tet_classifier, open("TETmt_9_6_100k.p", "wb"))
+        #TET_CLASSIFIER = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
+        #                                      data=list(TETs.values()))
+        #pickle.dump(TET_CLASSIFIER, open("TETmt_9_6_100k.p", "wb"))
 
         VALIDATION_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[7]])[0]
         TEST_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[8]])[0]
@@ -237,7 +281,7 @@ if __name__ == "__main__":
         START = datetime.now()
         for person in tqdm(list(TRAINING_DATA)):
             RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
-                                             tets, TRAINING_DATA, k=10)
+                                             TETS, TRAINING_DATA, k=10)
         FINISHED = datetime.now()
 
         V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
@@ -247,7 +291,7 @@ if __name__ == "__main__":
         print('test root mean square error: ' + str(T_ERROR))
         print('experiment time: ' + str(FINISHED - START))
 
-        FILE_WRITER.writerow(['fold 9-6 100k', V_ERROR, T_ERROR, FINISHED - START])'''
+        FILE_WRITER.writerow(['fold 9-6 100k', V_ERROR, T_ERROR, FINISHED - START])
 
 
         # node2vec experiment
@@ -273,4 +317,4 @@ if __name__ == "__main__":
         print('test root mean square error: ' + str(T_ERROR))
         print('experiment time: ' + str(FINISHED - START))
         FILE_WRITER.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
-        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])
+        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])'''
