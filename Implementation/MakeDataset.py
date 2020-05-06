@@ -13,7 +13,8 @@ class SimGNNDatasetCreator:
             folds = json.load(file)
             label_list = []
             fold_list = []
-            label_list.extend("High", "Medium", "Low")
+            label_addition = ["High", "Medium", "Low"]
+            label_list.extend(label_addition)
             start_val = 0
             end_val = 7
             currentfold_val = start_val
@@ -79,6 +80,8 @@ class SimGNNDatasetCreator:
         allgraphs = {}
         for lines in tqdm(graphs):
             if lines[1] in allgraphs:
+                # If the user exists in the dictionary of all graphs - We create the edge for the movie and add to the
+                # list of edges. We update the labels list as it will be used later on.
                 labels[lines[1]].append(lines[0])
                 edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
                 allgraphs[lines[1]].append(edge[0])
@@ -87,12 +90,15 @@ class SimGNNDatasetCreator:
                 else:
                     label_list.append(lines[0])
             else:
+                # If the user is not already in the dictionary of all graphs - We add a new index for him where we place
+                # his new edges too (1 for high, 2 for medium and 3 for low) this is done to reduce the amount of lookups
+                # later in the code. Labels are used to reduce the amount of lookup later when having to find all labels
                 allgraphs[lines[1]] = []
                 labels[lines[1]] = []
-                labels[lines[1]].append(lines[1], "High", "Medium", "Low", lines[0])
-                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 1])
-                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 2])
-                allgraphs[lines[1]].append([labels[lines[1]].index(lines[1]), 3])
+                standard_labels = ["High", "Medium", "Low", lines[0], lines[1]]
+                labels[lines[1]].extend(standard_labels)
+                extend_allgraphs = [[labels[lines[1]].index(lines[1]), 1], [labels[lines[1]].index(lines[1]), 2], [labels[lines[1]].index(lines[1]), 3]]
+                allgraphs[lines[1]].extend(extend_allgraphs)
                 edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
                 allgraphs[lines[1]].append(edge[0])
                 label_list.append(lines[1])
@@ -161,10 +167,8 @@ class SimGNNDatasetCreator:
         gedscore (integer): Graph Edit Distance for graph1 and graph2
         """
         gedscore = 0
-        similarnodes = []
         for node in labels1:
             if labels2.__contains__(node):
-                similarnodes.append(node)
                 continue
             else:
                 gedscore += 1
