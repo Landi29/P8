@@ -54,11 +54,12 @@ def knn(user, others, compare_model, extradata, user_database, k=4, item=None, f
 
 def tet_compare_method(user, other, method):
     '''
-    description:
-    parameters:
-    return:
+    description: because of the dufferent implementation on how to find distance
+                 with the tet this function in designed to be an easy way of changeing the method.
+    parameters: user is a tet for the user to compare to, other is a tet to compare to and
+                method is the method you want to use to find the distance.
+    return: the return is a distance between user and other
     '''
-    # TODO add function description
     returnmethod = None
 
     if method == "manhatten_tet":
@@ -77,11 +78,10 @@ def tet_compare_method(user, other, method):
 
 def manhatten_bruteforce(user, other):
     '''
-    description:
-    parameters:
-    return:
+    description: this method is meant to find the manhatten distance between two vectors.
+    parameters: user is a user vector and other is a another uservector.
+    return: the return is the manhatten distance between user and other.
     '''
-    # TODO add function description
     distance = 0.0
     if user != other:
         keys = compare_tet.find_all_keys_in_dicts(list(user), list(other))
@@ -110,9 +110,9 @@ def pred(user, others, user_database, item=None, filtervalue=None):
     if item is None:
         for movie in seen_by_neighbors:
             sum_simularity = sum_similarities(others, movie, user_database)
-            pred_rating = average_rating_user + rating_infuence(others, movie, sum_simularity,
-                                                                user_database,
-                                                                others_average_rating)
+            pred_rating = average_rating_user + rating_influence(others, movie, sum_simularity,
+                                                                 user_database,
+                                                                 others_average_rating)
             if filtervalue is not None:
                 if pred_rating >= filtervalue:
                     predictions[movie] = round(pred_rating, 2)
@@ -120,19 +120,19 @@ def pred(user, others, user_database, item=None, filtervalue=None):
                 predictions[movie] = round(pred_rating, 2)
     else:
         sum_simularity = sum_similarities(others, item, user_database)
-        pred_rating = average_rating_user + rating_infuence(others, item, sum_simularity,
-                                                            user_database, others_average_rating)
+        pred_rating = average_rating_user + rating_influence(others, item, sum_simularity,
+                                                             user_database, others_average_rating)
         predictions[item] = round(pred_rating, 2)
 
     return predictions
 
 def root_mean_squre_error(result_predictions, expected_predictions):
     '''
-    description:
-    parameters:
-    return:
+    description: this function finds the error beween the expected and the predicted.
+    parameters: result_predictons is the canculated predictions and
+                expected_predictions is the predictions we would like to find.
+    return: return is the root means square error between result and expected.
     '''
-    # TODO add function description
     rmse = 0
     total = 0
     for key in expected_predictions:
@@ -145,20 +145,20 @@ def root_mean_squre_error(result_predictions, expected_predictions):
 
 def average_rating(user):
     '''
-    description:
-    parameters:
-    return:
+    description: calculated the average rating for a user.
+    parameters: user is a dictionatty of movierations for a user.
+    return: the users average rating.
     '''
-    # TODO add function description
     return sum(user.values()) / len(user)
 
 def find_and_add_differences(list1, dict1, rlist):
     '''
-    description:
-    parameters:
-    return:
+    description: this function finds the element in a dictionarry and
+                 adds it to a list if its not in the list1 or rlist.
+    parameters: list1 is a list of items, dict1 is a dictionary with keys of items
+                and rlist is a list the result are stored in.
+    return: the return is a list of items that are not in list1.
     '''
-    # TODO add function description
     for movie in dict1:
         if movie not in rlist and movie not in list1:
             rlist.append(movie)
@@ -166,30 +166,33 @@ def find_and_add_differences(list1, dict1, rlist):
 
 def sum_similarities(similarities, film, database):
     '''
-    description:
-    parameters:
-    return:
+    description: find the total simularety score for a movie.
+    parameters: simulareties is a list of tubles tuples with a userid and a simularety score,
+                film is a you want to find the total simularety score for and
+                database is a userdatabase with movieretings.
+    return: the return is the total simularety score for film.
     '''
-    # TODO add function description
     rsum = 0
     for sim in similarities:
         if database[sim[0]].get(film, False):
             rsum += sim[1]
     return rsum
 
-def rating_infuence(others, movie, sum_simularity, database, others_average_rating):
+def rating_influence(others, movie, sum_simularity, database, others_average_rating):
     '''
-    description:
-    parameters:
-    return:
+    description: this method calculates the influence of the neighbours to a users rating.
+    parameters: others is a list of tubles tuples with a userid and a simularety score,
+                movie is a movie id, sum_simularity is the sumed simularety for the movie,
+                database is a userdatabase with movie ratings
+                and others_average_rating is the users in the list of others average rating.
+    return: the return is the influende other would give to a movierating.
     '''
-    # TODO add function description
-    infuence = 0
+    influence = 0
     for other in others:
         if database[other[0]].get(movie, False):
-            infuence += (other[1] / sum_simularity) * (database[other[0]][movie] -
-                                                       others_average_rating[other[0]])
-    return infuence
+            influence += (other[1] / sum_simularity) * (database[other[0]][movie] -
+                                                        others_average_rating[other[0]])
+    return influence
 
 def csvuserdatabase(load_path):
     '''
@@ -212,11 +215,11 @@ def csvuserdatabase(load_path):
 
 def jsonuserdatabase(load_path, folds):
     '''
-    description:
-    parameters:
-    return:
+    description: jsonuserdatabase loads a folds and transforms them to edgelist and userdatabase.
+    parameters: load_path is the past to the folds file and 
+                folds is a list of folds that you wish to load.
+    return: the return is a userdatabase and an edgelist coresponding to the folds.
     '''
-    # TODO add function description
     edgelist = []
     users = {}
     with open(load_path, 'r', encoding="utf-8") as read:
