@@ -1,30 +1,31 @@
-import compare_tet
-import Paths
 import csv
-from build_tet import load_tets, build_tets, save_tets, moviedict
-from tqdm import tqdm
-import math
 import json
-import metric_tree
+import math
 import pickle
 from datetime import datetime
+from tqdm import tqdm
+import compare_tet
+from build_tet import load_tets, build_tets, save_tets, moviedict
+import metric_tree
+import Paths
 import tet
 
-def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
+def knn(user, others, compare_model, extradata, user_database, k=4, item=None, filterv=None):
     '''
-    description: this is a simpel implementation of knn finding the k nearest neighbors
+    description: this is a simple implementation of knn finding the k nearest neighbors
                  and making predictions.
     parameters: user is a user you want to recommend to, others are all other trees
                 and k is the nomber of neighbors we want to compare with.
     return: the return is a sorted list of recommendet movies.
     '''
     sims = []
-    
     if compare_model == "manhatten_brute":
         for other in others:
             if user != other:
-                sims.append([other, comparemethod(extradata[user], extradata[other], compare_model)])
-                
+                sims.append([other, 1/(1 + manhatten_bruteforce(extradata[user],
+                                                                extradata[other]))])
+        best_k = sorted(sims, key=lambda x: x[1], reverse=True)[:k]
+
     elif compare_model == "node2vec":
         sims = extradata.wv.most_similar(user.replace("U:", "2"), topn=1000000)
         best_k = []
@@ -32,7 +33,7 @@ def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
         for sim in sims:
             if list(sim[0])[0] == '2':
                 temp = list(sim[0])
-                temp[0] ='U:'
+                temp[0] = 'U:'
                 temp = ''.join(temp)
                 best_k.append([temp, sim[1]])
                 count += 1
@@ -41,34 +42,32 @@ def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
 
     elif compare_model.split('_')[1] is not None and compare_model.split('_')[1] == "tet":
         others = list(extradata.values())
-        user = extradata[user]
+        usertet = extradata[user]
         for other in others:
-            if user != other:
-                sims.append([other, comparemethod(user, other, compare_model)])
-
-    
-    
-    if compare_model == "node2vec":
-        return pred(user, best_k, user_database, filterv)
+            if usertet != other:
+                sims.append([other.getroot(), 1/(1 + comparemethod(usertet, other, compare_model))])
+        best_k = sorted(sims, key=lambda x: x[1], reverse=True)[:k]
     else:
-        best_k = sorted(sims, key=lambda x: x[1])[:k]
-        return pred(user, best_k, user_database, filterv)
+        print("missing method knn classification")
+
+    return pred(user, best_k, user_database, item, filterv)
 
 def comparemethod(user, other, method):
+    # TODO add function description
     if method == "manhatten_tet":
         return compare_tet.manhatten_distance(user, other)
     elif method == "GED_tet":
         return compare_tet.graph_edit_distance(user, other)
-    elif method == "manhatten_brute":
-        return manhatten_bruteforce(user, other)
     elif method == "distancev2_tet":
         return compare_tet.distance_v2_start(user, other)
     elif method == "distancev3_tet":
         return compare_tet.distance_v3(user, other)
     else:
-        print("missing method")
+        print("missing method for tet compareson")
+        return ValueError("missing method for tet compareson")
 
 def manhatten_bruteforce(user, other):
+    # TODO add function description
     distance = 0.0
     if user != other:
         keys = compare_tet.find_all_keys_in_dicts(list(user), list(other))
@@ -76,115 +75,82 @@ def manhatten_bruteforce(user, other):
             distance += abs(user.get(key, 0) - other.get(key, 0))
     return distance
 
-def pred(user, others, user_database, filtervalue=None):
+def pred(user, others, user_database, item=None, filtervalue=None):
     '''
     description: This function calculates a prediction on the users rating on movies
                  others has seen that the user have not seen.
     parameters: user is a user you want to recommend to, others are the k other users.
     return: The return is a list of recommendet movies.
     '''
-    #ra average
-    average_rating_user = 0
-    if isinstance(user, tet.TET):
-        seen_by_user = list(user_database[user.getroot()])
-        for rating in user_database[user.getroot()].values():
-            average_rating_user += rating
-        average_rating_user = average_rating_user / len(user_database[user.getroot()])
+    average_rating_user = average_rating(user_database[user])
+    seen_by_user = list(user_database[user])
 
-        others = reasing_sims(others)
+    others_average_rating = {}
+    seen_by_neighbors = []
+    for other in others:
+        seen_by_neighbors = find_and_add_differences(seen_by_user, user_database[other[0]],
+                                                     seen_by_neighbors)
+        others_average_rating[other[0]] = average_rating(user_database[other[0]])
 
-        others_average_rating = {}
-        naighbor_seen = []
-        for other in others:
-            for movie in user_database[other[0].getroot()]:
-                if movie not in seen_by_user and movie not in naighbor_seen:
-                    naighbor_seen.append(movie)
-            average_rating_other_user = 0
-            for rating in user_database[other[0].getroot()].values():
-                average_rating_other_user += rating
-            others_average_rating[other[0].getroot()] = average_rating_other_user \
-                / (len(user_database[other[0].getroot()].values()))
-
-        predictions = {}
-        for movie in naighbor_seen:
-            sumrating = average_rating_user
-            sum_simularity = 0
-            for other in others:
-                if isinstance(user_database[other[0].getroot()].get(movie, False), float):
-                    sum_simularity += other[1]
-            for other in others:
-                if isinstance(user_database[other[0].getroot()].get(movie, False), float):
-                    sumrating += (other[1] / sum_simularity) \
-                    * (user_database[other[0].getroot()][movie] \
-                    - others_average_rating[other[0].getroot()])
+    predictions = {}
+    if item is None:
+        for movie in seen_by_neighbors:
+            sum_simularity = sum_similarities(others, movie, user_database)
+            pred_rating = average_rating_user + rating_infuence(others, movie, sum_simularity,
+                                                                user_database,
+                                                                others_average_rating)
             if filtervalue is not None:
-                if sumrating >= filtervalue:
-                    predictions[movie] = round(sumrating,2)
+                if pred_rating >= filtervalue:
+                    predictions[movie] = round(pred_rating, 2)
             else:
-                predictions[movie] = round(sumrating,2)
-        return predictions
+                predictions[movie] = round(pred_rating, 2)
     else:
-        seen_by_user = list(user_database[user])
-        for rating in user_database[user].values():
-            average_rating_user += rating
-        average_rating_user = average_rating_user / len(user_database[user])
-        if others[0][1] < others[-1][1]:
-            others = reasing_sims(others)
+        sum_simularity = sum_similarities(others, item, user_database)
+        pred_rating = average_rating_user + rating_infuence(others, item, sum_simularity,
+                                                            user_database, others_average_rating)
+        predictions[item] = round(pred_rating, 2)
 
-        others_average_rating = {}
-        naighbor_seen = []
-        for other in others:
-            for movie in user_database[other[0]]:
-                if movie not in seen_by_user and movie not in naighbor_seen:
-                    naighbor_seen.append(movie)
-            average_rating_other_user = 0
-            for rating in user_database[other[0]].values():
-                average_rating_other_user += rating
-            others_average_rating[other[0]] = average_rating_other_user \
-                / (len(user_database[other[0]].values()))
-
-        predictions = {}
-        for movie in naighbor_seen:
-            sumrating = average_rating_user
-            sum_simularity = 0
-            for other in others:
-                if isinstance(user_database[other[0]].get(movie, False), float):
-                    sum_simularity += other[1]
-            for other in others:
-                if isinstance(user_database[other[0]].get(movie, False), float):
-                    sumrating += (other[1] / sum_simularity) \
-                    * (user_database[other[0]][movie] \
-                    - others_average_rating[other[0]])
-            if filtervalue is not None:
-                if sumrating >= filtervalue:
-                    predictions[movie] = round(sumrating,2)
-            else:
-                predictions[movie] = round(sumrating,2)
-        return predictions
+    return predictions
 
 def root_mean_squre_error(result_predictions, expected_predictions):
+    # TODO add function description
     rmse = 0
-    T = 0
+    total = 0
     for key in expected_predictions:
         if result_predictions.get(key, False):
             for expected_prediction in expected_predictions[key]:
-                rmse += (result_predictions[key].get(key,0)-expected_predictions[key][expected_prediction])**2
-                T += 1
-    return math.sqrt(rmse/T)
+                rmse += (result_predictions[key].get(key, 0) -
+                         expected_predictions[key][expected_prediction])**2
+                total += 1
+    return math.sqrt(rmse/total)
 
+def average_rating(user):
+    # TODO add function description
+    return sum(user.values()) / len(user)
 
-def reasing_sims(sims):
-    '''
-    description: this function reasigns the distande ratings to use them as simularety values.
-    parameters: sims is a list of tubles containg userid and distance.
-    return: the return is a list tubles where the disance has been reasinged
-            to be used at simularety values.
-    '''
-    for i in range(int(len(sims)/2)):
-        temp = sims[i][1]
-        sims[i][1] = sims[-(i+1)][1]
-        sims[-(i+1)][1] = temp
-    return sims
+def find_and_add_differences(list1, dict1, rlist):
+    # TODO add function description
+    for movie in dict1:
+        if movie not in rlist and movie not in list1:
+            rlist.append(movie)
+    return rlist
+
+def sum_similarities(similarities, film, database):
+    # TODO add function description
+    rsum = 0
+    for sim in similarities:
+        if database[sim[0]].get(film, False):
+            rsum += sim[1]
+    return rsum
+
+def rating_infuence(others, movie, sum_simularity, database, others_average_rating):
+    # TODO add function description
+    infuence = 0
+    for other in others:
+        if database[other[0]].get(movie, False):
+            infuence += (other[1] / sum_simularity) * (database[other[0]][movie] -
+                                                       others_average_rating[other[0]])
+    return infuence
 
 def csvuserdatabase(load_path):
     '''
@@ -206,6 +172,7 @@ def csvuserdatabase(load_path):
     return users
 
 def jsonuserdatabase(load_path, folds):
+    # TODO add function description
     edgelist = []
     users = {}
     with open(load_path, 'r', encoding="utf-8") as read:
@@ -223,309 +190,87 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    with open("experiment_resultat_100k_n2v.csv", "w", newline='', encoding='utf-8') as write:
-        filewriter = csv.writer(write)
-        folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9']
+    with open("test.csv", "w", newline='', encoding='utf-8') as write:
+        FILE_WRITER = csv.writer(write)
+        FOLDS = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
+                 'fold6', 'fold7', 'fold8', 'fold9']
         # brute experiment
-        '''training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:-2])
-        
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
+        '''TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:-2])
+        VALIDATION_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[8]])[0]
+        TEST_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
-        finished = datetime.now()
+        COMPARISON_METHOD = "manhatten_brute"
 
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+        RESULT_PREDICTIONS = {}
+        START = datetime.now()
+        for person in tqdm(list(TRAINING_DATA)):
+            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
+                                             TRAINING_DATA, TRAINING_DATA, k=10)
+        FINISHED = datetime.now()
+
+        V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
+        T_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, TEST_EXPECTED_PREDICTIONS)
         print(0)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-        filewriter.writerow(['fold','validation_error','test_error','time taken on test'])
-        filewriter.writerow(['fold 0-7 100k', v_error, t_error, finished - start])'''
+        print('validation root mean square error: ' + str(V_ERROR))
+        print('test root mean square error: ' + str(T_ERROR))
+        print('experiment time: ' + str(FINISHED - START))
+        FILE_WRITER.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])'''
 
 
         # tet experiment
-        '''training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:7] + folds[9:])
-        tets = build_tets(edgelist, moviedict(Paths.MOVIE_NODES_100k_PATH), Paths.USER_NODES_100k_PATH)
+        '''TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:7] + FOLDS[9:])
+        tets = build_tets(EDGELIST, moviedict(Paths.MOVIE_NODES_100k_PATH),
+                          Paths.USER_NODES_100k_PATH)
         save_tets(tets, Paths.TETS_9_6_100k_PATH)
-        
-        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0, data=list(tets.values()))
+
+        #tet_classifier = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
+        #                                      data=list(tets.values()))
         #pickle.dump(tet_classifier, open("TETmt_9_6_100k.p", "wb"))
 
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
+        VALIDATION_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[7]])[0]
+        TEST_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[8]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "distancev3_tet"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, tets, training_data, k=10, filterv=None)
-        finished = datetime.now()
+        COMPARISON_METHOD = "distancev3_tet"
 
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+        RESULT_PREDICTIONS = {}
+        START = datetime.now()
+        for person in tqdm(list(TRAINING_DATA)):
+            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
+                                             tets, TRAINING_DATA, k=10)
+        FINISHED = datetime.now()
+
+        V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
+        T_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, TEST_EXPECTED_PREDICTIONS)
         print(9)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
+        print('validation root mean square error: ' + str(V_ERROR))
+        print('test root mean square error: ' + str(T_ERROR))
+        print('experiment time: ' + str(FINISHED - START))
 
-        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])'''
-
+        FILE_WRITER.writerow(['fold 9-6 100k', V_ERROR, T_ERROR, FINISHED - START])'''
 
 
         # node2vec experiment
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:-2])
+        TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:-2])
         with open('n2v_models/Folds_100k_1.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
+            N2V_MODEL = pickle.load(f)
+        VALIDATION_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[8]])[0]
+        TEST_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
+        COMPARISON_METHOD = "node2vec"
 
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+        RESULT_PREDICTIONS = {}
+        START = datetime.now()
+        for person in tqdm(list(TRAINING_DATA)):
+            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
+                                             N2V_MODEL, TRAINING_DATA, k=10)
+        FINISHED = datetime.now()
+
+        V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
+        T_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, TEST_EXPECTED_PREDICTIONS)
         print(0)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-        filewriter.writerow(['fold','validation_error','test_error','time taken on test'])
-        filewriter.writerow(['fold 0-7 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[1:-1])
-        with open('n2v_models/Folds_100k_2.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(1)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 1-8 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[2:])
-        with open('n2v_models/Folds_100k_3.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(2)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-        print(finished)
-
-        filewriter.writerow(['fold 2-9 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:1] + folds[3:])
-        with open('n2v_models/Folds_100k_4.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(3)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 3-0 100k', v_error, t_error, finished - start])
-
-        
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:2] + folds[4:])
-        with open('n2v_models/Folds_100k_5.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(4)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 4-1 100k', v_error, t_error, finished - start])
-        
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
-        with open('n2v_models/Folds_100k_6.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(5)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 5-2 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:4] + folds[6:])
-        with open('n2v_models/Folds_100k_7.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(6)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 6-3 100k', v_error, t_error, finished - start])
-
-        
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:5] + folds[7:])
-        with open('n2v_models/Folds_100k_8.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(7)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 7-4 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:6] + folds[8:])
-        with open('n2v_models/Folds_100k_9.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(8)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 8-5 100k', v_error, t_error, finished - start])
-
-
-
-        training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:7] + folds[9:])
-        with open('n2v_models/Folds_100k_10.pkl', 'rb') as f:
-            n2v_model = pickle.load(f)
-        validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
-        test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
-        # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "node2vec"
-        
-        result_predictions = {}
-        start = datetime.now()
-        for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
-        finished = datetime.now()
-
-        v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
-        t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
-        print(9)
-        print('validation root mean square error: ' + str(v_error))
-        print('test root mean square error: ' + str(t_error))
-        print('experiment time: ' + str(finished - start))
-
-        filewriter.writerow(['fold 9-6 100k', v_error, t_error, finished - start])
+        print('validation root mean square error: ' + str(V_ERROR))
+        print('test root mean square error: ' + str(T_ERROR))
+        print('experiment time: ' + str(FINISHED - START))
+        FILE_WRITER.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        FILE_WRITER.writerow(['fold 0-7 100k', V_ERROR, T_ERROR, FINISHED - START])
