@@ -19,21 +19,40 @@ def knn(user, others, compare_model, extradata, user_database, k=4, filterv=4):
     return: the return is a sorted list of recommendet movies.
     '''
     sims = []
-    if compare_model.split('_')[1] is not None and compare_model.split('_')[1] == "tet":
-        others = list(extradata.values())
-        user = extradata[user]
-        for other in others:
-            if user != other:
-                sims.append([other, comparemethod(user, other, compare_model)])
     
     if compare_model == "manhatten_brute":
         for other in others:
             if user != other:
                 sims.append([other, comparemethod(extradata[user], extradata[other], compare_model)])
+                
+    elif compare_model == "node2vec":
+        sims = extradata.wv.most_similar(user.replace("U:", "2"), topn=1000000)
+        best_k = []
+        count = 0
+        for sim in sims:
+            if list(sim[0])[0] == '2':
+                temp = list(sim[0])
+                temp[0] ='U:'
+                temp = ''.join(temp)
+                best_k.append([temp, sim[1]])
+                count += 1
+            if count >= k:
+                break
+
+    elif compare_model.split('_')[1] is not None and compare_model.split('_')[1] == "tet":
+        others = list(extradata.values())
+        user = extradata[user]
+        for other in others:
+            if user != other:
+                sims.append([other, comparemethod(user, other, compare_model)])
+
     
     
-    bestk = sorted(sims, key=lambda x: x[1])[:k]
-    return pred(user, bestk, user_database, filterv)
+    if compare_model == "node2vec":
+        return pred(user, best_k, user_database, filterv)
+    else:
+        best_k = sorted(sims, key=lambda x: x[1])[:k]
+        return pred(user, best_k, user_database, filterv)
 
 def comparemethod(user, other, method):
     if method == "manhatten_tet":
@@ -109,8 +128,8 @@ def pred(user, others, user_database, filtervalue=None):
         for rating in user_database[user].values():
             average_rating_user += rating
         average_rating_user = average_rating_user / len(user_database[user])
-    
-        others = reasing_sims(others)
+        if others[0][1] < others[-1][1]:
+            others = reasing_sims(others)
 
         others_average_rating = {}
         naighbor_seen = []
@@ -204,7 +223,7 @@ def jsonuserdatabase(load_path, folds):
     return users, edgelist
 
 if __name__ == "__main__":
-    with open("experiment_resultat_100k_brute.csv", "w", newline='', encoding='utf-8') as write:
+    with open("experiment_resultat_100k_n2v.csv", "w", newline='', encoding='utf-8') as write:
         filewriter = csv.writer(write)
         folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5', 'fold6', 'fold7', 'fold8', 'fold9']
         # brute experiment
@@ -261,16 +280,19 @@ if __name__ == "__main__":
 
 
 
+        # node2vec experiment
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:-2])
+        with open('n2v_models/Folds_100k_1.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -279,22 +301,23 @@ if __name__ == "__main__":
         print('validation root mean square error: ' + str(v_error))
         print('test root mean square error: ' + str(t_error))
         print('experiment time: ' + str(finished - start))
-
         filewriter.writerow(['fold','validation_error','test_error','time taken on test'])
         filewriter.writerow(['fold 0-7 100k', v_error, t_error, finished - start])
 
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[1:-1])
+        with open('n2v_models/Folds_100k_2.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[9]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -309,15 +332,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[2:])
+        with open('n2v_models/Folds_100k_3.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[0]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -333,15 +358,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:1] + folds[3:])
+        with open('n2v_models/Folds_100k_4.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[1]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -356,15 +383,17 @@ if __name__ == "__main__":
         
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:2] + folds[4:])
+        with open('n2v_models/Folds_100k_5.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[2]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -379,15 +408,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:3] + folds[5:])
+        with open('n2v_models/Folds_100k_6.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[3]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -402,15 +433,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:4] + folds[6:])
+        with open('n2v_models/Folds_100k_7.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[4]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -425,15 +458,17 @@ if __name__ == "__main__":
         
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:5] + folds[7:])
+        with open('n2v_models/Folds_100k_8.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[5]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -448,15 +483,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:6] + folds[8:])
+        with open('n2v_models/Folds_100k_9.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[6]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
@@ -471,15 +508,17 @@ if __name__ == "__main__":
 
 
         training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH, folds[:7] + folds[9:])
+        with open('n2v_models/Folds_100k_10.pkl', 'rb') as f:
+            n2v_model = pickle.load(f)
         validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[7]])[0]
         test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH, [folds[8]])[0]
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
-        comparison_method = "manhatten_brute"
+        comparison_method = "node2vec"
         
         result_predictions = {}
         start = datetime.now()
         for person in tqdm(list(training_data)):
-            result_predictions[person] = knn(person, list(training_data), comparison_method, training_data, training_data, k=10, filterv=None)
+            result_predictions[person] = knn(person, list(training_data), comparison_method, n2v_model, training_data, k=10, filterv=None)
         finished = datetime.now()
 
         v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
