@@ -9,7 +9,7 @@ from build_tet import load_tets, build_tets, save_tets, moviedict
 import metric_tree
 import Paths
 
-def knn(user, others, compare_model, extradata, user_database, k=4, item=None, filterv=None):
+def knn(user, others, item, compare_model, extradata, user_database, k=4, filterv=None):
     '''
     description: this is a simple implementation of knn finding the k nearest neighbors
                  and making predictions.
@@ -17,25 +17,37 @@ def knn(user, others, compare_model, extradata, user_database, k=4, item=None, f
                 and k is the nomber of neighbors we want to compare with.
     return: the return is a sorted list of recommendet movies.
     '''
+    if user_database[user].get(item, False):
+        return user_database[user][item]
     sims = []
+    best_k = []
+    count = 0
     if compare_model == "manhatten_brute":
         for other in others:
             if user != other:
                 sims.append([other, 1/(1 + manhatten_bruteforce(extradata[user],
                                                                 extradata[other]))])
-        best_k = sorted(sims, key=lambda x: x[1], reverse=True)[:k]
+        sims = sorted(sims, key=lambda x: x[1], reverse=True)
+
+        for sim in sims:
+            if item in list(user_database[sim[0]]):
+                best_k.append(sim)
+                count += 1
+            if count >= k:
+                break
+
 
     elif compare_model == "node2vec":
         sims = extradata.wv.most_similar(user.replace("U:", "2"), topn=1000000)
         best_k = []
-        count = 0
         for sim in sims:
             if list(sim[0])[0] == '2':
                 temp = list(sim[0])
                 temp[0] = 'U:'
                 temp = ''.join(temp)
-                best_k.append([temp, sim[1]])
-                count += 1
+                if  item in list(user_database[temp]):
+                    best_k.append([temp, sim[1]])
+                    count += 1
             if count >= k:
                 break
 
@@ -49,7 +61,6 @@ def knn(user, others, compare_model, extradata, user_database, k=4, item=None, f
         best_k = sorted(sims, key=lambda x: x[1], reverse=True)[:k]
     else:
         print("missing method knn classification")
-
     return pred(user, best_k, user_database, item, filterv)
 
 def tet_compare_method(user, other, method):
@@ -122,9 +133,8 @@ def pred(user, others, user_database, item=None, filtervalue=None):
         sum_simularity = sum_similarities(others, item, user_database)
         pred_rating = average_rating_user + rating_influence(others, item, sum_simularity,
                                                              user_database, others_average_rating)
-        predictions[item] = round(pred_rating, 2)
 
-    return predictions
+    return round(pred_rating, 2)
 
 def root_mean_squre_error(result_predictions, expected_predictions):
     '''
@@ -135,11 +145,11 @@ def root_mean_squre_error(result_predictions, expected_predictions):
     '''
     rmse = 0
     total = 0
-    for key in expected_predictions:
-        if result_predictions.get(key, False):
-            for expected_prediction in expected_predictions[key]:
-                rmse += (result_predictions[key].get(key, 0) -
-                         expected_predictions[key][expected_prediction])**2
+    for user in expected_predictions:
+        if result_predictions.get(user, False):
+            for expected_prediction in expected_predictions[user]:
+                rmse += (result_predictions[user].get(expected_prediction, 0) -
+                         expected_predictions[user][expected_prediction])**2
                 total += 1
     return math.sqrt(rmse/total)
 
@@ -226,7 +236,7 @@ def jsonuserdatabase(load_path, folds):
         graph_data = json.load(read)
         for fold in folds:
             edgelist += graph_data[fold]
-    for edge in tqdm(edgelist):
+    for edge in edgelist:
         if not users.get(edge[1], False):
             user = {}
             user[edge[0]] = float(edge[2])
@@ -239,20 +249,26 @@ def jsonuserdatabase(load_path, folds):
 if __name__ == "__main__":
     with open("test.csv", "w", newline='', encoding='utf-8') as write:
         FILE_WRITER = csv.writer(write)
+        MOVIE_DATABASE = moviedict(Paths.MOVIE_NODES_100k_PATH)
         FOLDS = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
                  'fold6', 'fold7', 'fold8', 'fold9']
         # brute experiment
         TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:-2])
         VALIDATION_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[8]])[0]
         TEST_EXPECTED_PREDICTIONS = jsonuserdatabase(Paths.Folds_100k_PATH, [FOLDS[9]])[0]
+        WANT_TOP_REDICTres = list(VALIDATION_EXPECTED_PREDICTIONS['U:1']) + list(TEST_EXPECTED_PREDICTIONS['U:1']) 
+
         # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
         COMPARISON_METHOD = "manhatten_brute"
 
         RESULT_PREDICTIONS = {}
         START = datetime.now()
-        for person in tqdm(list(TRAINING_DATA)):
-            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
-                                             TRAINING_DATA, TRAINING_DATA, k=10)
+        for person in tqdm(list(TRAINING_DATA)[:1]):
+            MOVIES = {}
+            for movie in tqdm(list(VALIDATION_EXPECTED_PREDICTIONS[person]) + list(TEST_EXPECTED_PREDICTIONS[person])):
+                MOVIES[movie] = knn(person, list(TRAINING_DATA), movie ,COMPARISON_METHOD,
+                                                        TRAINING_DATA, TRAINING_DATA, k=10)
+            RESULT_PREDICTIONS[person] = MOVIES
         FINISHED = datetime.now()
 
         V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
@@ -276,9 +292,12 @@ if __name__ == "__main__":
 
         RESULT_PREDICTIONS = {}
         START = datetime.now()
-        for person in tqdm(list(TRAINING_DATA)):
-            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
-                                             N2V_MODEL, TRAINING_DATA, k=10)
+        for person in tqdm(list(TRAINING_DATA)[:1]):
+            MOVIES = {}
+            for movie in list(MOVIE_DATABASE):
+                MOVIES[movie] = knn(person, list(TRAINING_DATA), movie, COMPARISON_METHOD,
+                                                 N2V_MODEL, TRAINING_DATA, k=10)
+            RESULT_PREDICTIONS[person] = MOVIES
         FINISHED = datetime.now()
 
         V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
@@ -293,7 +312,7 @@ if __name__ == "__main__":
 
         # tet experiment
         TRAINING_DATA, EDGELIST = jsonuserdatabase(Paths.Folds_100k_PATH, FOLDS[:2])
-        TETS = build_tets(EDGELIST, moviedict(Paths.MOVIE_NODES_100k_PATH),
+        TETS = build_tets(EDGELIST, MOVIE_DATABASE,
                           Paths.USER_NODES_100k_PATH)
         save_tets(TETS, Paths.TETS_0_7_100k_PATH)
 
@@ -308,9 +327,12 @@ if __name__ == "__main__":
 
         RESULT_PREDICTIONS = {}
         START = datetime.now()
-        for person in tqdm(list(TRAINING_DATA)):
-            RESULT_PREDICTIONS[person] = knn(person, list(TRAINING_DATA), COMPARISON_METHOD,
-                                             TETS, TRAINING_DATA, k=10)
+        for person in tqdm(list(TRAINING_DATA)[:1]):
+            MOVIES = {}
+            for movie in list(MOVIE_DATABASE):
+                MOVIES[movie] = knn(person, list(TRAINING_DATA), movie, COMPARISON_METHOD,
+                                                 TETS, TRAINING_DATA, k=10)
+            RESULT_PREDICTIONS[person] = MOVIES
         FINISHED = datetime.now()
 
         V_ERROR = root_mean_squre_error(RESULT_PREDICTIONS, VALIDATION_EXPECTED_PREDICTIONS)
