@@ -1,26 +1,25 @@
 \subsection{Metric Tree representation}
-  Since we can assume, with good reason, that datasets used in recommender systems only will increase in size, we are interested in minimizing the computation time of structural data queries, like the k-nearest neighbor query. In order to find the exact k-nearest neighbors for only one user, we would have to compare the user with all the other users. This will result in a linear runtime, which is usually categorized as efficient in the theory of algorithm design and implementation. But since the datasets used in recommender systems tend to be very large, including millions of users, having to calculate the distance between one user and millions of other users may become quite time consuming. Furthermore, if each user has to be compared to any other user, this brute force k-nearest neighbor approach will lead to a quadratic runtime. As a solution to this problem, we can use the Metric Tree (MT) datastructure for improving nearest neighbor retrieval. We refer to \cite{jaeger2019counts} and \cite{uhlmann1991} for the complete definition of MTs, but we give a short explanation for completion.
+  Since we can assume, with good reason, that datasets used in recommender systems only will increase in size, we are interested in minimizing the computation time of structural data queries, like the k-nearest neighbor query. In order to find the exact k-nearest neighbors for only one user, we would have to compare the user with all the other users. This will result in a linear runtime, which is usually categorized as efficient in the theory of algorithm design and implementation. But since the datasets used in recommender systems tend to be very large, including millions of users, having to calculate the distance between one user and millions of other users may become quite time consuming. Furthermore, if each user has to be compared to any other user, this brute force k-nearest neighbor approach will lead to a quadratic runtime. As a solution to this problem, we can use the Metric Tree (MT) datastructure for improving nearest neighbor retrieval. We refer to \cite{jaeger2019counts} and \cite{uhlmann1991} for the complete definition of MTs, but we give a short explanation of the parts relevant to this paper.
   % Explain briefly how we build Metric trees and search them.
-  A MT is made of two types of nodes, internal ones and leaves. An internal node contains two entities and two branches. A leaf node contains a set of entities, also known as the bucket. The MT is built recuesively from a dataset of node histogram trees by splitting the data until a stopping condition is met. The procedure splits data
-  and recursively calls itself over each of the subsets, until the stopping condition is met. If the maximal tree depth is reached, or the current set to be splitted is not larger than the maximal bucket size, a leaf node is returned. If not, two entities $z1$ and $z2$ are chosen randomly from the dataset and data are splitted according to their distances to these entities. Data that are closer to z1 go to the left branch, the others go to the right one, and we proceed with the recursive step by calling the procedure on each of the branches.
+  Metric Trees consist of two types of nodes, internal nodes and leaves. An internal node contains two entities and two branches. A leaf node contains a set of entities, also known as the bucket. MTs are built by the procedure in \autoref{MT_build}.  The procedure splits data and recursively calls itself over each of the subsets, until the stopping condition is met. If the maximal tree depth is reached, or the current set to be splitted is not larger than the maximal bucket size, a leaf node is returned as in line 2, 3 and 4. If not, two entities $z1$ and $z2$ are chosen randomly from the dataset at line 5 and data are splitted according to their distances to these entities at line 6. Data that are closer to z1 go to the left branch, the others go to the right one, and we proceed with the recursive step by calling the procedure on each of the branches at line 7 and 8.
 
   \begin{algorithm}
-\caption{Metric Tree building}\label{MT_building}
-\begin{algorithmic}[1]
-\Procedure{MTbuild}{$d_{max} ,n_{max} ,d,data$}
-  Initialize node MN
-  \If {$d = d_{max} \lor Size(data) \leq n_{max}$}
-  \State $MN.bucket \gets data$
-  \State \Return $MN$
-  \EndIf
-  \State $MN.z1, MN.z2 \gets GETRANDOMPAIR(data)$
-  \State $data_1, data_2 \gets SPLITDATA(data, MN.z1, MN.z2)$
-  \State $MN.left \gets MTBUILD(d_{max}, n_{max}, d+1, data_1)$
-  \State $MN.right \gets MTBUILD(d_{max}, n_{max}, d+1, data_2)$
-  \State \Return $MN$
-\EndProcedure
-\end{algorithmic}
+    \caption{Metric Tree building}\label{MT_build}
+    \begin{algorithmic}[1]
+    \Procedure{MTbuild}{$d_{max} ,n_{max} ,d,data$}
+      Initialize node MN
+      \If {$d = d_{max} \lor Size(data) \leq n_{max}$}
+      \State $MN.bucket \gets data$
+      \State \Return $MN$
+      \EndIf
+      \State $MN.z1, MN.z2 \gets GETRANDOMPAIR(data)$
+      \State $data_1, data_2 \gets SPLITDATA(data, MN.z1, MN.z2)$
+      \State $MN.left \gets MTBUILD(d_{max}, n_{max}, d+1, data_1)$
+      \State $MN.right \gets MTBUILD(d_{max}, n_{max}, d+1, data_2)$
+      \State \Return $MN$
+    \EndProcedure
+    \end{algorithmic}
 \end{algorithm}
 
   % Explain how it can improve the performance of the implementation.
-With the Metric trees implemented, we can use a greedy algorithm for finding the approximate k-nearest-neighbors for a user. 
+With the Metric trees implemented, we can use a greedy algorithm for finding the approximate k-nearest-neighbors for a user.
