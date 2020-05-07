@@ -11,10 +11,9 @@ class SimGNNDatasetCreator:
         """
         with open(Paths.FOLDS_DATA_PATH, "r") as file:
             folds = json.load(file)
-            label_list = []
+            labels = []
             fold_list = []
-            label_addition = ["High", "Medium", "Low"]
-            label_list.extend(label_addition)
+            labels.extend(["High", "Medium", "Low"])
             start_val = 0
             end_val = 7
             currentfold_val = start_val
@@ -29,17 +28,17 @@ class SimGNNDatasetCreator:
                         currentfold_val += 1
                         if currentfold_val > 9:
                             currentfold_val = 0
-                dataset, label_list = self.make_dataset(fold_list, label_list)
+                dataset, labels = self.make_dataset(fold_list, labels)
                 with open(Paths.SIMGNN_DATA_PATH/str(start_val) + "_to_" + str(end_val) + ".json", "w") as f:
                     json.dump(dataset, f)
                 fold_list = []
                 start_val = start_val + 1 if start_val < 9 else 0
                 end_val = end_val + 1 if end_val < 9 else 0
                 currentfold_val = start_val
-            label_list = self.make_single_fold_set(label_list)
+            labels = self.make_single_fold_set(labels)
             label_dict = {}
-            for label in label_list:
-                label_dict[label] = label_list.index(label)
+            for label in labels:
+                label_dict[label] = labels.index(label)
             with open("Movielens_data/SimGNN/label_list.json", "w") as file:
                 json.dump(label_dict, file)
 
@@ -95,10 +94,10 @@ class SimGNNDatasetCreator:
                 # later in the code. Labels are used to reduce the amount of lookup later when having to find all labels
                 allgraphs[lines[1]] = []
                 labels[lines[1]] = []
-                standard_labels = ["High", "Medium", "Low", lines[0], lines[1]]
-                labels[lines[1]].extend(standard_labels)
-                extend_allgraphs = [[labels[lines[1]].index(lines[1]), 1], [labels[lines[1]].index(lines[1]), 2], [labels[lines[1]].index(lines[1]), 3]]
-                allgraphs[lines[1]].extend(extend_allgraphs)
+                labels[lines[1]].extend(["High", "Medium", "Low", lines[0], lines[1]])
+                allgraphs[lines[1]].extend([[labels[lines[1]].index(lines[1]), 1],
+                                            [labels[lines[1]].index(lines[1]), 2],
+                                            [labels[lines[1]].index(lines[1]), 3]])
                 edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
                 allgraphs[lines[1]].append(edge[0])
                 label_list.append(lines[1])
