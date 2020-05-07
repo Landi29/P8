@@ -1,6 +1,7 @@
 % Encoding: UTF-8
 %https://libguides.murdoch.edu.au/IEEE/text
 
+
 @article{uhlmann1991,
   title={Satisfying general proximity/similarity queries with metric trees},
   author={Uhlmann, Jeffrey K},
@@ -11,6 +12,18 @@
   year={1991},
   publisher={Elsevier}
 }
+
+
+@INPROCEEDINGS{recommender_e-comerce,
+author={S. {Sivapalan} and A. {Sadeghian} and H. {Rahnama} and A. M. {Madni}},
+booktitle={2014 World Automation Congress (WAC)},
+title={Recommender systems in e-commerce},
+year={2014},
+volume={},
+number={},
+pages={179-184}}
+
+
 @INPROCEEDINGS{4809246,
 author={N. {Duhan} and A. K. {Sharma} and K. K. {Bhatia}},
 booktitle={2009 IEEE International Advance Computing Conference},
@@ -163,3 +176,28 @@ isbn="978-3-030-34223-4"
 	year={2014},
 	publisher={Copernicus GmbH}
 }
+
+@Article{Bai2018,
+  author      = {Yunsheng Bai and Hao Ding and Song Bian and Ting Chen and Yizhou Sun and Wei Wang},
+  date        = {2018-08-16},
+  title       = {SimGNN: A Neural Network Approach to Fast Graph Similarity Computation},
+  eprint      = {1808.05689v4},
+  eprintclass = {cs.LG},
+  eprinttype  = {arXiv},
+  abstract    = {Graph similarity search is among the most important graph-based applications, e.g. finding the chemical compounds that are most similar to a query compound. Graph similarity computation, such as Graph Edit Distance (GED) and Maximum Common Subgraph (MCS), is the core operation of graph similarity search and many other applications, but very costly to compute in practice. Inspired by the recent success of neural network approaches to several graph applications, such as node or graph classification, we propose a novel neural network based approach to address this classic yet challenging graph problem, aiming to alleviate the computational burden while preserving a good performance. The proposed approach, called SimGNN, combines two strategies. First, we design a learnable embedding function that maps every graph into a vector, which provides a global summary of a graph. A novel attention mechanism is proposed to emphasize the important nodes with respect to a specific similarity metric. Second, we design a pairwise node comparison method to supplement the graph-level embeddings with fine-grained node-level information. Our model achieves better generalization on unseen graphs, and in the worst case runs in quadratic time with respect to the number of nodes in two graphs. Taking GED computation as an example, experimental results on three real graph datasets demonstrate the effectiveness and efficiency of our approach. Specifically, our model achieves smaller error rate and great time reduction compared against a series of baselines, including several approximation algorithms on GED computation, and many existing graph neural network based models. To the best of our knowledge, we are among the first to adopt neural networks to explicitly model the similarity between two graphs, and provide a new direction for future research on graph similarity computation and graph similarity search.},
+  file        = {:http\://arxiv.org/pdf/1808.05689v4:PDF},
+  keywords    = {cs.LG, stat.ML},
+}
+
+@Article{Kipf2016,
+  author      = {Thomas N. Kipf and Max Welling},
+  date        = {2016-09-09},
+  title       = {Semi-Supervised Classification with Graph Convolutional Networks},
+  eprint      = {1609.02907v4},
+  eprintclass = {cs.LG},
+  eprinttype  = {arXiv},
+  abstract    = {We present a scalable approach for semi-supervised learning on graph-structured data that is based on an efficient variant of convolutional neural networks which operate directly on graphs. We motivate the choice of our convolutional architecture via a localized first-order approximation of spectral graph convolutions. Our model scales linearly in the number of graph edges and learns hidden layer representations that encode both local graph structure and features of nodes. In a number of experiments on citation networks and on a knowledge graph dataset we demonstrate that our approach outperforms related methods by a significant margin.},
+  file        = {:http\://arxiv.org/pdf/1609.02907v4:PDF},
+  keywords    = {cs.LG, stat.ML},
+}
+
