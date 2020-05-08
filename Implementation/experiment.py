@@ -312,7 +312,7 @@ def base_experiment():
 
             if num2 >= len(folds):
                 num2 = 0
-            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '100k',
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
 
@@ -359,7 +359,7 @@ def brutefoce_experiment():
 
             if num2 >= len(folds):
                 num2 = 0
-            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '100k',
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
 
@@ -406,7 +406,7 @@ def node2vec_experiment():
 
             if num2 >= len(folds):
                 num2 = 0
-            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '100k',
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
 
@@ -461,7 +461,7 @@ def tet_experiment():
 
             if num2 >= len(folds):
                 num2 = 0
-            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '100k',
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
 
