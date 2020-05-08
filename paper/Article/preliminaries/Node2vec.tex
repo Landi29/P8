@@ -3,4 +3,14 @@ In this paper we will look at graph embedding as a way to find structural simila
 
 Node2vec makes use of word2vec skip-gram model to train a model for embedding the nodes, thus an overall understanding of word2vec is needed.
 
-The skip-gram model trains a neural network with a single hidden layer, but instead of using the model for what it was trained for, you discard the model and keep the weights of the hidden layer. These weights are then used as our vectors. The model is trained by giving it a specific word in a sentence, looking at a window around it and picking a random word within the window. 
+The idea behind the skip-gram model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one. That means we as output get the probability for the words being related.
+
+Quickly describe how it is trained
+example of window
+
+\TODO example of the neural network
+
+But instead of using the model for what it was trained for, you discard the model and keep the weights of the hidden layer. These weights are then what is used as our vectors.
+
+Text have a linear nature in form of sentences, but networks are not linear and thus a richer notion of a neighborhood is needed.
+
