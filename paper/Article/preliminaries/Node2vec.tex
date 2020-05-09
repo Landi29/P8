@@ -1,22 +1,78 @@
 \subsection{Node2vec}
-In this paper we will look at graph embedding as a way to find structural similarity between nodes in a graph, specifically node embedding. This is done using the implementation in “Node2vec: Scalable Feature Learning for Networks” by Aditya Grover and Jure Leskovec. They present an algorithm called node2vec for efficient feature learning for nodes in networks. This is done by mapping nodes to a vector representation of their features, that try to preserve local networks of neighborhood nodes and communities, using a random walk approach to generate a nodes neighborhood network. They formulate a random walk strategy that interpolates between BFS and DFS to try and preserve both homophily and structural equivalence.
+In this paper we will look at graph embedding as a way to find structural similarity between nodes in a graph, specifically node embedding. This is done using the implementation in “Node2vec: Scalable Feature Learning for Networks” by Aditya Grover and Jure Leskovec. They present an algorithm called node2vec for efficient feature learning for nodes in networks. This is done by mapping nodes to a vector representation of their features, that try to preserve local networks of neighborhood nodes and communities, using a random walk approach to generate a nodes neighborhood network.
 
-Node2vec makes use of word2vec skip-gram model to train a model for embedding the nodes, thus an overall understanding of word2vec is needed.
+Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes, thus an overall understanding of the word2vec model is needed.
 
-The idea behind the skip-gram model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one.
+The idea behind the model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one.
 
-The model is trained by feeding it word pairs from sentences, sliding the window across and picking random words, training the model on how often each word pairing shows up. An example can be seen in 
+The model is trained by feeding it word pairs from sentences, sliding the window across and picking random words, training the model on how often each word pairing shows up. An example can be seen in \autoref{fig:wordpair_example}.
 
-\TODO tilføj figure omkring word pairs og indsæt ref
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.6]{Article/figures/training_data.png}
+  \caption{Example of word pair sample generation}
+  \label{fig:wordpair_example}
+\end{figure}
 
-This is done by first creating a vocabulary $V$, that consist of all unique words found in our sentences. The input-layer will then be a single word represented as a one-hot encoding of size $V$. The size of the hidden layer is the number of features or dimensions $D$ we want to learn. Lastly the output layer is a vector of size $V$, containing the probability for each word in our vocabulary being the randomly chosen word, or how related each word is to the input word.
+This is done by first creating a vocabulary $V$, that consist of all unique words found in our sentences. The input-layer will then be a single word represented as a one-hot encoding of size $V$. The size of the hidden layer is the number of features or dimensions $D$ we want to learn. Lastly the output layer is a vector of size $V$, containing the probability for each word in our vocabulary being the randomly chosen word, or how related each word is to the input word. An example of the network is shown in \autoref{fig:skip-gram_example}.
 
-\TODO indsæt eksempel på neural network
+\begin{figure}[H]
+\centering
+  \includegraphics[width=\linewidth]{Article/figures/skip_gram_net_arch.png}
+  \caption{Example of the skip-gram network}
+  \label{fig:skip-gram_example}
+\end{figure}
 
-Once training is done, instead of using the model for what it was trained for, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our vectors. Giving us $D$ vectors of size $V$ 
+Once training is done, instead of using the model for what it was trained for, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our vectors. Giving us $D$ vectors of size $V$.
 
-Text have a linear nature in form of sentences, but networks are not linear and thus a richer notion of a neighborhood is needed.
+In the node2vec article feature learning is formulated as a maximum likelihood optimization problem. Let $G = (V,E)$ be a given network and let $f : V \to \mathbb{R}^d$ be the mapping function from nodes to their feature representation, $d$ is then the parameter specifying the number of dimensions, for the feature representation. For every source node $u \in V$, we define $Ns(u) \subset V$ as a network neighborhood of a node $u$, generated through a sampling strategy $S$.
 
-\TODO Description of a graph network and what a neighborhood is
+Feature learning methods based on the skip-gram model were developed within the context of natural languages. Text have a linear nature in form of sentences and the notion of a neighborhood can therefor be defined by sliding the window across the sentence. But networks are not linear and a richer notion of a nodes neighborhood is needed. Here they propose a random walk, that samples different neighborhoods $N_s (u)$ for a given source node $u$, and can have very different structures depending on the sampling strategy $S$ used.
 
-\TODO desciption of the sampling strategy including p and q parameters
+Thus given a graph and a source node, they want to sample its neighborhood $N_s(u)$. To be able to compare the different sampling strategies, the size of the neighborhood set $N_s(u)$ is constrained to $k$ nodes and will sample multiple neighborhood sets for a single node $u$ using a sampling strategy $S$.
+
+There is in general two sampling-strategies for generating neighborhood sets:
+
+A Breadth-first sampling (BFS), where a nodes neighborhood is restricted to nodes which are immediate neighbors to the node, finding the immediate community that the node is part of. This gives us a microscopic view of the neighborhood and is therefor good for finding structural equivalence.
+
+A Depth-first sampling (DFS), where a nodes neighborhood consist of nodes sampled at an increasing distance from the node, giving a bigger view of the structure and differences. This gives us a macro-view of the neighborhood, which is essential for inferring communities based on homophily.
+
+Networks commonly exhibit both behaviors, where some nodes exhibit homophily while others reflect structural equivalence, thus a sampling strategy that can find both is needed.
+
+They then formulate a sampling strategy $S$, which is a biased random walk procedure that can explore in a BFS as well as DFS approach.
+
+Given a source node $u$, simulate a random walk of length $l$. Let $c_i$ be the i'th node in the walk, starting with $c_o = u$. Nodes $c_i$ are then generated by the distribution given in \autoref{EQ:n2v_distribution}.
+
+\begin{equation}\label{EQ:n2v_distribution}
+P(c_i = x | c_{i-1} = v) = 
+\begin{cases} 
+	\frac{\pi_{vx}}{Z}  \; \text{if} \: (v,x) \in E \\
+	0 \; \text{otherwise}
+\end{cases}
+\end{equation}
+
+where $\pi_{vx}$ is the unnormalized transition probability between node $v$ and $x$, and $Z$ is the normalizing constant.
+
+A 2nd order random walk is defined, with two parameters $p$ and $q$, which helps guide the walk.
+
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.5]{Article/figures/randomwalkexample.png}
+  \caption{Random walk example of node2vec}
+  \label{fig:n2v_randomwalk}
+\end{figure}
+
+Looking at the figure above consider a random walk that have just travelled the edge $(t, v)$ and now resides at node $v$. The walk then have to decide on the next step to take and evaluates the transition probabilities $\pi_{vx}$ on edges $(v,x)$ leading from node $v$. The unnormalized transition probability is set to $\pi_{vc} = \alpha_pq (t,x) \times w_{vx}$ where \autoref{EQ:n2v_transition_probability}.
+
+\begin{equation}\label{EQ:n2v_transition_probability}
+\alpha_{pq} (t,x) =
+\begin{cases} 
+	\frac{1}{p} \; \text{if} \:  d_{tx} = 0 \\
+	1 \; \text{if} \: d_{tx} = 1 \\
+	\frac{1}{q} \; \text{if} \: d_{tx} = 0
+\end{cases}
+\end{equation}
+
+
+Here $d_tx$ denotes the shortest path distance between nodes $t$ and $x$. In this case $p$ and $q$ controls how fast the walker explores and leaves the neighborhood of a starting node $u$ and allows the search procedure to interpolate between BFS and DFS.
+
