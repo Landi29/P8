@@ -37,7 +37,7 @@ def knn(user, others, items, compare_model, extradata, user_database, k=4, filte
                 temp = list(sim[0])
                 temp[0] = 'U:'
                 temp = ''.join(temp)
-                sims = [temp, sim[1]]
+                sims.append([temp, sim[1]])
         sims = sorted(sims, key=lambda x: x[1], reverse=True)
 
     elif compare_model.split('_')[1] is not None and compare_model.split('_')[1] == "tet":
@@ -466,10 +466,10 @@ def tet_experiment():
             num2 += 1
 
 if __name__ == "__main__":
-    print('start base')
-    base_experiment()
-    print('start brute')
-    brutefoce_experiment()
+    #print('start base')
+    #base_experiment()
+    #print('start brute')
+    #brutefoce_experiment()
     print('start N2V')
     node2vec_experiment()
     print('start TET')
