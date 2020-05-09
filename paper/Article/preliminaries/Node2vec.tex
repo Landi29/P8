@@ -3,14 +3,20 @@ In this paper we will look at graph embedding as a way to find structural simila
 
 Node2vec makes use of word2vec skip-gram model to train a model for embedding the nodes, thus an overall understanding of word2vec is needed.
 
-The idea behind the skip-gram model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one. That means we as output get the probability for the words being related.
+The idea behind the skip-gram model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one.
 
-Quickly describe how it is trained
-example of window
+The model is trained by feeding it word pairs from sentences, sliding the window across and picking random words, training the model on how often each word pairing shows up. An example can be seen in 
 
-\TODO example of the neural network
+\TODO tilføj figure omkring word pairs og indsæt ref
 
-But instead of using the model for what it was trained for, you discard the model and keep the weights of the hidden layer. These weights are then what is used as our vectors.
+This is done by first creating a vocabulary $V$, that consist of all unique words found in our sentences. The input-layer will then be a single word represented as a one-hot encoding of size $V$. The size of the hidden layer is the number of features or dimensions $D$ we want to learn. Lastly the output layer is a vector of size $V$, containing the probability for each word in our vocabulary being the randomly chosen word, or how related each word is to the input word.
+
+\TODO indsæt eksempel på neural network
+
+Once training is done, instead of using the model for what it was trained for, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our vectors. Giving us $D$ vectors of size $V$ 
 
 Text have a linear nature in form of sentences, but networks are not linear and thus a richer notion of a neighborhood is needed.
 
+\TODO Description of a graph network and what a neighborhood is
+
+\TODO desciption of the sampling strategy including p and q parameters
