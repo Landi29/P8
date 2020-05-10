@@ -2,7 +2,7 @@
   \centering
   \begin{axis}[
         ybar, axis on top,
-        title={TET Error},
+        title={Node2Vec Error},
         height=8cm, width=20cm,
         bar width=0.7cm,
         ymajorgrids, tick align=inside,
@@ -32,27 +32,27 @@
        }
     ]
     \addplot [draw=none, fill=blue!30] coordinates {
-      (Fold 1, 1.00)
-      (Fold 2, 1.02)
-      (Fold 3, 1.01)
-      (Fold 4, 1.00)
-      (Fold 5, 1.01)
-      (Fold 6, 0.99)
-      (Fold 7, 1.00)
-      (Fold 8, 1.01)
-      (Fold 9, 1.00)
-      (Fold 10, 1.00)};
+      (Fold 1, 0.96)
+      (Fold 2, 0.97)
+      (Fold 3, 0.96)
+      (Fold 4, 0.95)
+      (Fold 5, 0.96)
+      (Fold 6, 0.94)
+      (Fold 7, 1.06)
+      (Fold 8, 0.96)
+      (Fold 9, 0.95)
+      (Fold 10, 0.94)};
    \addplot [draw=none,fill=red!30] coordinates {
-      (Fold 1, 1.01)
-      (Fold 2, 1.01)
-      (Fold 3, 1.00)
-      (Fold 4, 1.02)
-      (Fold 5, 1.00)
-      (Fold 6, 1.00)
-      (Fold 7, 1.01)
-      (Fold 8, 1.00)
-      (Fold 9, 1.00)
-      (Fold 10, 1.00)};
+      (Fold 1, 0.96)
+      (Fold 2, 0.96)
+      (Fold 3, 0.95)
+      (Fold 4, 0.96)
+      (Fold 5, 0.94)
+      (Fold 6, 0.94)
+      (Fold 7, 0.96)
+      (Fold 8, 0.96)
+      (Fold 9, 0.96)
+      (Fold 10, 0.96)};
     \legend{validation error 100k, test error 100k}
   \end{axis}
   \end{tikzpicture}
