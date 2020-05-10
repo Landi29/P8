@@ -1,7 +1,7 @@
 \subsection{Node2vec}
 In this paper we will look at graph embedding as a way to find structural similarity between nodes in a graph, specifically node embedding. This is done using the implementation in “Node2vec: Scalable Feature Learning for Networks” by Aditya Grover and Jure Leskovec \cite{Node2vec}. They present an algorithm called node2vec for efficient feature learning for nodes in networks. This is done by mapping nodes to a vector representation of their features, that try to preserve local networks of neighborhood nodes and communities, using a random walk approach to generate a nodes neighborhood network.
 
-Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes, thus an overall understanding of the word2vec model is needed.
+Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes.
 The idea behind the model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one \cite{Word2vec}.
 The model is trained by feeding it pairs of words from sentences, sliding the window across a sentence and picking random words for each specific word, training the model on how often each word pairing shows up. An example can be seen in \autoref{fig:wordpair_example}.
 \begin{figure}[H]
@@ -76,4 +76,3 @@ $p$ is the return parameter, and controls the likelihood of immediately revisiti
 $q$ is the In-out parameter, and allows the search to differentiate between inward and outward nodes. A high value will keep the walker more biased towards a starting node $u$, obtaining a local view. Whereas a low value will make the walker more inclined to visit nodes further away from $u$, encouraging outward exploration.
 
 Using the node2vec strategy, transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker then traverses the network, sampling a chosen amount of neighborhood(s) $N_s(u)$. These neighborhoods acts as the sentence given to the word2vec skip-gram model, learning the probabilities for the nodes being related to eachother and learning the embeddings for each node.
-
