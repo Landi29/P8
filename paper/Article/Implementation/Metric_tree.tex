@@ -9,7 +9,7 @@
   The Metric Tree is a datastructure that consists of two types of nodes, internal nodes and leaf nodes. An internal node contains two entities and two branches. A leaf node contains a set of entities, also known as the bucket.
   A MT is constructed by a recursive procedure in which a dataset is split. The procedure splits data and recursively calls itself over each of the subsets, until a stopping condition is met.
   If the maximal tree depth is reached, or the current set to be splitted is not larger than the maximal bucket size, a leaf node is returned.
-  If not, two entities $z1$ and $z2$ are chosen randomly from the dataset and data are splitted according to their distances to these entities. Data that are closer to $z1$ go to the left branch, the others go to the right one, and we proceed with the recursive step by calling the procedure on each of the branches.
+  If not, two entities $z1$ and $z2$ are chosen randomly from the dataset, and data are split by their distances to these entities.
 
   With the Metric trees implemented, we can use a greedy algorithm for finding the approximate k-nearest-neighbors for a user.
   As stated in \cite{jaeger2019counts}, given a metric tree, the fastest solution for approximate k-nearest-neighbor retrieval for a query object is to traverse the tree, following at each node the branch whose corresponding entity is closer to the query one, until a leaf node is found.
