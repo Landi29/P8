@@ -20,7 +20,7 @@ The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80
 
 These split will then be used for building the TETs, embedding nodes and training SimGNN.
 
-When these models have been build and trained we will use them to find k-nearest neighbors according to each model. With these neighbors we are able to make a prediction on the rating between movies and a user. For the predictions we will use the folded graphs adjacency matrix. We use \autoref{eq:pred} to calculate a predicted rating for the missing ratings in the adjacency matrix.
+When these models have been build and trained we will use them to find k-nearest user neighbors according  to each model. With these neighbors we are able to make a prediction on the rating between movies and a user. For the predictions we will use the folded graphs adjacency matrix. We use \autoref{eq:pred} to calculate a predicted rating for the missing ratings in the adjacency matrix.
 
 \begin{equation}\label{eq:pred}
 pred(u,m,N) = \overline{r_u}+\sum_{n \in N}w(u,n, N)(r_{n,m}-\overline{r_n})
@@ -30,7 +30,7 @@ pred(u,m,N) = \overline{r_u}+\sum_{n \in N}w(u,n, N)(r_{n,m}-\overline{r_n})
 w(u,n, N)=sim(u,n)/\sum_{n' \in N} sim(u,n')
 \end{equation}
 
-In \autoref{eq:pred} $u$ and $m$ is the user and movie to calculate a rating between, $N$ is the set of nearest neighbors. $\overline{r_a}$ is the average rating for a user and $r_{b,m}$ is the rating given by user $b$ to movie $m$.
+In \autoref{eq:pred} $u$ and $m$ is the user and movie to calculate a rating between, $N$ is the set of nearest neighbors. $\overline{r_a}$ is the average rating for user $a$ and $r_{b,m}$ is the rating given by user $b$ to movie $m$.
 Additionally in \autoref{eq:W} $n$ is a neighboring user to $u$.
 
 The ratings that are missing should be found in the set of the validation fold and test folds.
