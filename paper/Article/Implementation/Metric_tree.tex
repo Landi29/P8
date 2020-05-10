@@ -13,4 +13,4 @@
 
   With the Metric trees implemented, we can use a greedy algorithm for finding the approximate k-nearest-neighbors for a user.
   As stated in \cite{jaeger2019counts}, given a metric tree, the fastest solution for approximate k-nearest-neighbor retrieval for a query object is to traverse the tree, following at each node the branch whose corresponding entity is closer to the query one, until a leaf node is found.
-  We can then sort the entities in the bucket contained in the leaf node according to their distance to the query object, and return the k nearest neighbors. We note here that this only is an approximate solution, but it will provide us with results that are more than accurate for recommendation tasks.
+  We can then sort the entities in the bucket contained in the leaf node according to their distance to the query object, and return the k nearest neighbors. We note here that this only is an approximate solution, but it should provide us with results that are accurate enough for recommendation tasks.
