@@ -2,13 +2,13 @@
   \centering
   \begin{axis}[
         ybar, axis on top,
-        title={TET Error},
+        title={Bruteforce Error},
         height=8cm, width=20cm,
         bar width=0.7cm,
         ymajorgrids, tick align=inside,
         major grid style={draw=white},
         enlarge y limits={value=.1,upper},
-        ymin=0, ymax=4,
+        ymin=0, ymax=1.4,
         axis x line*=bottom,
         y axis line style={opacity=0},
         tickwidth=0pt,
@@ -32,37 +32,27 @@
        }
     ]
     \addplot [draw=none, fill=blue!30] coordinates {
-      (Fold 1, 3.70)
-      (Fold 2, 3.71)
-      (Fold 3, 3.68)
-      (Fold 4, 3.71)
-      (Fold 5, 3.70)
-      (Fold 6, 3.70)
-      (Fold 7, 3.73)
-      (Fold 8, 3.72)
-      (Fold 9, 3.70)
-      (Fold 10, 3.72)};
+      (Fold 1, 0.99)
+      (Fold 2, 0.99)
+      (Fold 3, 0.99)
+      (Fold 4, 0.98)
+      (Fold 5, 0.99)
+      (Fold 6, 0.97)
+      (Fold 7, 0.98)
+      (Fold 8, 0.98)
+      (Fold 9, 0.99)
+      (Fold 10, 0.98)};
    \addplot [draw=none,fill=red!30] coordinates {
-      (Fold 1, 3.71)
-      (Fold 2, 3.68)
-      (Fold 3, 3.71)
-      (Fold 4, 3.70)
-      (Fold 5, 3.70)
-      (Fold 6, 3.73)
-      (Fold 7, 3.72)
-      (Fold 8, 3.70)
-      (Fold 9, 3.72)
-      (Fold 10, 3.70)};
-%   \addplot [draw=none, fill=green!30] coordinates {
-%      (Sep-11,75.4064)
-%      (Oct-11, 89.7961) 
-%      (Nov-11,94.4597)
-%      (Dec-11,76.6786) 
-%      (Jan-12,77.5600) 
-%      (Feb-12,78.2339)
-%      (Mar-12,88.6138) 
-%      (Apr-12,78.9129) };
-
+      (Fold 1, 0.99)
+      (Fold 2, 0.99)
+      (Fold 3, 0.98)
+      (Fold 4, 0.99)
+      (Fold 5, 0.97)
+      (Fold 6, 0.98)
+      (Fold 7, 0.99)
+      (Fold 8, 0.98)
+      (Fold 9, 0.98)
+      (Fold 10, 0.99)};
     \legend{validation error 100k, test error 100k}
   \end{axis}
   \end{tikzpicture}
