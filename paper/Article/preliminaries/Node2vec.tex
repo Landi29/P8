@@ -4,6 +4,7 @@ In this paper we will look at graph embedding as a way to find structural simila
 Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes.
 The idea behind the model is that given a specific word in a sentence, look at a so called window around it, and pick a random word within the window. As output we get for each word, the probability for that word being the randomly chosen one \cite{Word2vec}.
 The model is trained by feeding it pairs of words from sentences, sliding the window across a sentence and picking random words for each specific word, training the model on how often each word pairing shows up. An example can be seen in \autoref{fig:wordpair_example}.
+
 \begin{figure}[H]
 \centering
   \includegraphics[scale=0.6]{Article/figures/training_data.png}
