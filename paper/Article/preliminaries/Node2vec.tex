@@ -71,7 +71,7 @@ As an example, look at the figure above and consider a random walk that have jus
 \end{equation}
 
 
-Here $d_{tx}$ denotes the shortest path distance between nodes $t$ and $x$. In this case $p$ and $q$ controls how fast the walker explores and leaves the neighborhood of a starting node $u$, allowing the walker to interpolate between the BFS and DFS sampling methods.
+In \autoref{EQ:n2v_transition_probability} $d_{tx}$ denotes the shortest path distance between nodes $t$ and $x$. In this case $p$ and $q$ controls how fast the walker explores and leaves the neighborhood of a starting node $u$, allowing the walker to interpolate between the BFS and DFS sampling methods.
 
 $p$ is the return parameter, and controls the likelihood of immediately revisiting a node in the walk, in this case the propability to revisit node $t$. A high value ensures that you are less likely to sample an already visited node, encouraging exploration, whereas a low value will keep the walker close to a starting node $u$.
 
