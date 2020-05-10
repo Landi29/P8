@@ -12,7 +12,7 @@ The model is trained by feeding it pairs of words from sentences, sliding the wi
   \label{fig:wordpair_example}
 \end{figure}
 
-First a vocabulary $V$ is created, that consist of all unique words found in the sentences. The input for the input-layer will be a single word, represented as a one-hot encoding, of size $|V|$. The size of the hidden layer is the number of features or dimensions $d$ that we want to learn. Lastly the output layer is a vector of size $|V|$, containing the probability for each word in our vocabulary being the randomly chosen word. An example of the network is shown in \autoref{fig:skip-gram_example}.
+First a vocabulary $V$ is created, that consist of all unique words found in the sentences. The input is a single word, represented as a one-hot encoding, of size $|V|$. The size of the hidden layer is the number of features or dimensions $d$ that we want to learn. Lastly the output layer is a vector of size $|V|$, containing the probability for each word in our vocabulary being the randomly chosen word. An example of the network is shown in \autoref{fig:skip-gram_example}.
 
 \begin{figure}[H]
 \centering
