@@ -24,7 +24,7 @@ First a vocabulary $V$ is created, that consist of all unique words found in the
 Once trained is done, instead of using the model for further calculations, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our embedding vectors. Giving us $V$ vectors of size $d$.
 
 
-In article \cite{Node2vec} feature learning is formulated as a maximum likelihood optimization problem. Let $G = (V,E)$ be a given network and let $f : V \to \mathbb{R}^d$ be the mapping function from nodes to their feature representation, $d$ is the parameter specifying the number of dimensions, for the feature representation. For every source node $u \in V$, they define $N_s (u) \subset V$ as a network neighborhood of a node $u$, generated through a sampling strategy $S$.
+In article \cite{Node2vec} feature learning is explained in further details where for every source node $u \in V$, $N_s (u) \subset V$ is defined as a network neighborhood of a node $u$, generated through a sampling strategy $S$.
 
 Feature learning methods based on the skip-gram model were developed within the context of natural languages. Text have a linear nature in form of sentences and the notion of a neighborhood can in that case easily be defined by sliding the window across the sentence. Networks are not linear and therefor a richer notion of a nodes neighborhood is needed. For this they propose a random walk, that samples different neighborhoods $N_s (u)$ for a given source node $u$, and can have very different structures depending on the sampling strategy $S$ used.
 
@@ -59,7 +59,7 @@ A $2^{nd}$ order random walk is defined, with two parameters $p$ and $q$, which 
   \label{fig:n2v_randomwalk}
 \end{figure}
 
-As an example, look at figure \autoref{fig:n2v_randomwalk} and consider a random walk that have just travelled the edge $(t, v)$ and which now resides at node $v$. The walker will then have to decide on the next step to take. It then evaluates the transition probabilities $\pi_{vx}$ on edges $(v,x)$ leading from node $v$. The unnormalized transition probability is set to $\pi_{vc} = \alpha_{pq} (t,x) \times w_{vx}$ where \autoref{EQ:n2v_transition_probability}.
+As an example, look at figure \autoref{fig:n2v_randomwalk} and consider a random walk that have just travelled the edge $(t, v)$ and which now resides at node $v$. The walker will then have to decide on the next step to take. It then evaluates the transition probabilities $\pi_{vx}$ on edges $(v,x)$ leading from node $v$. The unnormalized transition probability is set to $\pi_{vc} = \alpha_{pq} (t,x) \times w_{vx}$ where \autoref{EQ:n2v_transition_probability} applies.
 
 \begin{equation}\label{EQ:n2v_transition_probability}
 \alpha_{pq} (t,x) =
