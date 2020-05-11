@@ -24,12 +24,12 @@ def main_SimGNN(training, test, labels):
     #    p.join()
     trainer.fit()
     trainer.score()
-    pickle.dump(trainer, open("Experiment_data/Output/simGNN.p", "wb"))
+    pickle.dump(trainer, open("simGNN.p", "wb"))
 
 if __name__ == "__main__":
-    with open("Experiment_data/SimGNN/9_to_6.json", "r") as file:
+    with open("Experiment_data/SimGNN/2_to_9.json", "r") as file:
        training = json.load(file)
-    with open("Experiment_data/SimGNN/fold8.json", "r") as file:
+    with open("Experiment_data/SimGNN/fold0.json", "r") as file:
         test = json.load(file)
     with open("Experiment_data/SimGNN/Label_list.json", "r") as file:
         labels = json.load(file)

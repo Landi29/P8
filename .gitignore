@@ -419,7 +419,10 @@ dmypy.json
 .pytype/
 
 #ignoring csv files
-/Implementation/Movielens_data/*.csv
+/Implementation/Movielens_data/*
+/Implementation/n2v_models/*
 *.json
 
 *.rar
+
+/Implementation/Experiment_data/*
