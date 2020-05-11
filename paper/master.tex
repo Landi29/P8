@@ -55,6 +55,20 @@
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
 
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12}{17}\sffamily\bfseries}
+  {\thesection}
+  {1em}
+  {}
+
+\titleformat{\subsection}
+{\normalfont\fontsize{10}{17}\sffamily}
+{\thesubsection}
+{1em}
+{}
+
 \makeatletter
 \def\endthebibliography{%
 	\def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
@@ -178,7 +192,11 @@
 \usepackage{amsthm}
 \usepackage{todonotes}
 \usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{pgfplots}
 \usetikzlibrary{calc,positioning,shapes.geometric,shapes.symbols,shapes.misc,trees}
 \newtheorem{hypothesis}{Hypothesis}
 \newtheorem{theorem}{Theorem}
@@ -660,6 +678,7 @@
 \bibliography{bib}
 
 
+\input{Article/Appendix}
 
 
 
