@@ -37,8 +37,10 @@ def create_graph(data_path):
     return graph
 
 if __name__ == "__main__":
-    print("Start at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
+
+    print("Start at: {}".format(datetime.now().strftime("%y-%d-%m  %H:%M")))
     print("Creating the graph: ")
+    
     GRAPH_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph2.csv'
     graph = create_graph(GRAPH_PATH)
 
@@ -52,4 +54,4 @@ if __name__ == "__main__":
 
     value = str(sum_of_neighbors/graph.number_of_nodes())
     print("The average number of neighbors for a node is: {}".format(value))
-    print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
+    print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H:%M")))
