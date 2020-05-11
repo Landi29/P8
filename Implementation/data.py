@@ -34,7 +34,7 @@ def create_graph(data_path):
         print("success:"+" nodes:"+ str(non) +" Edges:"+str(noe))
 
     return graph
-
+print("Start at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
 print("Creating the graph: ")
 graph = create_graph(Paths.GRAPH_DATA_PATH)
 
@@ -48,3 +48,4 @@ for node in graph.nodes():
 
 value = str(sum_of_neighbors/graph.number_of_nodes)
 print("The average number of neighbors for a node is: {}".format(value))
+print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
