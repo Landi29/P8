@@ -46,6 +46,6 @@ for node in graph.nodes():
         neighbors += 1
     sum_of_neighbors += neighbors
 
-value = str(sum_of_neighbors/graph.number_of_nodes)
+value = str(sum_of_neighbors/graph.number_of_nodes())
 print("The average number of neighbors for a node is: {}".format(value))
 print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
