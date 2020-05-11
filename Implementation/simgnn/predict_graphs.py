@@ -23,15 +23,15 @@ class predictGraph:
     def create_simgnn_file(self, user1, user2):
         user1_graph = self.graph[user1]
         user2_graph = self.graph[user2]
-        return_dict = {}
+        graph_pair = {}
         interm_graph, interm_labels = self.create_SimGNN_graph(user1, user1_graph)
-        return_dict["graph_1"] = interm_graph
-        return_dict["labels_1"] = interm_labels
+        graph_pair["graph_1"] = interm_graph
+        graph_pair["labels_1"] = interm_labels
         interm_graph, interm_labels = self.create_SimGNN_graph(user1, user2_graph)
-        return_dict["graph_2"] = interm_graph
-        return_dict["labels_2"] = interm_labels
-        return_dict["ged"] = 0
-        return return_dict
+        graph_pair["graph_2"] = interm_graph
+        graph_pair["labels_2"] = interm_labels
+        graph_pair["ged"] = 0
+        return graph_pair
 
 
     def create_SimGNN_graph(self, user, user_graph):

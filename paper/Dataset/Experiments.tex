@@ -1,0 +1,4 @@
+\subsection{Experiments}
+For our experiments we use a MovieLens dataset provided by grouplens\cite{Grouplensdata}. The data is taken from MovieLens, a movie recommendation website. The dataset we use contains 25000095 movie ratings, given by 162541 users, applied to 62423 movies. All users have rated at least 20 movies and each user and movie is represented by an Id. The data was generated between January 09, 1995 and November 21, 2019. For the users no additional information is available, other than what can be inferred from the rating data. For the movies we have additional information such as Movie Title, Release year, Genres and genome-tags.
+
+From the data a weighted network was created, represented as en edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U or M respectively, to differentiate them.

@@ -4,25 +4,26 @@ An popular algorithm for computing the similarity between substructures in graph
 	\begin{equation}\label{eq:basic_simrank}
 	s(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 	\end{equation}
-	Where C is the confidence level or decay factor which is a constant between 0 and 1. If $a=\emptyset$ and $b= \emptyset$ then $s(a,b) = 0$. If both $a$ and $b$ are not $\emptyset$ then we compute $s(a,b)$ by iterating over all in-neighbor (nodes connected to the node we are currently looking at) pairs of $a$ and $b$ and sum up the similarity $s(I_i(a),I_j(b)$ of these pairs. The similarity is then divided by the total number of in-neighbor pairs in order to normalize it. That is, the similarity between a and b is the average similarity between in-neighbors of $a$ and in-neighbors of $b$. It is important to note here that the similarity between an object and itself is 1\cite{10.1145/775047.775126}.
 \end{definition}
+In \autoref{def:simrank} for SimRank, $C$ is the confidence level or decay factor which is a constant between $0$ and $1$. If $a=\emptyset$ and $b= \emptyset$ then $s(a,b) = 0$. If both $a$ and $b$ are not $\emptyset$ then we compute $s(a,b)$ by iterating over all neighbor  pairs of $a$ and $b$ and sum up the similarity $s(I_i(a),I_j(b)$ of these pairs. The similarity is then divided by the total number of neighbor pairs in order to normalize it. That is, the similarity between $a$ and $b$ is the average similarity between neighbors of $a$ and neighbors of $b$. It is important to note here that the similarity between an object and itself is 1 \cite{10.1145/775047.775126}.
 
 %\Jeg er lidt usikker på om det er nødvendigt at snakke om bipartite simRank så det kan godt være at alt dette ikke er nødvendigt
-It is also possible to extend the above equation \ref{eq:basic_simrank} to bipartite domains consisting of two types of objects. The idea here is that we can compute similarity of two objects of one type based the objects they reference which are of another type. An example of this could be trying to figure out the similarity two customers based on the items they have bought\cite{10.1145/775047.775126}.The equations for computing the similarity of object in bipartite domains can be seen below:
+It is possible to extend the above equation \ref{eq:basic_simrank} to bipartite domains consisting of two types of objects. The idea here is that we can compute similarity of two objects of one type based on the objects they reference which are of another type. An example of this could be to calculate the similarity of two customers based on the items they have bought\cite{10.1145/775047.775126}.The equations for computing the similarity of objects in bipartite domains are defined in \autoref{def:bipartite_simrank}.
 
-\begin{definition}[Bipartite SimRank]\label{def:bipartite_simrank} Given two objects A and B of type 1 which reference objects of type 2 and objects c and of type 2 which gets referenced by objects of type 1 the similarity can be computed via the follow mutually-recursive equations:
-	
+%\Problemet her er jeg ikke ved hvad du bruger C til. I din formel er det en value mellem 0 - 1 men du bruger det som et nyt objekt. Hvad var tanken?
+\begin{definition}[Bipartite SimRank]\label{def:bipartite_simrank} Let s(A,B) be the similarity between two objects A and B of type 1 and for nodes of type 2 we denote it as s(M1,M2) where M1 and M2 are of type 2. $C_1$ and $C_2$ are both constants between 0 and 1.
+
 	For objects of type 1 where $A \neq B$ the similarity is computed as:
 	\begin{equation}\label{eq:bipartite_simrank1}
 	s(A,B)= \frac{C_1}{|O(A)||O(B)|}\sum^{|O(A)|}_{i=1}\sum^{|O(B)|}_{j=1}s(O_i(A),O_j(B))
 	\end{equation}
-	
-	For objects of type 2 where $c \neq c'$ the similarity is computed as:
+
+	For objects of type 2 where $M1 \neq M2$ the similarity is computed as:
 
 	\begin{equation}\label{eq:bipartite_simrank2}
-	s(c,c')= \frac{C_2}{I|(c)||I(c')|}\sum^{|I(c)|}_{i=1}\sum^{|I(c')|}_{j=1}s(I_i(c),I_j(c'))
+	s(M1, M2)= \frac{C_2}{I|(M1)||I(M2)|}\sum^{|I(M1)|}_{i=1}\sum^{|I(M2)|}_{j=1}s(I_i(M1),I_j(M2))
 	\end{equation}
-	
+
 	We can then compute the bipartite SimRank score by checking $C_1 = C_2$\cite{10.1145/775047.775126}.
 \end{definition}
 
@@ -35,9 +36,9 @@ R_0(a,b)= \begin{cases}
 \end{cases}
 \end{equation}
 
-To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank equation \ref{eq:basic_simrank}:
+To compute compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation below which is simply a modification of the basic SimRank from \autoref{eq:basic_simrank}:
 \begin{equation}\label{eq:simrank_computation}
 R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 \end{equation}
 
-What the \ref{eq:simrank_computation} states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$ we update for $(a,b)$ on each iteration $k+1$ using the similarity of the neighbors of $(a,b)$ from the previous iteration $k$. The values $R_k(*,*)$ are nondecreasing as $k$ increases. 
+What \autoref{eq:simrank_computation} states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$ we update for $(a,b)$ on each iteration $k+1$ using the similarity of the neighbors of $(a,b)$ from the previous iteration $k$. The values $R_k(*,*)$ are nondecreasing as $k$ increases.

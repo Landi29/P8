@@ -144,7 +144,6 @@ class SimGNNTrainer(object):
                 for graph_pair in self.training_graphs[graph]:
                     intermediate.append(self.training_graphs[graph][graph_pair])
             self.training_graphs = intermediate
-        #random.shuffle(self.training_graphs)
         batches = []
         for graph in range(0, len(self.training_graphs), self.args.batch_size):
             batches.append(self.training_graphs[graph:graph+self.args.batch_size])

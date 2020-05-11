@@ -1,0 +1,34 @@
+\begin{tikzpicture}[
+  	every node/.style = {shape=rectangle, rounded corners,
+    draw, align=center,
+    top color=white, bottom color=blue!20},
+    level 1/.style={sibling distance=3cm},
+	level 2/.style={sibling distance=1cm}, 
+    ]
+  
+  \node {\{\{low\{\{a:t\},\{c:t\},\{r:t\}\}:2\}, \{low\{\{a:t\},\{h:t\}\}:1\},\\
+   \{mid \{\{c:t\},\{r:t\}\}:1\}, \{high\{\{a:t\},\{r:t\}\}:1\}\}}
+	child{ node{\{low\{a:t\},\{c:t\},\{r:t\}\}} 
+		child{ node{a:t}}
+		child{ node{c:t}}
+		child{ node{r:t}}
+		}
+	child{ node{\{mid\{c:t\},\{r:t\}\}} 
+		child{ node{a:t}}
+		child{ node{r:t}}
+		}
+	child{ node{\{low\{a:t\},\{c:t\},\{r:t\}\}} 
+		child{ node{a:t}}
+		child{ node{c:t}}
+		child{ node{r:t}}
+		}
+    child{ node{\{high\{a:t\},\{r:t\}\}}
+	    child { node{a:t}}
+      	child { node{r:t}} 
+      	}
+      ;
+\end{tikzpicture}
+
+%
+%
+%
