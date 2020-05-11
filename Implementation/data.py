@@ -5,6 +5,7 @@ import node2vec as n2v
 import networkx as nx
 import Paths
 import random
+import pathlib
 
 def create_graph(data_path):
     """
@@ -34,18 +35,21 @@ def create_graph(data_path):
         print("success:"+" nodes:"+ str(non) +" Edges:"+str(noe))
 
     return graph
-print("Start at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
-print("Creating the graph: ")
-graph = create_graph(Paths.GRAPH_DATA_PATH)
 
-print ("Summing the neighbors of nodes")
-sum_of_neighbors = 0
-for node in graph.nodes():
-    neighbors = 0
-    for neighbor in graph.neighbors(node):
-        neighbors += 1
-    sum_of_neighbors += neighbors
+if __name__ == "__main__":
+    print("Start at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
+    print("Creating the graph: ")
+    GRAPH_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph2.csv'
+    graph = create_graph(GRAPH_PATH)
 
-value = str(sum_of_neighbors/graph.number_of_nodes())
-print("The average number of neighbors for a node is: {}".format(value))
-print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
+    print ("Summing the neighbors of nodes")
+    sum_of_neighbors = 0
+    for node in graph.nodes():
+        neighbors = 0
+        for neighbor in graph.neighbors(node):
+            neighbors += 1
+        sum_of_neighbors += neighbors
+
+    value = str(sum_of_neighbors/graph.number_of_nodes())
+    print("The average number of neighbors for a node is: {}".format(value))
+    print("Finished at: {}".format(datetime.now().strftime("%y-%d-%m  %H,%M")))
