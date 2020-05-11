@@ -1,11 +1,18 @@
 \subsection{Setup}
 In this experiment we test the reliability of the TET compared to the embedding, SimGNN and a bruteforce methods. 
 
-For our experiments we use the MovieLens dataset provided by grouplens\cite{Grouplensdata}. The data is taken from MovieLens, a movie recommendation website. The dataset we use contains $25000095$ movie ratings, given by $162541$ users, applied to $62423$ movies. All users have rated at least $20$ movies and each user and movie is represented by an Id. The data was generated between January 09, 1995 and November 21, 2019. For the users no additional information is available, other than what can be inferred from the rating data. For the movies we have additional information such as Movie Title, Release year, and Genres.
+For our experiments we use the MovieLens dataset provided by grouplens\cite{Grouplensdata}. The data is taken from MovieLens, a movie recommendation website. The dataset we use contains $100000$ movie ratings, given by $943$ users, applied to $1682$ movies. All users have rated at least $20$ movies and each user and movie is represented by an Id. The data was generated between September 19th, 1997 and April 22nd, 1998. For the users no additional information is available, other than what can be inferred from the rating data. For the movies we have additional information such as Movie Title, Release year, and Genres.
 
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/graph_representation.tex}
+	\end{adjustbox}
+	\caption{The simple graph}
+	\label{fig:graph_representation}
+\end{figure}
 
-
-We create a weighted graph from the data, represented as an edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U on userid and M on movieid respectively, to differentiate them.
+We create a weighted graph from the data, represented as an edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U on userid and M on movieid respectively, to differentiate them. the movie mode will have the additional latent data of genre. A simple example of the graph can be seen in \autoref{fig:graph_representation}.
 
 The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80\%/20\%$ split into training- and testset \cite{Ricci2015}. We would like to also add a validation set and the split will therefore be $80\%/10\%/10\%$ or 8 folds/1 fold/1 fold. The splits will be on edge level meaning that training a user will have $80\%$ of their ratings. We will in the validation and test reconstruct or predict the ratings in the set.
 
