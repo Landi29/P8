@@ -5,6 +5,7 @@ import csv
 import json
 import requests
 import Paths
+import pathlib
 
 
 
@@ -315,3 +316,5 @@ if __name__ == "__main__":
     print("Hallo")
     #disc_movie_data_100k(MOVIEPATH_100K, MOVIE_NODES_PATH_100K)
     #disc_movie_data_1m(MOVIEPATH_1M, MOVIE_NODES_PATH_1M)
+    GRAPH_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'graph2.csv'
+    disc_rating_data(Paths.RATING_DATA_PATH, GRAPH_PATH, None)
