@@ -1,5 +1,5 @@
 \subsection{Result analysis}
-
+The results of each test will in this section be compared to the baselise RMSE as seen in \autoref{fig:base_errors} and sytems RMSE.
 \begin{figure}[H]
 	\centering
 	\begin{adjustbox}{width=0.5\textwidth}
@@ -8,6 +8,8 @@
 	\caption{base error from 100k dating dataset }
 	\label{fig:base_errors}
 \end{figure}
+
+In \autoref{fig:base_errors} is the baseline RMSE, we got this by using the average rating for the dataset as the prediction for all future rating.
 
 \begin{figure}[H]
 	\centering
@@ -18,6 +20,8 @@
 	\label{fig:brute_errors}
 \end{figure}
 
+\autoref{fig:brute_errors} show the RMSE for the 20 evaluations. the graph shows that with a relatively simple method recommendation can be done better than the baseline with an RMSE in most folds only having a difference of $0.01$ between validation and test sets.
+
 \begin{figure}[H]
 	\centering
 	\begin{adjustbox}{width=0.5\textwidth}
@@ -27,8 +31,8 @@
 	\label{fig:N2V_errors}
 \end{figure}
 
+The graph in \autoref{fig:N2V_errors} shows the most promising of our results with RMSE values being as low as 0.94. 
 
-Each of the test had an average run time of 1 hour and 12 minutes.  Fold 6 had the fasted run time of about 48 minutes but this fold might have a fitting problem as seen by the gap between validation and test error.
 
 \begin{figure}[H]
 	\centering
@@ -39,16 +43,3 @@ Each of the test had an average run time of 1 hour and 12 minutes.  Fold 6 had t
 	\label{fig:tet_errors}
 \end{figure}
 
-In the graph of relative errors seen on \autoref{fig:tet_errors} we see that most folds lie at about $3.75$ error and that the fold with the lowest validation error has one of the biggest gap to test error this indicates a fitting mistake. 
-
-Fold 5 and Fold 9 both have some interesting properties fold 9 has the same error for validation and test witch indicates a more general fold. Fold 5 has less error and thereby more accuracy and with and error difference between validation of 0.01 this might be the most reliable fold.
-
-
-%\begin{figure}[H]
-%	\centering
-%	\begin{adjustbox}{width=0.5\textwidth}
-%		\input{Article/figures/SimGNN_10_fold_error.tex}
-%	\end{adjustbox}
-%	\caption{TET error from 100k dating dataset }
-%	\label{fig:tet_errors}
-%\end{figure}
