@@ -1,5 +1,5 @@
 \subsection{Result analysis}
-The results of each test will in this section be compared to the baselise RMSE as seen in \autoref{fig:base_errors} and sytems RMSE.
+The results of each test will in this section be compared to the baseline RMSE as seen in \autoref{fig:base_errors} and systems RMSE.
 \begin{figure}[H]
 	\centering
 	\begin{adjustbox}{width=0.5\textwidth}
@@ -31,7 +31,8 @@ In \autoref{fig:base_errors} is the baseline RMSE, we got this by using the aver
 	\label{fig:N2V_errors}
 \end{figure}
 
-The graph in \autoref{fig:N2V_errors} shows the most promising of our results with RMSE values being as low as 0.94. 
+The graph in \autoref{fig:N2V_errors} shows the most promising of our results with RMSE values being as low as 0.94 and by tweaking the metadata of the training we believe that there are potential for even better recommendations.
+The discrepancy between validation and test in fold 7 seems to indicate that this fold has been fitted wrongly.
 
 
 \begin{figure}[H]
@@ -43,3 +44,6 @@ The graph in \autoref{fig:N2V_errors} shows the most promising of our results wi
 	\label{fig:tet_errors}
 \end{figure}
 
+The RMSE scores for the TETs seen in \autoref{fig:tet_error} is at a glance not impressive, but the RMSE scores are still better than the baseline. 
+This shows potential in the framework and it might be better with more descriptive features. The advantage of the TET recommendation is that it can fully depend on structure . 
+Where the other methods we have disgust are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that looks like the movie or product you try to predict a recommendation for.
