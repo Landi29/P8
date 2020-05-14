@@ -1,5 +1,6 @@
 \subsection{Result analysis}
-The results of each test will in this section be compared to the baseline RMSE as seen in \autoref{fig:base_errors} and systems RMSE.
+The results of each test will in this section be compared to the baseline RMSE as seen in \autoref{fig:base_errors} and different methods RMSE score.
+
 \begin{figure}[H]
 	\centering
 	\begin{adjustbox}{width=0.5\textwidth}
@@ -20,14 +21,14 @@ In \autoref{fig:base_errors} is the baseline RMSE, we got this by using the aver
 	\label{fig:brute_errors}
 \end{figure}
 
-\autoref{fig:brute_errors} show the RMSE for the 20 evaluations. the graph shows that with a relatively simple method recommendation can be done better than the baseline with an RMSE in most folds only having a difference of $0.01$ between validation and test sets.
+\autoref{fig:brute_errors} show the RMSE for the 20 evaluations. This shows that with a relatively simple method recommendation can be done better than the baseline with an RMSE in most folds only having a difference of $0.01$ between validation and test sets.
 
 \begin{figure}[H]
 	\centering
 	\begin{adjustbox}{width=0.5\textwidth}
 		\input{Article/figures/N2V_10_fold_error.tex}
 	\end{adjustbox}
-	\caption{Node2vec error from 100k dating dataset }
+	\caption{Node2vec error from 100k dating dataset}
 	\label{fig:N2V_errors}
 \end{figure}
 
@@ -44,6 +45,8 @@ The discrepancy between validation and test in fold 7 seems to indicate that thi
 	\label{fig:tet_errors}
 \end{figure}
 
-The RMSE scores for the TETs seen in \autoref{fig:tet_error} is at a glance not impressive, but the RMSE scores are still better than the baseline. 
-This shows potential in the framework and it might be better with more descriptive features. The advantage of the TET recommendation is that it can fully depend on structure . 
-Where the other methods we have disgust are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that looks like the movie or product you try to predict a recommendation for.
+The RMSE scores for the TETs seen in \autoref{fig:tet_errors} is at a glance not impressive, but the RMSE scores are still better than the baseline. 
+This shows potential in the framework and it might be better with more descriptive features. The advantage of the TET recommendation is that it can fully depend on structure.
+Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that looks like the movie or product you try to predict a recommendation for.
+
+\todo{make scenario tet shines}
