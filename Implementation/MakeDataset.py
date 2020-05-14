@@ -91,7 +91,7 @@ class SimGNNDatasetCreator:
             else:
                 # If the user is not already in the dictionary of all graphs - We add a new index for him where we place
                 # his new edges too (1 for high, 2 for medium and 3 for low) this is done to reduce the amount of lookups
-                # later in the code. Labels are used to reduce the amount of lookup later when having to find all labels
+                # Labels are used to reduce the amount of lookup later when having to find all labels.
                 allgraphs[lines[1]] = []
                 labels[lines[1]] = []
                 labels[lines[1]].extend(["High", "Medium", "Low", lines[0], lines[1]])
@@ -177,4 +177,3 @@ class SimGNNDatasetCreator:
             else:
                 gedscore += 1
         return gedscore
-
