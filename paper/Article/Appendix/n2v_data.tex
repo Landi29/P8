@@ -34,10 +34,10 @@ $$
 $$
 
 
-If we assume that the dictionaries contain values of type float with size 8 bytes, the two dictionaries will hold the data equal to 180,8 GB as seen in:
+If we assume that the dictionaries contain values of type float with size 8 bytes, the two dictionaries will hold the data equal to 180.8 GB as seen in:
 
 $$
-  \frac{22599800100 \cdot 8 \ B}{1000000000 \ B/GB} = 180,8 \ GB.
+  \frac{22599800100 \cdot 8 \ B}{1000000000 \ B/GB} = 180.8 \ GB.
 $$
 
 We also investigated how much data Node2Vec was able to use on our server with 32 GB of RAM. Embedding the first 1 million ratings used about 10 GB of memory. Embedding the first 2 million ratings used the corresponding 20 GB of memory. If we assume a linear scale, the whole embedding process will then require almost 250 GB of RAM for the 25 million dataset.
