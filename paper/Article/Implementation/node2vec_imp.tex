@@ -1,5 +1,5 @@
 \subsection{Node2vec}
-
+\label{Sec:n2v_implementation}
 As mentioned earlier in \ref{Sec:node2vec_prelim} we will use node2vec as a method to embed nodes in a network in a vector space. In the node2vec paper, Aditya Grover and Jure Leskovec provides a python implementation of node2vec. An updated python3 version with some performance improvements, by eliorc\cite{n2v.eliorc} is available, and will be the implementation used as other implementations are also done in python.
 
 The implementation by eliorc makes use of the NetworkX package to represent the network that you want to embed. For creating the network, we first discretize the data into an edgelist representation. Let $E$ be the set of all edges and $e = \{node, node, weight\}$ be the representation for an edge. For each $e \in E$ add e as an edge to our NetworkX graph $G$, this gives us both our edges and nodes in a graph object $G$.
@@ -13,8 +13,8 @@ The model also contains a method called $most_similar$ for finding the similarit
 The formular for computing the cosine similarity is shown in \ref{EQ:CosSim} where $a$ and $b$ is our vectors.
 
 \begin{equation}\label{EQ:CosSim}
-\cos\theta = 
+\cos\theta =
 \frac{\vec{a}\cdot\vec{b}}{\parallel a\parallel
-\cdot\parallel b\parallel} = 
+\cdot\parallel b\parallel} =
 \frac{\sum_1^n a_i b_i}{\sqrt{\sum_1^n a_i^2}\sqrt{\sum_1^n b_i^2}}
 \end{equation}

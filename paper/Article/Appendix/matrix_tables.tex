@@ -1,0 +1,54 @@
+
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c}
+        Node & Connects to\\
+        \hline
+        $N_1$ & $N_2, N_3, N_4$\\
+        $N_2$ & $N_1, N_3$\\
+        $\cdots$ & $\cdots$\\
+        $N_n$ & $\cdots$
+      \end{tabular}
+
+    \end{center}
+    \caption{A graph as a sparse adjacency matrix.}
+    \label{table:sparse_matrix_1}
+  \end{table}
+
+
+
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c}
+        Node pair/Edge (src, dst) & Weight\\
+        \hline
+        $(N_1, N_2)$ & $5.0$\\
+        $(N_1, N_3)$ & $2.0$\\
+        $(N_1, N_4)$ & $3.0$\\
+        $N_2, N_3$ & $2.0$\\
+        $\cdots$ & $\cdots$\\
+        $N_n, N_m$ & $x$
+      \end{tabular}
+
+    \end{center}
+    \caption{A dictionary to save the edge weights.}
+    \label{table:sparse_matrix_weights}
+  \end{table}
+
+
+
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c}
+        Node & Connects to\\
+        \hline
+        $N_1$ & $(N_2, 5.0), (N_3, 2.0), (N_4, 3.0)$\\
+        $N_2$ & $(N_1, 5.0), (N_3, 2.0)$\\
+        $\cdots$ & $\cdots$\\
+        $N_n$ & $\cdots$
+      \end{tabular}
+
+    \end{center}
+    \caption{A graph as a sparse adjacency matrix.}
+    \label{table:sparse_matrix_2}
+  \end{table}
