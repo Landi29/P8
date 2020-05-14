@@ -77,34 +77,34 @@ class SimGNNDatasetCreator:
         """
         labels = {}
         allgraphs = {}
-        for lines in tqdm(graphs):
-            if lines[1] in allgraphs:
+        for edge in tqdm(graphs):
+            if edge[1] in allgraphs:
                 # If the user exists in the dictionary of all graphs - We create the edge for the movie and add to the
                 # list of edges. We update the labels list as it will be used later on.
-                labels[lines[1]].append(lines[0])
-                edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
-                allgraphs[lines[1]].append(edge[0])
-                if label_list.__contains__(lines[0]):
+                labels[edge[1]].append(edge[0])
+                new_edge, labels[edge[1]] = self.get_new_graph(edge, labels[edge[1]])
+                allgraphs[edge[1]].append(new_edge[0])
+                if label_list.__contains__(edge[0]):
                     continue
                 else:
-                    label_list.append(lines[0])
+                    label_list.append(edge[0])
             else:
                 # If the user is not already in the dictionary of all graphs - We add a new index for him where we place
                 # his new edges too (1 for high, 2 for medium and 3 for low) this is done to reduce the amount of lookups
                 # Labels are used to reduce the amount of lookup later when having to find all labels.
-                allgraphs[lines[1]] = []
-                labels[lines[1]] = []
-                labels[lines[1]].extend(["High", "Medium", "Low", lines[0], lines[1]])
-                allgraphs[lines[1]].extend([[labels[lines[1]].index(lines[1]), 1],
-                                            [labels[lines[1]].index(lines[1]), 2],
-                                            [labels[lines[1]].index(lines[1]), 3]])
-                edge, labels[lines[1]] = self.get_new_graph(lines, labels[lines[1]])
-                allgraphs[lines[1]].append(edge[0])
-                label_list.append(lines[1])
-                if label_list.__contains__(lines[0]):
+                allgraphs[edge[1]] = []
+                labels[edge[1]] = []
+                labels[edge[1]].extend(["High", "Medium", "Low", edge[0], edge[1]])
+                allgraphs[edge[1]].extend([[labels[edge[1]].index(edge[1]), 1],
+                                            [labels[edge[1]].index(edge[1]), 2],
+                                            [labels[edge[1]].index(edge[1]), 3]])
+                new_edge, labels[edge[1]] = self.get_new_graph(edge, labels[edge[1]])
+                allgraphs[edge[1]].append(new_edge[0])
+                label_list.append(edge[1])
+                if label_list.__contains__(edge[0]):
                     continue
                 else:
-                    label_list.append(lines[0])
+                    label_list.append(edge[0])
         dataset = {}
         for x in tqdm(range(1, allgraphs.__len__())):
             user1 = "U:" + str(x)
@@ -123,25 +123,25 @@ class SimGNNDatasetCreator:
         return dataset, label_list
 
     @staticmethod
-    def get_new_graph(edge, labels):
+    def get_new_graph(new_edge, labels):
         """
-        Takes a edge and its labels to create a new edge containing high, medium or low.
+        Takes a new_edge and its labels to create a new new_edge containing high, medium or low.
 
         Parameters:
-        edge (list): Edge of type [MovieNode, UserNode, Rating]
+        new_edge (list): Edge of type [MovieNode, UserNode, Rating]
         labels (list): List of labels in current graph
 
         Returns:
-        edgelist (list): New edge containing 1,2 or 3 representing high, medium and low and a movie.
+        edgelist (list): New new_edge containing 1,2 or 3 representing high, medium and low and a movie.
         labels (list): The list of labels containing the new movie too.
         """
         edgelist = []
-        value = float(edge[2].strip())
-        if labels.__contains__(edge[0]):
-            position = labels.index(edge[0])
+        value = float(new_edge[2].strip())
+        if labels.__contains__(new_edge[0]):
+            position = labels.index(new_edge[0])
         else:
-            labels.append(edge[0])
-            position = labels.index(edge[0])
+            labels.append(new_edge[0])
+            position = labels.index(new_edge[0])
         if value > 3.5:
             edgelist.append([1, position])
         elif value > 2.5:
