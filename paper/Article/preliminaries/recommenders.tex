@@ -1,11 +1,11 @@
 \subsection{Recommenders}
-\label{recommenders}
+\label{Subsec:recommenders}
 We will now give a formal definition of recommender systems as described in computer science theory.
 
 There are mainly two different  types of recommender systems and in this paper, we focus on the types that might work on subgraphs.
 
-\textit{Content-based recommendation} is a recommendation system that analyses items preferred by a user to find reoccuring attributes of the items. The system then compares these attributes to attributes of other items to find similarities \cite{lu2015recommender}. Thus, Content-based recommendation is not dependent on other users but the attributes of the items.
+\textit{Content-based recommendation} is a recommender system that analyses items preferred by a user to find recurring attributes. The system then compares these attributes to attributes of other items to find similarities\cite{lu2015recommender}. Thus, Content-based recommendation is not dependent on other users but the attributes of the items.
 
-\textit{Collaborative filtering-based recommendation} is a recommender system that use users preferences about a item to recommend them to other users. For example if two people buy the same items we could say that they are similar and then use this to recommend new items. There are two approaches to this namely, \textit{User Based Approach} and \textit{Item Based Approach} where the first is recommendations are given by other users who the user share preferences with and the second is recommend based on the items are associated, for example items that often are bought together.
+\textit{Collaborative filtering-based recommendation} is a recommender system that use users preferences about a item to recommend them to other users. There are two approaches to this namely, \textit{User Based Approach} and \textit{Item Based Approach}. In the first approach, recommendations are based on user preference, for example if two people buy the same items we could say that they are similar and then use this to recommend new items. In the second approach, recommendations are based on item association, for example items that often are bought together.
 %\textit{Collaborative filtering-based recommendation} is a recommender system that represents users or items as vectors, such that a similarity value can be calculated between vectors. 
 Collaborative filtering-based recommenders depend on data from other items or users, and these systems therefore give users trust in the answer but often have the cold start problem \cite{lu2015recommender}. In this context, trust is defined as when a system is able to represent why it recommended an item, and the cold start problem is a common problem in recommender systems where a database or a subset of a database has inadequate data, resulting in unreliable recommendations\cite{Ricci2015}.
