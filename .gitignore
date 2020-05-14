@@ -418,6 +418,7 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+/paper/Article/Appendix/Memory_usage.md
 # Ignore all the files in the Movielens_data folder:
 /Implementation/Movielens_data/*
 # Ignore json and rar files:
