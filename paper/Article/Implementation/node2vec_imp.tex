@@ -1,20 +1,20 @@
 \subsection{Node2vec}
-
-As mentioned earlier in \ref{Sec:node2vec_prelim} we will use node2vec as a method to embed nodes in a network in a vector space. In the node2vec paper, Aditya Grover and Jure Leskovec provides a python implementation of node2vec. An updated python3 version with some performance improvements, by eliorc\cite{n2v.eliorc} is available, and will be the implementation used as other implementations are also done in python.
+\label{Subsec:n2v_implementation}
+As mentioned earlier in \ref{Subsec:node2vec_prelim} we will use node2vec as a method to embed nodes in a network in a vector space. In the node2vec paper, Aditya Grover and Jure Leskovec provides a python implementation of node2vec. An updated python3 version with some performance improvements, by eliorc\cite{n2v.eliorc} is available, and will be the implementation used as other implementations are also done in python.
 
 The implementation by eliorc makes use of the NetworkX package to represent the network that you want to embed. For creating the network, we first discretize the data into an edgelist representation. Let $E$ be the set of all edges and $e = \{node, node, weight\}$ be the representation for an edge. For each $e \in E$ add e as an edge to our NetworkX graph $G$, this gives us both our edges and nodes in a graph object $G$.
 
-The node2vec implementation have a set of parameters that it takes as well as the graph. $Node2vec(G, d, w\_l, n\_w, p, q)$ where $G$ is the graph, $d$ is the number of dimensions, $w\_l$ is the walk length, $n\_w$ is the number of walks for each node, $p$ and $q$ is the parameters used for tuning the biased sampling strategy described in \ref{Sec:node2vec_prelim}. As output we get a list of all random walks done on each node. These walks can then be fed to the Gensim Word2vec\cite{Gensim.Word2vec} implementation as our sentences used to train and embed the nodes.
+The node2vec implementation have a set of parameters that it takes as well as the graph. $Node2vec(G, d, w\_l, n\_w, p, q)$ where $G$ is the graph, $d$ is the number of dimensions, $w\_l$ is the walk length, $n\_w$ is the number of walks for each node, $p$ and $q$ is the parameters used for tuning the biased sampling strategy described in \ref{Subsec:node2vec_prelim}. As output we get a list of all random walks done on each node. These walks can then be fed to the Gensim Word2vec\cite{Gensim.Word2vec} implementation as our sentences used to train and embed the nodes.
 
-This is done by calling a $fit$ method onto the generated walks from node2vec, which parses the walks and parameters onto gensim.models.word2vec\cite{Gensim.Word2vec}. This method takes the same parameters as gensims word2vec. The parameters we are interested in is $node2vec.fit(window, size, min_count, sg)$. Where $window$ is the size of the window in the skip-gram model, $size$ is the number of features in the neural network, this is taken from dimensions $d$ in the node2vec method. $min_count$ which is the minimum number of times a word must be seen to not be ignored and $sg$ which is a boolean value for whether to use skip-gram or CBOW as the training method. As output we get a trained model, containing the word-vectors that were learned.
+This is done by calling a $fit$ method onto the generated walks from node2vec, which parses the walks and parameters onto gensim.models.word2vec\cite{Gensim.Word2vec}. This method takes the same parameters as gensims word2vec. The parameters we are interested in is $node2vec.fit(window, size, min\_count, sg)$. Where $window$ is the size of the window in the skip-gram model, $size$ is the number of features in the neural network, this is taken from dimensions $d$ in the node2vec method. $min\_count$ which is the minimum number of times a word must be seen to not be ignored and $sg$ which is a boolean value for whether to use skip-gram or CBOW as the training method. As output we get a trained model, containing the word-vectors that were learned.
 
-The model also contains a method called $most_similar$ for finding the similarity between a given word vector against all others, using cosine similarity. Which measures the cosine of the angle between two vectors in a multi-dimensional space.
+The model also contains a method called $most\_similar$ for finding the similarity between a given word vector against all others, using cosine similarity. Which measures the cosine of the angle between two vectors in a multi-dimensional space.
 
 The formular for computing the cosine similarity is shown in \ref{EQ:CosSim} where $a$ and $b$ is our vectors.
 
 \begin{equation}\label{EQ:CosSim}
-\cos\theta = 
+\cos\theta =
 \frac{\vec{a}\cdot\vec{b}}{\parallel a\parallel
-\cdot\parallel b\parallel} = 
+\cdot\parallel b\parallel} =
 \frac{\sum_1^n a_i b_i}{\sqrt{\sum_1^n a_i^2}\sqrt{\sum_1^n b_i^2}}
 \end{equation}
