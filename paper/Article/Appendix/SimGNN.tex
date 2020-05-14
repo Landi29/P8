@@ -1,7 +1,10 @@
-\subsection{SimGNN}
-Similarity Computation via Graph Neural Networks or SimGNN is an algorithm used for calculating the similarity between two graphs created by Bai et al. \cite{Bai2018}. The algorithm works by using two different strategies. The first primary strategy is to compute the similarity between two graphs based on interaction between their graph level embeddings. The second auxiliary strategy computes similarity based on two sets of node-level embeddings. The second strategy is optional and only helps to give a more accurate prediction at the cost of runtime\cite{Bai2018}.
+\subsection{SimGNN}\label{AP:SimGNN}
+One of the methods that we tried to use was Similarity Computation via Graph Neural Networks or SimGNN which is an algorithm used for calculating the similarity between two graphs created by Bai et. al. \cite{Bai2018}. The algorithm was intended to be utilized to compare two users from the MovieLens dataset but was found to be too complex when it comes to finding Graph Edit Distance (GED) due to two reasons. The first reason was due to the fact that SimGNN could take upwards of 2 days to train on the dataset. The second reason was due to all the data needed for computing the GED is avaliable prior to using SimGNN and can be used with a much simpler method to compute the GED between two graphs without needing to train SimGNN model. The remainder of this section is a explanation on how SimGNN works.
 
-Both strategies in SimGNN require that the graphs get embedded at the node level. To perform this embedding Bai et al uses a Graph Convolutional Network (GCN)\cite{Bai2018} which is created by Kipf et al. \cite{Kipf2016}. The main operation behind GCN is shown in \autoref{Eq:GCN}.
+
+The algorithm works by using two different strategies. The first primary strategy is to compute the similarity between two graphs based on interaction between their graph level embeddings. The second auxiliary strategy computes similarity based on two sets of node-level embeddings. The second strategy is optional and only helps to give a more accurate prediction at the cost of runtime\cite{Bai2018}.
+
+Both strategies in SimGNN require that the graphs get embedded at the node level. To perform this embedding Bai et. al. uses a Graph Convolutional Network (GCN)\cite{Bai2018} which is created by Kipf et. al. \cite{Kipf2016}. The main operation behind GCN in SimGNN is shown in \autoref{Eq:GCN}.
 
 
 \begin{equation}\label{Eq:GCN}
@@ -11,7 +14,8 @@ conv(u_n)=f_1(\sum_{m \in N(n)} \frac{1}{\sqrt{d_nd_m}}u_mW_1^{(l)}+b_1^{(l)})
 In \autoref{Eq:GCN} $u_n$ is a representation of a node. $N(n)$ is the set of first-order neighbors of a node $n$ plus $n$ itself, $d_n$ is the degree of node $n$ plus 1, $w_1^{(l)}$ is a weight matrix associated l-th GCN layer, $b_1^{(l)}$ is the bias and $f_1()$ is an activation function. The idea of \autoref{Eq:GCN} is that it aggregates features from the first-order neighbor of a node $n$\cite{Bai2018}.
 
 
-Once node-level embedding has been computed, the first strategy can use these to compute the graph-level embeddings. Here Bai et al present an attention mechanism that is used to figure out which nodes are more important than other and consequently should therefore receive more weights\cite{Bai2018}. The equation for the attention mechanism can be seen \autoref{Eq:Att}.
+Once node-level embedding has been computed, the first strategy can use these to compute the graph-level embeddings. Here Bai et. al. present an attention mechanism that is used to figure out which nodes are more important than others with respect to a specific similarity metric. Consequently more important nodes should therefore receive higher weights\cite{Bai2018}. The equation for the attention mechanism can be seen \autoref{Eq:Att}.
+
 
 
 \begin{equation}\label{Eq:Att}
@@ -34,3 +38,7 @@ In \autoref{Eq:NTN} $h_i$ and $h_j$ are the two graph-level embeddings we would 
 Besides computing a course comparison between the two graphs which is what was done in the first strategy, SimGNN also allows for supplementing with a finer node level comparison which is what the second strategy does.
 
 The second strategy utilizes the same node-level embedding computed by the GCN algorithm as the first strategy and then a set of pairwise interaction score are computed by $S = \sigma(U_iU_j^T)$ where $U_i$ and $U_j$ are node embedding for the two graphs. $S$ is also called a pairwise similarity matrix. In the case where one graph has less nodes than the other a set of fakes node are padded on. Once the $S$ has been computed we extract histogram features $hist(S)$. These histogram features are then normalized and concatenated with the graph-level interaction scores computed in the first strategy and then fed into a feed-forward neural network\cite{Bai2018}.
+
+
+
+

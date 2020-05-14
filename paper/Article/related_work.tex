@@ -1,5 +1,6 @@
 \section{Related work}
 \label{Related_work}
+
 In "Page Ranking Algorithms: A Survey" N. Duhan et al.\cite{4809246} explains the concept of PageRank and the evolution of the algorithm. They explain the strengths and weaknesses of each stage of the algorithm. The original PageRank algorithm is easy to implement but can take time to train. Weighted PageRank can be more precise and generally trains faster by looking at the strength of the input from and output to other pages. 
 
 "SimRank: A Measure of Structural-Context Similarity" written by G. Jeh and J. Widom\cite{10.1145/775047.775126} describes the SimRank algorithm and its uses on graphs. In SimRank two objects are similar if they are referenced by similar objects and an object is maximally similar to itself. This leads to similarity in different parts of a graph to be hard to find and uses vast amounts of memory $(O(n^2))$. SimRank is reliable in many cases of finding similar subgraphs.
@@ -13,3 +14,4 @@ The article "Counts-of-counts similarity for prediction and search in relational
 "Knowledge Graph Embedding for Link Prediction and Triplet Classification" an article by E. Shijia et al. \cite{10.1007/978-981-10-3168-7_23} combats the problem of embedding knowledge graphs where graph embedding mostly has been used on social network graphs. Their solution is to learn semantic relations between entities in a form of edge embedding, where they later would be able to ask logical questions and get one or more relations. A question could be is there a set of relations $R$ between $h$ and $t$ ($relation(h,R,t)$) or what set of tails $T$ will the relation $r$ starting at head $h$ return ($relation(h,r,T)$).
 
 In "Semi-supervised Graph Embedding for Multi-label Graph Node Classification" by K. Gao et al.\cite{10.1007/978-3-030-34223-4_35} they train a Graph Convolution Network to classify and embed subgraphs. They use a semi supervised technique because of the inconsistencies that can be found in multi-label graphs. This technique allows for unavailable relations to be represented, but since these relations are not part of the original graph, a "supervised learning only" strategy cannot be applied.
+
