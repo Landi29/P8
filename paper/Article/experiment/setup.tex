@@ -12,7 +12,7 @@ For our experiments we use the MovieLens dataset provided by grouplens\cite{Grou
 	\label{fig:graph_representation}
 \end{figure}
 
-We create a weighted graph from the data, represented as an edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U on userid and M on movieid respectively, to differentiate them. the movie mode will have the additional latent data of genre. A simple example of the graph can be seen in \autoref{fig:graph_representation}.
+We create a weighted graph from the data, represented as an edgelist. Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight. Each node in the network is either a User or a Movie represented by their Id with the addition of a U on userid and M on movieid respectively, to differentiate them. The movie node will have the additional latent data of genre. A simple example of the graph can be seen in \autoref{fig:graph_representation}.
 
 The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80\%/20\%$ split into training- and testset \cite{Ricci2015}. We would like to also add a validation set and the split will therefore be $80\%/10\%/10\%$ or 8 folds/1 fold/1 fold. The splits will be on edge level meaning that training a user will have $80\%$ of their ratings. We will in the validation and test reconstruct or predict the ratings in the set.
 
