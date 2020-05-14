@@ -418,8 +418,16 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+/Implementation/n2v_models/*
+*.json
+
+*.rar
+
+/Implementation/Experiment_data/*
+
 # Ignore all the files in the Movielens_data folder:
 /Implementation/Movielens_data/*
 # Ignore json and rar files:
 *.json
 *.rar
+
