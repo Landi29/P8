@@ -28,15 +28,17 @@ Given that $\mathcal{N}$ is the number of nodes, $\mathcal{E}$ is the number of 
   \mathcal{V} = \mathcal{N} \cdot (\mathcal{C} + \mathcal{C}) + 2 \cdot \mathcal{E} \cdot (\mathcal{C} + \mathcal{C})
 \end{equation}
 
-Entering the values from the Movielens 25 million dataset we get: $\mathcal{V} = 221588 \cdot (225 + 225) + 2 \cdot 25000095 \cdot (225 + 225) = 22599800100$
+Entering the values from the Movielens 25 million dataset we get:
+$$
+\mathcal{V} = 221588 \cdot (225 + 225) + 2 \cdot 25000095 \cdot (225 + 225) = 22599800100
+$$
 
 
-If we assume that the dictionaries contain values of type float with size 8 bytes, the two dictionaries will hold the data equal to 180,8 GB as seen in \autoref{eq:memory_use}
+If we assume that the dictionaries contain values of type float with size 8 bytes, the two dictionaries will hold the data equal to 180,8 GB as seen in:
 
-\begin{equation}
-  \label{eq:memory_use}
+$$
   \frac{22599800100 \cdot 8 \ B}{1000000000 \ B/GB} = 180,8 \ GB.
-\end{equation}
+$$
 
 We also investigated how much data Node2Vec was able to use on our server with 32 GB of RAM. Embedding the first 1 million ratings used about 10 GB of memory. Embedding the first 2 million ratings used the corresponding 20 GB of memory. If we assume a linear scale, the whole embedding process will then require almost 250 GB of RAM for the 25 million dataset.
 
