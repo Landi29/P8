@@ -1,0 +1,47 @@
+\subsection{Node2Vec and the size of input data}\label{AP:N2V}
+
+As stated in \autoref{Sec:n2v_implementation}, we also tried to embded the full Movielens dataset of 25 million ratings, with Node2Vec, but experienced that all the main memory of our server was allocated to the process and we ran out of memory. We narrowed the issue down to the call of the function  \textit{preprocess\_transition\_probs} (\textit{ptp}) from the implementation based on the paper \cite{Node2vec}.
+The function aims to create a preliminary transition probability matrix. The dependence on this matrix however, makes Node2Vec difficult to use with big datasets that have tens of millions of edges.
+In order to test how much memory that would be necessary in order to embed the Movielens dataset with 25 million ratings, we have analyzed the \textit{ptp} function of the Node2Vec library and calculated memory usage estimates of the algorithm.
+In the following, we will discuss Node2Vec's use of networkx and the \textit{ptp} function.
+% The results:
+The first bottleneck of the Node2Vec library when it comes to very large graphs, is its use of the networkx library and the networkx Graph datastructure.
+The class Graph provided by networkx is in many ways very useful and provides several tools for creating and working with different types of graphs. Furthermore, networkx tries to speed up common graph traversal tasks and calculations by adding metadata to the Graph object in memory, thus saving on intermediate calculations.
+This approach however, becomes problematic when working with large graphs consisting of millions of edges.
+The size of our data file, graph.csv, is about 460 megabytes. But when loading it into a networkx Graph, the corresponding Python process uses about 15 GB of main memory in order to represent the same graph.
+This results in an increase of memory usage with a scale of 32, when loading the graph from disc to main memory.
+
+A solution to this problem could be to represent the graph as a sparse adjacency matrix in a dictionary like structure as shown in \autoref{table:sparse_matrix_1}.
+The weights between nodes could then be saved in a separate dictionary structure as in \autoref{table:sparse_matrix_weights}.
+An even more compact solution could be to store the weights in the adjacency matrix, as in \autoref{table:sparse_matrix_2}, where values in the "Connects to" column are tuples of the form $(Node, Weight)$.
+
+% Analysis of the preprocess_transition_probs() function:
+The memory allocation of the \textit{ptp} function mainly takes place in two loops, one for each node and one for each edge.
+In these loops, values are stored to two corresponding dictionaries: alias\_nodes and alias\_edges.
+The alias\_nodes dictionary contains, for each node $N_i$ in the set of nodes $N$, 2 sets of the size corresponding to the amount of neighbors of $N_i$.
+Given that the graph is undirected, the alias\_edges dictionary contains, for each edge, two entries. Each of these entries then contains 2 sets with the size corresponding to the amount of neighbors for the source node in the edge.
+
+Given that $\mathcal{N}$ is the number of nodes, $\mathcal{E}$ is the number of edges and $\mathcal{C}$ is the average number of connections, we can setup an equation for calculating the amount of values $\mathcal{V}$ stored in alias\_nodes and alias\_edges, as seen in \autoref{eq:ptp}
+
+\begin{equation}
+  \label{eq:ptp}
+  \mathcal{V} = \mathcal{N} \cdot (\mathcal{C} + \mathcal{C}) + 2 \cdot \mathcal{E} \cdot (\mathcal{C} + \mathcal{C})
+\end{equation}
+
+Entering the values from the Movielens 25 million dataset we get:
+$$
+\mathcal{V} = 221588 \cdot (225 + 225) + 2 \cdot 25000095 \cdot (225 + 225) = 22599800100
+$$
+
+
+If we assume that the dictionaries contain values of type float with size 8 bytes, the two dictionaries will hold the data equal to 180.8 GB calculated as such:
+
+$$
+  \frac{22599800100 \cdot 8 \ B}{1000000000 \ B/GB} = 180.8 \ GB.
+$$
+
+We also investigated how much data Node2Vec was able to use on our server with 32 GB of RAM. Embedding the first 1 million ratings used about 10 GB of memory. Embedding the first 2 million ratings used the corresponding 20 GB of memory. If we assume a linear scale, the whole embedding process will then require almost 250 GB of RAM for the 25 million dataset.
+
+Given these results, we can conclude that the Node2Vec framework performs well on small to medium size graphs, but is not a feasible option for large graphs.
+
+\input{Article/Appendix/matrix_tables.tex}
