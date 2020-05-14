@@ -419,8 +419,13 @@ dmypy.json
 .pytype/
 
 /paper/Article/Appendix/Memory_usage.md
+
+/Implementation/n2v_models/*
+/Implementation/Experiment_data/*
+
 # Ignore all the files in the Movielens_data folder:
 /Implementation/Movielens_data/*
+
 # Ignore json and rar files:
 *.json
 *.rar
