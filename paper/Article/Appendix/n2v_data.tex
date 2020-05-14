@@ -1,6 +1,6 @@
 \subsection{Node2Vec and the size of input data}\label{AP:N2V}
 
-As stated in \autoref{Sec:n2v_implementation}, we also tried to embded the full Movielens dataset of 25 million ratings, with Node2Vec, but experienced that all the main memory of our server was allocated to the process and we ran out of memory. We narrowed the issue down to the call of the function  \textit{preprocess\_transition\_probs} (\textit{ptp}) from the implementation based on the paper \cite{Node2vec}.
+As stated in \autoref{Subsec:n2v_implementation}, we also tried to embded the full Movielens dataset of 25 million ratings, with Node2Vec, but experienced that all the main memory of our server was allocated to the process and we ran out of memory. We narrowed the issue down to the call of the function  \textit{preprocess\_transition\_probs} (\textit{ptp}) from the implementation based on the paper \cite{Node2vec}.
 The function aims to create a preliminary transition probability matrix. The dependence on this matrix however, makes Node2Vec difficult to use with big datasets that have tens of millions of edges.
 In order to test how much memory that would be necessary in order to embed the Movielens dataset with 25 million ratings, we have analyzed the \textit{ptp} function of the Node2Vec library and calculated memory usage estimates of the algorithm.
 In the following, we will discuss Node2Vec's use of networkx and the \textit{ptp} function.

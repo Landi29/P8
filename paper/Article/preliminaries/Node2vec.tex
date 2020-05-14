@@ -1,4 +1,4 @@
-\subsection{Node2vec}\label{Sec:node2vec_prelim}
+\subsection{Node2vec}\label{Subsec:node2vec_prelim}
 In this paper we will look at graph embedding as a way to find structural similarity between nodes in a graph, specifically node embedding. This is done using the implementation in “Node2vec: Scalable Feature Learning for Networks” by Aditya Grover and Jure Leskovec \cite{Node2vec}. They present an algorithm called node2vec for efficient feature learning for nodes in networks. This is done by mapping nodes to a vector representation of their features, that try to preserve local networks of neighborhood nodes and communities, using a random walk approach to generate a nodes neighborhood network.
 
 Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes.

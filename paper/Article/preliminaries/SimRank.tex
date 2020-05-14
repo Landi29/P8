@@ -1,5 +1,5 @@
 \subsection{SimRank}
-\label{SimRank}
+\label{Subsec:SimRank}
 A popular algorithm for computing the similarity between substructures in graphs is SimRank, created by Jeh et al.\cite{10.1145/775047.775126}. The intuition behind the SimRank algorithm is as the author states in the paper \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}. The algorithm assigns a similarity score between 0 and 1 based on how similar two objects are. The basic SimRank equation can be seen below:
 \begin{definition}[SimRank]\label{def:simrank} Given two objects $a$ and $b$ as input we compute the similarity $s(a,b) \in [0,1]$ via the following recursive equation:
 	\begin{equation}\label{eq:basic_simrank}
