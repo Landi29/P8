@@ -79,6 +79,15 @@ class TET:
                     haschild = True
                     break             
         return haschild
+    
+    def getchildrenlike(self, movie):
+        children = []
+        for child in self._children:
+            treegenres = list(map(lambda x: x.getroot(), movie.getchildren()))
+            selfgenres = list(map(lambda x: x.getroot(), child.getchildren()))
+            if selfgenres == treegenres:
+                children.append(child)
+        return children
                 
 
     def count_children(self):

@@ -50,15 +50,26 @@ def knn(user, others, items, compare_model, extradata, user_database, k=4, filte
     else:
         print("missing method knn classification")
 
-    
+    if len(compare_model.split('_')) == 3 and compare_model.split('_')[2] == "2":
+        predictions = {}
+        for item in items:
+            subtet = construct_child(item, 'none', moviedict(Paths.MOVIE_NODES_100k_PATH))
+            count = 0
+            best_k_tree = []
+            for sim in sims:
+                if extradata[sim[0]].haschild(subtet):
+                    best_k_tree.append([extradata[sim[0]], sim[1]])
+                    count += 1
+                if count >= k:
+                    break
+            predictions[item] = predtree(extradata[user], best_k_tree, user_database, subtet, filterv)
+        return predictions
 
     predictions = {}
     for item in items:
-        #subtet = construct_child(item, 'none', moviedict(Paths.MOVIE_NODES_PATH))
         count = 0
         best_k = []
         for sim in sims:
-            #bob = extradata[sim[0]].haschild(subtet)
             if user_database[sim[0]].get(item, False):
                 best_k.append(sim)
                 count += 1
@@ -83,7 +94,7 @@ def tet_compare_method(user, other, method):
         returnmethod = compare_tet.graph_edit_distance(user, other)
     elif method == "distancev2_tet":
         returnmethod = compare_tet.distance_v2_start(user, other)
-    elif method == "distancev3_tet":
+    elif method.split('_')[0] == "distancev3":
         returnmethod = compare_tet.distance_v3(user, other)
     else:
         print("missing method for tet compareson")
@@ -140,6 +151,19 @@ def pred(user, others, user_database, item=None, filtervalue=None):
 
     return round(pred_rating, 2)
 
+def predtree(user, others, user_database, item=None, filtervalue=None):
+    average_rating_user = average_tree_rating(user)
+
+    others_average_rating = {}
+    for other in others:
+        others_average_rating[other[0].getroot()] = average_tree_rating(other[0])
+ 
+    sum_simularity = tree_sum_similarities(others)
+    pred_rating = average_rating_user + tree_rating_influence(others, item, sum_simularity,
+                                                            user_database, others_average_rating)
+
+    return torating(round(pred_rating, 2))
+
 def root_mean_squre_error(result_predictions, expected_predictions):
     '''
     description: this function finds the error beween the expected and the predicted.
@@ -152,8 +176,12 @@ def root_mean_squre_error(result_predictions, expected_predictions):
     for user in expected_predictions:
         if result_predictions.get(user, False):
             for expected_prediction in expected_predictions[user]:
-                rmse += (result_predictions[user].get(expected_prediction, 0) -
-                         expected_predictions[user][expected_prediction])**2
+                if isinstance(result_predictions[user].get(expected_prediction, 0), str):
+                    rmse += (tree_rating_enummerater(result_predictions[user].get(expected_prediction, 'none')) -
+                                tree_rating_enummerater(Otorating(expected_predictions[user][expected_prediction])))**2
+                else:
+                    rmse += (result_predictions[user].get(expected_prediction, 0) -
+                                expected_predictions[user][expected_prediction])**2
                 total += 1
     return math.sqrt(rmse/total)
 
@@ -164,6 +192,37 @@ def average_rating(user):
     return: the users average rating.
     '''
     return sum(user.values()) / len(user)
+
+def average_tree_rating(user):
+    user = list(map(lambda x: x.getroot(), user.getchildren()))
+    user = list(map(tree_rating_enummerater, user))
+    return sum(user) / len(user)
+
+def tree_rating_enummerater(rating):
+    if rating == "low":
+        return 1
+    elif rating == "mid":
+        return 2
+    elif rating == "high":
+        return 3
+    else:
+        return 0
+
+def torating(prediction):
+    if prediction <= 1:
+        return 'low'
+    elif prediction <= 2:
+        return 'mid'
+    else:
+        return 'high'
+
+def Otorating(prediction):
+    if float(prediction) < 2.5:
+        return "low"
+    elif float(prediction) > 3.5:
+        return "high"
+    else:
+        return "mid"
 
 def find_and_add_differences(list1, dict1, rlist):
     '''
@@ -192,6 +251,12 @@ def sum_similarities(similarities, film, database):
             rsum += sim[1]
     return rsum
 
+def tree_sum_similarities(similarities):
+    rsum = 0
+    for sim in similarities:
+        rsum += sim[1]
+    return rsum
+
 def rating_influence(others, movie, sum_simularity, database, others_average_rating):
     '''
     description: this method calculates the influence of the neighbours to a users rating.
@@ -206,6 +271,15 @@ def rating_influence(others, movie, sum_simularity, database, others_average_rat
         if database[other[0]].get(movie, False):
             influence += (other[1] / sum_simularity) * (database[other[0]][movie] -
                                                         others_average_rating[other[0]])
+    return influence
+
+def tree_rating_influence(others, movie, sum_simularity, database, others_average_rating):
+    influence = 0
+    for other in others:
+        part = []
+        for tree in other[0].getchildrenlike(movie):
+            part.append(tree_rating_enummerater(tree.getroot()) - others_average_rating[other[0].getroot()])
+        influence += (other[1] / sum_simularity) * (sum(part)/len(part))
     return influence
 
 def csvuserdatabase(load_path):
@@ -466,6 +540,61 @@ def tet_experiment():
             file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
+            
+def tet_experiment2():
+    '''
+    description: runs 10fold experimant with tet comparison
+    '''
+    with open("tet_experiment2.csv", "w", newline='', encoding='utf-8') as write:
+        file_writer = csv.writer(write)
+        movie_database = moviedict(Paths.MOVIE_NODES_100k_PATH)
+        folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
+                 'fold6', 'fold7', 'fold8', 'fold9']
+        file_writer.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        num2 = 7
+
+        for i in range(len(folds)):
+            training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                       fold_split_reconstruction(folds, i, 8))
+            validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                               fold_split_reconstruction(folds,
+                                                                                         i+8, 1))[0]
+            test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                         fold_split_reconstruction(folds,
+                                                                                   i+9, 1))[0]
+
+            tets = build_tets(edgelist, movie_database, Paths.USER_NODES_100k_PATH)
+
+            save_tets(tets, Paths.TETS_PATH / Path('TET_' + str(i) + '_' + str(num2) + '_100k.csv'))
+
+            #TET_CLASSIFIER = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
+            #                                      data=list(TETs.values()))
+            #pickle.dump(TET_CLASSIFIER, open("TETmt_9_6_100k.p", "wb"))
+
+            # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
+            comparison_method = "distancev3_tet_2"
+
+            result_predictions = {}
+            start = datetime.now()
+            for person in tqdm(list(training_data)):
+                wish_to_predict = list(validation_expected_predictions[person]) + \
+                                  list(test_expected_predictions[person])
+                result_predictions[person] = knn(person, list(training_data), wish_to_predict,
+                                                 comparison_method, tets, training_data, k=10)
+            finished = datetime.now()
+
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+            print(i)
+            print('validation root mean square error: ' + str(v_error))
+            print('test root mean square error: ' + str(t_error))
+            print('experiment time: ' + str(finished - start))
+
+            if num2 >= len(folds):
+                num2 = 0
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
+                                  v_error, t_error, finished - start])
+            num2 += 1
 
 if __name__ == "__main__":
     #print('start base')
@@ -475,5 +604,6 @@ if __name__ == "__main__":
     #print('start N2V')
     #node2vec_experiment()
     print('start TET')
-    tet_experiment()
+    #tet_experiment()
+    tet_experiment2()
     print('done')
