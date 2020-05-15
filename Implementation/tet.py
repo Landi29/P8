@@ -65,6 +65,22 @@ class TET:
         string += ']'
         return string
 
+    def haschild(self, tree):
+        haschild = False
+        for child in self._children:
+            if child.isleaf():
+                treegenres = list(map(lambda x: x.getroot(), tree.getchildren()))
+                selfgenres = list(map(lambda x: x.getroot(), self.getchildren()))
+                if selfgenres == treegenres:
+                    haschild = True
+                break
+            else:
+                if child.haschild(tree):
+                    haschild = True
+                    break             
+        return haschild
+                
+
     def count_children(self):
         '''
         counts the amount of each subtet returning a dictionary

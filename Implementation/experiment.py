@@ -11,8 +11,6 @@ import compare_tet
 import metric_tree
 import Paths
 
-
-
 def knn(user, others, items, compare_model, extradata, user_database, k=4, filterv=None):
     '''
     description: this is a simple implementation of knn finding the k nearest neighbors
@@ -52,11 +50,15 @@ def knn(user, others, items, compare_model, extradata, user_database, k=4, filte
     else:
         print("missing method knn classification")
 
+    
+
     predictions = {}
     for item in items:
+        #subtet = construct_child(item, 'none', moviedict(Paths.MOVIE_NODES_PATH))
         count = 0
         best_k = []
         for sim in sims:
+            #bob = extradata[sim[0]].haschild(subtet)
             if user_database[sim[0]].get(item, False):
                 best_k.append(sim)
                 count += 1
@@ -466,12 +468,12 @@ def tet_experiment():
             num2 += 1
 
 if __name__ == "__main__":
-    print('start base')
-    base_experiment()
-    print('start brute')
-    brutefoce_experiment()
-    print('start N2V')
-    node2vec_experiment()
+    #print('start base')
+    #base_experiment()
+    #print('start brute')
+    #brutefoce_experiment()
+    #print('start N2V')
+    #node2vec_experiment()
     print('start TET')
     tet_experiment()
     print('done')
