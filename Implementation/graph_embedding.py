@@ -81,8 +81,8 @@ if __name__ == "__main__":
         print("Iteration {} start at: {}".format(str(iteration),
                                                  datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n"))
 
-        OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / (file_data[0] + '_' + str(iteration)
-                    + '.pkl')
+        OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / (file_data[0] + '_' + 'sg' + '_'
+                    + str(iteration) + '.pkl')
         GRAPH = create_graph_from_folds(filepath, list_of_folds)
         print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
         # Learn embeddings
         print("Learning embeddings:")
-        N2V_MODEL = GRAPH_N2V.fit(window=10, min_count=1)
+        N2V_MODEL = GRAPH_N2V.fit(window=10, min_count=1, sg = 1)
 
         with open(OUTPUT_PATH, "wb") as disc_file:
             pickle.dump(N2V_MODEL, disc_file)
