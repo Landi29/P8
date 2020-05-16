@@ -81,7 +81,7 @@ if __name__ == "__main__":
         print("Iteration {} start at: {}".format(str(iteration),
                                                  datetime.now().strftime("%d-%m-%Y %H:%M:%S") + "\n"))
 
-        OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH / (file_data[0] + '_' + 'sg' + '_'
+        OUTPUT_PATH = Paths.EXPERIMENT_DATA_OUTPUT_PATH_SG / (file_data[0] + '_' + 'sg' + '_'
                     + str(iteration) + '.pkl')
         GRAPH = create_graph_from_folds(filepath, list_of_folds)
         print_graph_information(GRAPH.number_of_nodes(), GRAPH.number_of_edges())

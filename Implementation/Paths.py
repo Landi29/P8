@@ -35,3 +35,4 @@ MOVIE_NODES_PATH_1M = pathlib.Path.cwd() / 'Movielens_data' / 'Movie_nodes_1m.cs
 FOLDS_JSON = pathlib.Path.cwd() / 'Movielens_data' / 'Folds_1m.json'
 EXPERIMENT_DATA_PATH = pathlib.Path.cwd() / 'Experiment_data'
 EXPERIMENT_DATA_OUTPUT_PATH = pathlib.Path.cwd() / 'Experiment_data' / 'Output'
+EXPERIMENT_DATA_OUTPUT_PATH_SG = pathlib.Path.cwd() / 'Experiment_data' / 'Output' / 'with_sg'
