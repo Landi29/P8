@@ -5,6 +5,8 @@ or can be used throughout the project
 
 import pathlib
 
+FOLDS_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'Folds_100k.json'
+SIMGNN_DATA_PATH = pathlib.Path.cwd() / 'Movielens_data' / 'SimGNN'
 RATINGPATH = pathlib.Path.cwd() / 'Movielens_data' / 'ratings.csv'
 MOVIEPATH = pathlib.Path.cwd() / 'Movielens_data' / 'movies.csv'
 MOVIELINKPATH = pathlib.Path.cwd() / 'Movielens_data' / 'links.csv'

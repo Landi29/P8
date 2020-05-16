@@ -1,4 +1,4 @@
-\subsection{Node2vec}
+\subsection{Node2vec}\label{Subsec:node2vec_prelim}
 In this paper we will look at graph embedding as a way to find structural similarity between nodes in a graph, specifically node embedding. This is done using the implementation in “Node2vec: Scalable Feature Learning for Networks” by Aditya Grover and Jure Leskovec \cite{Node2vec}. They present an algorithm called node2vec for efficient feature learning for nodes in networks. This is done by mapping nodes to a vector representation of their features, that try to preserve local networks of neighborhood nodes and communities, using a random walk approach to generate a nodes neighborhood network.
 
 Node2vec makes use of the word2vec skip-gram model to train a model for embedding the nodes.
@@ -21,16 +21,16 @@ First a vocabulary $V$ is created, that consist of all unique words found in the
   \label{fig:skip-gram_example}
 \end{figure}
 
-Once trained is done, instead of using the model for further calculations, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our embedding vectors. Giving us $V$ vectors of size $d$.
+Once training is done, instead of using the model for further calculations, the model is discarded and only the weights of the hidden layer is kept. These weights are then what is used as our embedding vectors. Giving us $V$ vectors of size $d$.
 
 
 In article \cite{Node2vec} feature learning is explained in further details where for every source node $u \in V$, $N_s (u) \subset V$ is defined as a network neighborhood of a node $u$, generated through a sampling strategy $S$.
 
-Feature learning methods based on the skip-gram model were developed within the context of natural languages. Text have a linear nature in form of sentences and the notion of a neighborhood can in that case easily be defined by sliding the window across the sentence. Networks are not linear and therefor a richer notion of a nodes neighborhood is needed. For this they propose a random walk, that samples different neighborhoods $N_s (u)$ for a given source node $u$, and can have very different structures depending on the sampling strategy $S$ used.
+Feature learning methods based on the skip-gram model were developed within the context of natural languages. Text have a linear nature in form of sentences and the notion of a neighborhood can in that case easily be defined by sliding the window across the sentence. Networks are not linear and therefore a richer notion of a nodes neighborhood is needed. For this they propose a random walk, that samples different neighborhoods $N_s (u)$ for a given source node $u$, and can have very different structures depending on the sampling strategy $S$ used.
 
 Thus given a graph and a source node, we want to sample its neighborhood, the size of the neighborhood set $N_s(u)$ is constrained to $k$ nodes and will sample multiple neighborhood sets for a single node $u$ using a sampling strategy $S$.
 
-There is in general two sampling-strategies for generating neighborhood sets \cite{Node2vec}. The first one is a Breadth-first sampling (BFS) strategy, where a nodes neighborhood is restricted to nodes which are immediate neighbors to the node, finding the immediate community that the node is part of. This gives us a microscopic view of the neighborhood and is therefor good for finding structural equivalence.
+There is in general two sampling-strategies for generating neighborhood sets \cite{Node2vec}. The first one is a Breadth-first sampling (BFS) strategy, where a nodes neighborhood is restricted to nodes which are immediate neighbors to the node, finding the immediate community that the node is part of. This gives us a microscopic view of the neighborhood and is therefore good for finding structural equivalence.
 
 The second one is Depth-first sampling (DFS) strategy, where a nodes neighborhood consist of nodes sampled at an increasing distance from the node, giving a bigger view of the structure and its differences. This gives us a macro-view of the neighborhood, which is essential for inferring communities based on homophily.
 
@@ -76,4 +76,4 @@ $p$ is the return parameter, and controls the likelihood of immediately revisiti
 
 $q$ is the In-out parameter, and allows the search to differentiate between inward and outward nodes. A high value will keep the walker more biased towards a starting node $u$, obtaining a local view. Whereas a low value will make the walker more inclined to visit nodes further away from $u$, encouraging outward exploration.
 
-Using the node2vec strategy, the transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker then traverses the network, sampling a chosen amount of neighborhood(s) $N_s(u)$. These neighborhoods acts as the sentence given to the word2vec skip-gram model, learning the probabilities for the nodes being related to eachother and learning the embeddings for each node.
+Using the node2vec strategy, the transition probabilities for a network is calculated for each node depending on $p$ and $q$. A random walker then traverses the network, sampling a chosen amount of neighborhood(s) $N_s(u)$. These neighborhoods acts as the sentence given to the word2vec skip-gram model, learning the probabilities for the nodes being related to each other and learning the embeddings for each node.

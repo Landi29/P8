@@ -1,11 +1,11 @@
-\subsection{TET Features}
+\subsection{TET Features}\label{Subsec:TET_features}
 % Indledning:
 
 
 For each $u$ in the set of all users $U$, we build a TET $T_u$. The root of TET $T_u$ is its corresponding user $u$.
 A node $n$ is a user-node in the graph $G$ if $User(n) = True$.
 
-The feature User is in the boolean domain meaning that this feature will be either true or false(\autoref{Eq:Userdomain}).
+The feature User is in the boolean domain meaning that this feature will be either true or false (\autoref{Eq:Userdomain}).
 \begin{equation}\label{Eq:Userdomain}
   User(n)\rightarrow \{True, False\}
 \end{equation}
@@ -18,7 +18,7 @@ For each rating, we thus have that:
     Rating(u, m) \rightarrow \{Low, Mid, High\}
 \end{equation}
 Note that \autoref{Eq:Ratingdomain} is the case for every rating in $G$.
-Each genre in the dataset is a feature in the boolean domain. These features will return a value when given a movie $m$, returning true if $m$ is categorized as the genre, and false otherwise (\autoref{Eq:genredomain}).
+Each genre in the dataset is a feature in the boolean domain. These features will return a value when given a movie $m$, returning true if $m$ is categorized as the genre, and false otherwise as shown in \autoref{Eq:genredomain}.
 \begin{equation}\label{Eq:genredomain}
 \begin{aligned}
 Action(m)& \rightarrow \{True, False\} \\
@@ -28,12 +28,12 @@ Western(m)& \rightarrow \{True, False\} \\
 \end{aligned}
 \end{equation}
 
-The TETs constructed from the movielens dataset will be represented with the structure shown in \autoref{Eq:TETstructure}.
+The TETs constructed from the MovieLens dataset will be represented with the structure shown in \autoref{Eq:TETstructure}.
 \begin{equation}\label{Eq:TETstructure}
 User(u) \stackrel{m}{\longrightarrow} Rating(u,m) \longrightarrow Genre(m)
 \end{equation}
 
-The TET will represent a neighbourhood of the graph with a User as the root.
+The TET will represent a neighborhood of the graph with a User as the root.
 
 The sub-trees are themselves TETs as shown in \autoref{Eq:subtetstructure}.
 \begin{equation}\label{Eq:subtetstructure}
@@ -45,14 +45,14 @@ Rating(u,m)& \longrightarrow Western(m)
 \end{aligned}
 \end{equation}
 
-Since the count of occurrences of \textit{false} values is often semantically not very meaningful, as stated in \cite{jaeger2019counts}, and also are of little relevance in our case, we only consider \textit{true} values. The tree will therefore end up having the form seen in \autoref{fig:Tet_example}
+Since the count of occurrences of \textit{False} values is often semantically not very meaningful, as stated in \cite{jaeger2019counts}, and also are of little relevance in our case, we only consider \textit{True} values. The tree will therefore end up having the form seen in \autoref{fig:Tet_example}
 
 \begin{figure}[H]
     \centering
     \begin{adjustbox}{width=0.5\textwidth}
     \input{Article/figures/TET_ilustration.tex}
     \end{adjustbox}
-    \caption{caption}
+    \caption{TET Tree example}
     \label{fig:Tet_example}
 \end{figure}
 
@@ -70,7 +70,7 @@ The tree can also be represented as \autoref{Eq:TETvector}
 \end{equation}
 
 % Where is the action and horror movie?
-This tells that the tree $T_u$ has 2 movies with low rating and the genres action, casual, and romance, a movie rated low that has action and horror. there is a movie rated in the mid range with genres comedy and romance, and a movie that is highly rated with genres adventure and romance.
+This tells that the tree $T_u$ has 2 movies with low rating and the genres action, casual, and romance. There is a movie rated in the mid range with genres comedy and romance, and a movie that is highly rated with genres adventure and romance.
 
 With this structure we have a representation of user preferences.
 The structures can be compared to find similarities and thereby make more trustworthy recommendations for a user.
