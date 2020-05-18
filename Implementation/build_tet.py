@@ -94,7 +94,6 @@ def build_tets(edges, vmoviedict, user_nodes_path):
     '''
     tets = {}
     user_dict = userdict(user_nodes_path)
-    print("Starting to built TETs")
     for edge in edges:
         if isinstance(edge, str): 
             edge = edge.strip().split(',')

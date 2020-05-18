@@ -191,8 +191,11 @@ def average_rating(user):
     parameters: user is a dictionatty of movierations for a user.
     return: the users average rating.
     '''
-    return sum(user.values()) / len(user)
-
+    try:
+        return sum(user.values()) / len(user)
+    except:
+        return 3
+        
 def average_tree_rating(user):
     user = list(map(lambda x: x.getroot(), user.getchildren()))
     user = list(map(tree_rating_enummerater, user))
@@ -554,7 +557,7 @@ def tet_senario_experiment():
         num2 = 7
 
         for i in range(len(folds)):
-            training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH,
+            master_training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH,
                                                        fold_split_reconstruction(folds, i, 8))
             validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
                                                                fold_split_reconstruction(folds,
@@ -562,16 +565,6 @@ def tet_senario_experiment():
             test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
                                                          fold_split_reconstruction(folds,
                                                                                    i+9, 1))[0]
-
-            tets = build_tets(edgelist, movie_database, Paths.USER_NODES_100k_PATH)
-
-            wish_to_predict = list(validation_expected_predictions['U:1']) + \
-                              list(test_expected_predictions['U:1'])
-            
-            for item in wish_to_predict:
-                training_data = remove_relation(training_data, item)
-
-            save_tets(tets, Paths.TETS_PATH / Path('TET_' + str(i) + '_' + str(num2) + '_100k_senario.csv'))
 
             #TET_CLASSIFIER = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
             #                                      data=list(TETs.values()))
@@ -581,25 +574,33 @@ def tet_senario_experiment():
             comparison_method = "distancev3_tet_2"
 
             result_predictions = {}
-            start = datetime.now()
-            for person in tqdm(list({'U:1':training_data['U:1']})):
+            totaltime = 0
+
+            for person in tqdm(master_training_data):
                 wish_to_predict = list(validation_expected_predictions[person]) + \
-                                  list(test_expected_predictions[person])
+                              list(test_expected_predictions[person])
+            
+                for item in wish_to_predict:
+                    training_data = remove_relation(master_training_data, item)
+
+                tets = build_tets(edgelist, movie_database, Paths.USER_NODES_100k_PATH)
+                
+                start = datetime.now()
                 result_predictions[person] = knn(person, list(training_data), wish_to_predict,
                                                  comparison_method, tets, training_data, k=10)
-            finished = datetime.now()
+            totaltime += datetime.now() - start
 
-            v_error = root_mean_squre_error({'U:1':result_predictions['U:1']}, {'U:1':validation_expected_predictions['U:1']})
-            t_error = root_mean_squre_error({'U:1':result_predictions['U:1']}, {'U:1':test_expected_predictions['U:1']})
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
             print(i)
             print('validation root mean square error: ' + str(v_error))
             print('test root mean square error: ' + str(t_error))
-            print('experiment time: ' + str(finished - start))
+            print('experiment time: ' + str(totaltime))
 
             if num2 >= len(folds):
                 num2 = 0
             file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
-                                  v_error, t_error, finished - start])
+                                  v_error, t_error, totaltime])
             num2 += 1
 
 def node2vec_senario_experiment():
@@ -613,7 +614,7 @@ def node2vec_senario_experiment():
         file_writer.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
         num2 = 7
         for i in range(len(folds)):
-            training_data = jsonuserdatabase(Paths.Folds_100k_PATH,
+            master_training_data = jsonuserdatabase(Paths.Folds_100k_PATH,
                                              fold_split_reconstruction(folds, i, 8))[0]
             
             validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
@@ -622,11 +623,7 @@ def node2vec_senario_experiment():
             test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
                                                          fold_split_reconstruction(folds,
                                                                                    i+9, 1))[0]
-            wish_to_predict = list(validation_expected_predictions['U:1']) + \
-                              list(test_expected_predictions['U:1'])
             
-            for item in wish_to_predict:
-                training_data = remove_relation(training_data, item)
             
             with open(Paths.N2V_MODELS_PATH / Path('Folds_100k_' + str(i+1) + '.pkl'), 'rb') as modelfile:
                 n2v_model = pickle.load(modelfile)
@@ -636,15 +633,19 @@ def node2vec_senario_experiment():
 
             result_predictions = {}
             start = datetime.now()
-            for person in tqdm(list({'U:1':training_data['U:1']})):
+            for person in tqdm(master_training_data):
                 wish_to_predict = list(validation_expected_predictions[person]) + \
-                                  list(test_expected_predictions[person])
+                              list(test_expected_predictions[person])
+            
+                for item in wish_to_predict:
+                    training_data = remove_relation(master_training_data, item)
+
                 result_predictions[person] = knn(person, list(training_data), wish_to_predict,
                                                  comparison_method, n2v_model, training_data, k=10)
             finished = datetime.now()
 
-            v_error = root_mean_squre_error({'U:1':result_predictions['U:1']}, {'U:1':validation_expected_predictions['U:1']})
-            t_error = root_mean_squre_error({'U:1':result_predictions['U:1']}, {'U:1':test_expected_predictions['U:1']})
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
             print(i)
             print('validation root mean square error: ' + str(v_error))
             print('test root mean square error: ' + str(t_error))
