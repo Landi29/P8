@@ -1,10 +1,12 @@
 \subsection{Brute force comparison}\label{Subsec:brute_force}
 Besides comparing node2vec and TET's we also create a simple brute force comparison method that will be competing with the two other methods.
 One of the most simple methods of comparing users in data set is to compare all relations one by one. 
-In an unweighted graph if there was a relation from a user $A$ to a product $p$ and a relation from user $B$ to $p$ there would be a distance $d$ of 0 between these users assuming that this is the only relation user A and B has. 
+In an unweighted graph if there was a relation from a user $A$ to a product $p$ and a relation from user $B$ to $p$ there would be a distance $d$ of 0 between these users assuming that this is the only relation user A and B has.
 A weighted graph the distance would also depend on the relation weight, if $A$ has a relation to $p$ with a weight of 2 and $B$ with a relation to $p$ with a weight of 3, using Manhattan distance there would a distance of 1 between $A$ and $B$. 
-This can then be extended to all product relations $P$ as seen in \autoref{eq:manhat}
+This can then be extended to all product relations $R$ as seen in \autoref{eq:manhat}
 
 \begin{equation}\label{eq:manhat}
-	d(A,B) = \sum_{i=1}^{P} |A_i - B_i|
+	d(A,B) = \sum_{i=1}^{R} |A_i - B_i|
 \end{equation}
+
+In \autoref{eq:manhat} $A_i$ and $B_i$ are a relation $i \in R$ to a product $p \in P$ where $R$ is the set of all relations and $P$ is the set og all products.
