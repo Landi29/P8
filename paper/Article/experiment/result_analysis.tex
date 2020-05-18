@@ -57,7 +57,7 @@ A scenario where the TETs structure should be better is with the addition of new
 We made this scenario by artificially removing any relation to all the movies in verification and test sets from all users in the traning set, and making the predictions for a single person.
 The error scores will because of this be far more fluctuating.
 We ran the scenario on the TETs and Node2vec.
-The Node2vec's predictions should default to the users average rating because there are no similar relations to make predictions from.
+The Node2vec's predictions should default to the users average rating because there are no other users that has rated the movies, we do not have their input to the prediction.
 
 \begin{figure}[H]
 	\centering
