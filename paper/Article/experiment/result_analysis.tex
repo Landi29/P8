@@ -54,7 +54,7 @@ This shows potential in the framework and it might be better with more descripti
 Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that look like the movie or product you try to predict a recommendation for.
 
 A scenario where the TETs structure should be better is with the addition of new items in the database.
-We made this scenario by artificially removing any relation to all the movies in verification and test sets from all users in the traning set, and making the predictions for a single person.
+We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set, and making the predictions for a single person.
 The error scores will because of this be far more fluctuating.
 We ran the scenario on the TETs and Node2vec.
 The Node2vec's predictions should default to the users average rating because there are no other users that has rated the movies, we do not have their input to the prediction.
