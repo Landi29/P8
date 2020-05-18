@@ -11,15 +11,14 @@
 \node[node_style] (v6) at (2,0) {M:3};
 \node[node_style] (v7) at (2,-1) {M:4};
 \node[node_style] (v8) at (2,-2) {M:5};
+\draw[edge_style]  (v1) edge node[above]{1} (v4);
+\draw[edge_style]  (v1) edge node[above left]{4} (v6);
+\draw[edge_style]  (v1) edge node[above left]{3} (v7);
+\draw[edge_style]  (v1) edge node[above]{5} (v8);
+\draw[edge_style]  (v2) edge node[above]{1} (v4);
 
-\draw[edge_style]  (v1) edge node{1} (v4);
-\draw[edge_style]  (v1) edge node{4} (v6);
-\draw[edge_style]  (v1) edge node{3} (v7);
-\draw[edge_style]  (v1) edge node{5} (v8);
-\draw[edge_style]  (v2) edge node{1} (v4);
-
-\draw[edge_style]  (v2) edge node{5} (v8);
-\draw[edge_style]  (v3) edge node{2} (v4);
-\draw[edge_style]  (v3) edge node{4} (v5);
-\draw[edge_style]  (v3) edge node{3} (v7);
+\draw[edge_style]  (v2) edge node[above left]{5} (v8);
+\draw[edge_style]  (v3) edge node[above right]{2} (v4);
+\draw[edge_style]  (v3) edge node[above right]{4} (v5);
+\draw[edge_style]  (v3) edge node[below left]{3} (v7);
 \end{tikzpicture}
