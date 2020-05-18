@@ -8,8 +8,8 @@ In the following, we will discuss Node2Vec's use of networkx and the \textit{ptp
 The first bottleneck of the Node2Vec library when it comes to very large graphs, is its use of the networkx library and the networkx Graph datastructure.
 The class Graph provided by networkx is in many ways very useful and provides several tools for creating and working with different types of graphs. Furthermore, networkx tries to speed up common graph traversal tasks and calculations by adding metadata to the Graph object in memory, thus saving on intermediate calculations.
 This approach however, becomes problematic when working with large graphs consisting of millions of edges.
-The size of our data file, graph.csv, is about 460 megabytes. But when loading it into a networkx Graph, the corresponding Python process uses about 15 GB of main memory in order to represent the same graph.
-This results in an increase of memory usage with a scale of 32, when loading the graph from disc to main memory.
+The size of our data file, graph.csv, is about 460 megabytes. But when loading it into a networkx Graph, the corresponding Python process uses about 11 to 12 GB of main memory in order to represent the same graph.
+This results in an increase of memory usage with a scale of 25, when loading the graph from disc to main memory.
 
 A solution to this problem could be to represent the graph as a sparse adjacency matrix in a dictionary like structure as shown in \autoref{table:sparse_matrix_1}.
 The weights between nodes could then be saved in a separate dictionary structure as in \autoref{table:sparse_matrix_weights}.
