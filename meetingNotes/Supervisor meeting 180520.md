@@ -31,7 +31,8 @@
   * We could also do it prior to the exam if we don't do it now.
   * Manfred and Peter means although that we should not do it unless it brings something that is clearly missing/incomplete from our paper. Otherwise it could create more confussion.
     * Don't consider the time time between the handin and the exam as an extension because they can evaluate it properly at the exam and it's also against what the handin is for.
-* The scnario case
+* The scenario case
+
   * It would be nice to see how many predictions there is for a single user
   * Why don't we try and predict on all the user instead of a single user?
   * We need to explain what it really shows?
@@ -57,4 +58,3 @@
 Meeting at the 25 of May at 14:00
 
 Send the draft on friday morning.
-
