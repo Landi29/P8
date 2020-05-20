@@ -395,6 +395,56 @@ def base_experiment():
                                   v_error, t_error, finished - start])
             num2 += 1
 
+def abstract_base_experiment():
+    '''
+    description: runs 10fold experimant on base results
+    '''
+    with open("base_experiment.csv", "w", newline='', encoding='utf-8') as write:
+        file_writer = csv.writer(write)
+        folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
+                 'fold6', 'fold7', 'fold8', 'fold9']
+        file_writer.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        num2 = 7
+
+        start = datetime.now()
+        edgelist = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                    fold_split_reconstruction(folds, 0, 10))[1]
+        sum_rating = 0
+        for edge in edgelist:
+            sum_rating += float(edge[2])
+
+        ovar_all_average_rating = sum_rating/len(edgelist)
+        result_predictions = {}
+
+        for edge in edgelist:
+            temp_person = result_predictions.get(edge[1], {})
+            temp_person[edge[0]] = ovar_all_average_rating
+            result_predictions[edge[1]] = temp_person
+
+        finished = datetime.now()
+        
+        result_predictions = ratingstoabstract(result_predictions)
+        for i in range(10):
+            validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                               fold_split_reconstruction(folds,
+                                                                                         i+8, 1))[0]
+            test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                         fold_split_reconstruction(folds,
+                                                                                   i+9, 1))[0]
+            
+            
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+            print(i)
+            print('validation root mean square error: ' + str(v_error))
+            print('test root mean square error: ' + str(t_error))
+            print('experiment time: ' + str(finished - start))
+
+            if num2 >= len(folds):
+                num2 = 0
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
+                                  v_error, t_error, finished - start])
+            num2 += 1
 def brutefoce_experiment():
     '''
     description: runs 10fold experimant with a bruteforce method
@@ -712,6 +762,61 @@ def node2vec_senario_experiment():
                                   v_error, t_error, finished - start])
             num2 += 1
 
+def abstract_node2vec_senario_experiment():
+    '''
+    description: runs 10fold experimant with the Node2vec method
+    '''
+    with open("node2vec_senario_experiment.csv", "w", newline='', encoding='utf-8') as write:
+        file_writer = csv.writer(write)
+        folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
+                 'fold6', 'fold7', 'fold8', 'fold9']
+        file_writer.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        num2 = 7
+        for i in range(len(folds)):
+            master_training_data = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                             fold_split_reconstruction(folds, i, 8))[0]
+            
+            validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                               fold_split_reconstruction(folds,
+                                                                                         i+8, 1))[0]
+            test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                         fold_split_reconstruction(folds,
+                                                                                   i+9, 1))[0]
+            
+            
+            with open(Paths.N2V_MODELS_PATH / Path('Folds_100k_' + str(i+1) + '.pkl'), 'rb') as modelfile:
+                n2v_model = pickle.load(modelfile)
+
+            # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
+            comparison_method = "node2vec"
+
+            result_predictions = {}
+            start = datetime.now()
+            for person in tqdm(master_training_data):
+                wish_to_predict = list(validation_expected_predictions[person]) + \
+                              list(test_expected_predictions[person])
+            
+                for item in wish_to_predict:
+                    training_data = remove_relation(master_training_data, item)
+
+                result_predictions[person] = knn(person, list(training_data), wish_to_predict,
+                                                 comparison_method, n2v_model, training_data, k=10)
+            finished = datetime.now()
+
+            result_predictions = ratingstoabstract(result_predictions)
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+            print(i)
+            print('validation root mean square error: ' + str(v_error))
+            print('test root mean square error: ' + str(t_error))
+            print('experiment time: ' + str(finished - start))
+
+            if num2 >= len(folds):
+                num2 = 0
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
+                                  v_error, t_error, finished - start])
+            num2 += 1
+
 def remove_relation(userdatabase, item):
     for person in userdatabase:
         temp = userdatabase[person]
@@ -720,17 +825,24 @@ def remove_relation(userdatabase, item):
             userdatabase[person] = temp
     return userdatabase
 
+def ratingstoabstract(predictions):
+    for user in predictions:
+        for movie in predictions[user]:
+            predictions[user][movie] = Otorating(predictions[user][movie])
+    return predictions
 
 if __name__ == "__main__":
-    #print('start base')
+    print('start base')
     #base_experiment()
+    abstract_base_experiment()
     #print('start brute')
     #brutefoce_experiment()
-    print('start N2V')
+    #print('start N2V')
     #node2vec_experiment()
+    #abstract_node2vec_senario_experiment()
     #node2vec_senario_experiment()
-    print('start TET')
+    #print('start TET')
     #tet_experiment()
-    abstract_tet_experiment()
-    tet_senario_experiment()
+    #abstract_tet_experiment()
+    #tet_senario_experiment()
     print('done')
