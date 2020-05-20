@@ -195,7 +195,7 @@ def average_rating(user):
         return sum(user.values()) / len(user)
     except:
         return 3
-        
+
 def average_tree_rating(user):
     user = list(map(lambda x: x.getroot(), user.getchildren()))
     user = list(map(tree_rating_enummerater, user))
@@ -205,19 +205,19 @@ def tree_rating_enummerater(rating):
     if rating == "low":
         return 1
     elif rating == "mid":
-        return 2
-    elif rating == "high":
         return 3
+    elif rating == "high":
+        return 5
     else:
         return 0
 
 def torating(prediction):
-    if abs(prediction - 1) <  0.5:
+    if prediction < 2.5:
         return 'low'
-    elif abs(prediction - 2) <  0.5:
-        return 'mid'
-    else:
+    elif prediction > 3.5:
         return 'high'
+    else:
+        return 'mid'
 
 def Otorating(prediction):
     if float(prediction) < 2.5:
@@ -543,6 +543,61 @@ def tet_experiment():
             file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
                                   v_error, t_error, finished - start])
             num2 += 1
+
+def abstract_tet_experiment():
+    '''
+    description: runs 10fold experimant with tet comparison
+    '''
+    with open("abstract_tet_experiment.csv", "w", newline='', encoding='utf-8') as write:
+        file_writer = csv.writer(write)
+        movie_database = moviedict(Paths.MOVIE_NODES_100k_PATH)
+        folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
+                 'fold6', 'fold7', 'fold8', 'fold9']
+        file_writer.writerow(['fold', 'validation_error', 'test_error', 'time taken on test'])
+        num2 = 7
+
+        for i in range(len(folds)):
+            training_data, edgelist = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                       fold_split_reconstruction(folds, i, 8))
+            validation_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                               fold_split_reconstruction(folds,
+                                                                                         i+8, 1))[0]
+            test_expected_predictions = jsonuserdatabase(Paths.Folds_100k_PATH,
+                                                         fold_split_reconstruction(folds,
+                                                                                   i+9, 1))[0]
+
+            tets = build_tets(edgelist, movie_database, Paths.USER_NODES_100k_PATH)
+
+            save_tets(tets, Paths.TETS_PATH / Path('TET_' + str(i) + '_' + str(num2) + '_100k.csv'))
+
+            #TET_CLASSIFIER = metric_tree.mt_build(dmax = 10, nmax= 1000, depth = 0,
+            #                                      data=list(TETs.values()))
+            #pickle.dump(TET_CLASSIFIER, open("TETmt_9_6_100k.p", "wb"))
+
+            # models: manhatten_tet, GED_tet, manhatten_brute, distancev3_tet, distancev2_tet
+            comparison_method = "distancev3_tet_2"
+
+            result_predictions = {}
+            start = datetime.now()
+            for person in tqdm(list(training_data)):
+                wish_to_predict = list(validation_expected_predictions[person]) + \
+                                  list(test_expected_predictions[person])
+                result_predictions[person] = knn(person, list(training_data), wish_to_predict,
+                                                 comparison_method, tets, training_data, k=10)
+            finished = datetime.now()
+
+            v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
+            t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
+            print(i)
+            print('validation root mean square error: ' + str(v_error))
+            print('test root mean square error: ' + str(t_error))
+            print('experiment time: ' + str(finished - start))
+
+            if num2 >= len(folds):
+                num2 = 0
+            file_writer.writerow(['fold' + str(i) + '-' + str(num2) + '-100k',
+                                  v_error, t_error, finished - start])
+            num2 += 1
             
 def tet_senario_experiment():
     '''
@@ -574,8 +629,8 @@ def tet_senario_experiment():
             comparison_method = "distancev3_tet_2"
 
             result_predictions = {}
-            totaltime = 0
 
+            totaltime = datetime.now() - datetime.now()
             for person in tqdm(master_training_data):
                 wish_to_predict = list(validation_expected_predictions[person]) + \
                               list(test_expected_predictions[person])
@@ -588,7 +643,7 @@ def tet_senario_experiment():
                 start = datetime.now()
                 result_predictions[person] = knn(person, list(training_data), wish_to_predict,
                                                  comparison_method, tets, training_data, k=10)
-            totaltime += datetime.now() - start
+                totaltime += datetime.now() - start
 
             v_error = root_mean_squre_error(result_predictions, validation_expected_predictions)
             t_error = root_mean_squre_error(result_predictions, test_expected_predictions)
@@ -673,8 +728,9 @@ if __name__ == "__main__":
     #brutefoce_experiment()
     print('start N2V')
     #node2vec_experiment()
-    node2vec_senario_experiment()
+    #node2vec_senario_experiment()
     print('start TET')
     #tet_experiment()
+    abstract_tet_experiment()
     tet_senario_experiment()
     print('done')
