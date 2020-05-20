@@ -26,5 +26,5 @@ A recommender can be accurate, fast and also trustworthy. With accurate, we mean
 
 ## Why do we use RMSE:
 * It is one of two standard measures for measuring the difference between predicted and observed values.
-* The other measure Mean Absolute Error (MAE).
+* The other measure is Mean Absolute Error (MAE).
 * This measure is less tolerant regarding off values (wrongly predicted values) and it is thus better at telling us, if we have predicted wrong values.

@@ -21,10 +21,5 @@ As the secondary measure, speed will be measured in seconds per recommendation a
   The average recommendation time is less than 10 seconds.
 \end{hypothesis}
 
-
-The limit is 10 seconds in \autoref{Speed_hypothesis}, since the average human attention span is 12 seconds, and as a result, a recommendation might not be valuable after 12 seconds.
-
 % Why do we use RMSE:
-
-
-% What does it tell us:
+We measure the accurary with RMSE since it is one of two standard measures for measuring the difference between predicted and observed values. The other measure called \textit{Mean Absolute Error}, would also work to some degree, but RMSE is less tolerant towards off values and thus better at telling us, if we have predicted wrong values.  
