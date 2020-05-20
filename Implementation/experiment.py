@@ -205,19 +205,19 @@ def tree_rating_enummerater(rating):
     if rating == "low":
         return 1
     elif rating == "mid":
-        return 3
+        return 2
     elif rating == "high":
-        return 5
+        return 3
     else:
         return 0
 
 def torating(prediction):
-    if prediction < 2.5:
+    if abs(prediction - 1) <  0.5:
         return 'low'
-    elif prediction > 3.5:
-        return 'high'
-    else:
+    elif abs(prediction - 2) <  0.5:
         return 'mid'
+    else:
+        return 'high'
 
 def Otorating(prediction):
     if float(prediction) < 2.5:
