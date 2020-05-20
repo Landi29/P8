@@ -1,25 +1,23 @@
 \subsection{Reliability}\label{Subsec:Reliability_definition}
-% Introduction:
-In order to evaluate the results of our solution, we would like to investigate it from a reliability perspective. Realiability can be many things depending on the science and research area it is used for, and we will thus start by giving a definition of Realiability in regards to Recommender systems
-% Reliability in recommender systems:
+
+In order to evaluate the results of our solution, we would like to investigate it from a reliability perspective.
+Realiability can be many things depending on the science and research area it is used for, and we will thus start by giving a definition of Realiability in regards to Recommender systems
+
 For a recommender to be \textit{reliable}, it must be \textit{accurate}, \textit{fast} and \textit{trustworthy}.
 By accurate, we mean that the recommender provides recommendations with rating estimates that are close to the ratings, the user would actually give the recommended items.
 A recommender system must also be idempotent, thus producing the same results under similar conditions. Furthermore, a system must take frequent updates into account and be able to manage them, as new data is constantly provided.
 For a recommender system to be reliable, it must also be robust, thus being able to withstand attempts of manipulation. As a result of this, the system should only collect the amount of data necessary, in order to give accurate recommendations.
 
-% What aspects to consider when measuring Reliability
- We will focus on accuracy as the main measure and speed as a secondary measure for Reliability, because we are not analyzing a full recommender system, but instead focus on the task of recommendation.
-
-
-% How do we want to measure these Reliability apects:
+We will focus on accuracy as the main measure and speed as a secondary measure for Reliability, because we are not analyzing a full recommender system, but instead focus on the task of recommendation.
 We measure accuracy as an average precision value, and as a consequence, we cannot say anything about best or worst case scenarios. This can be done with the \textit{Root Mean Square Error (RMSE)} metric. Using RMSE and defining a baseline value leads us to the following hypothesis:
+
 \begin{hypothesis}\label{RMSE_hypothesis}
   Brute force based recommendation, recommendation with node embedding and recommendation with TETs will perform better than the baseline RMSE.
 \end{hypothesis}
+
 As the secondary measure, speed will be measured in seconds per recommendation and leads us to the hypothesis:
 \begin{hypothesis}\label{Speed_hypothesis}
   The average recommendation time is less than 10 seconds.
 \end{hypothesis}
 
-% Why do we use RMSE:
-We measure the accurary with RMSE since it is one of two standard measures for measuring the difference between predicted and observed values. The other measure called \textit{Mean Absolute Error}, would also work to some degree, but RMSE is less tolerant towards off values and thus better at telling us, if we have predicted wrong values.  
+We measure the accurary with RMSE since it is one of two standard measures for measuring the difference between predicted and observed values. The other measure called \textit{Mean Absolute Error}, would also work to some degree, but RMSE is less tolerant towards off values and thus better at telling us, if we have predicted wrong values.
