@@ -13,7 +13,7 @@
     * Do we see RMSE score below 1 as reliable, 1.10 or 1.50?
   * The section needs to be explained clearly
   * We should explain that reliability of the answers is an average case basis not a worst case? We can't promise it will be reliable all the time but we can promise it will be most of the time.
-  * Before we discuss metrics we need to explain how we measure and how reliability and argue that our measures is a measure of reliability.
+  * Before we discuss metrics we need to explain how we measure and argue that our measures is a measure of reliability.
   * It pretty critical if we don't get this right and we can easily get a lower grade due to it.
   * We need to have some substantial in our section and with some metrits.
   * Need to sell our system as reliable and be believable.
