@@ -54,11 +54,33 @@ This shows potential in the framework and it might be better with more descripti
 Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that look like the movie or product you try to predict a recommendation for.
 
 A scenario where the TETs structure should be better is with the addition of new items in the database.
-We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set, and making the predictions for a single person.
-The error scores will because of this be far more fluctuating.
+We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set.
 We ran the scenario on the TETs and Node2vec.
-The Node2vec's predictions should default to the users average rating since there are no other users that have rated the movies.
 As a consequence, we do not have their input to the prediction.
+
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/abstract_base_10_fold_error.tex}
+	\end{adjustbox}
+	\caption{abstract baseline error from 100k dataset}
+	\label{fig:abstract_baseline_errors}
+\end{figure}
+
+Because of tet rating set is split in 3 instead of 5, when making recommendation based on subtets we are able to recommendations within this set.
+We abstracted the ratings to this form for the baseline as seen in \autoref{fig:abstract_baseline_errors}.
+
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/abstract_N2V_scenario_10_fold_error.tex}
+	\end{adjustbox}
+	\caption{Node2vec scenario error from 100k dataset}
+	\label{fig:N2V_scenario_errors}
+\end{figure}
+
+The best of the comparison models with the best RMSE scores node2vex. 
+The predictions default to the users average rating since there are no other users that have rated the movies. when the predictions are calculated they are abstracted similarly to the baseline the RMSE can be seen in \autoref{fig:N2V_scenario_errors}. these predictions are still better than baseline because they consider the users average rating rather than the datasets average rating.
 
 \begin{figure}[H]
 	\centering
@@ -69,17 +91,5 @@ As a consequence, we do not have their input to the prediction.
 	\label{fig:tet_scenario_errors}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\begin{adjustbox}{width=0.5\textwidth}
-		\input{Article/figures/N2V_scenario_10_fold_error.tex}
-	\end{adjustbox}
-	\caption{Node2vec scenario error from 100k dataset}
-	\label{fig:N2V_scenario_errors}
-\end{figure}
-
-%From this scenario we can clearly see that the TET comparison and predictions (\autoref{fig:tet_scenario_errors}), are better than the predictions made by Node2Vec (\autoref{fig:N2V_scenario_errors}).
-%Fold 4 for the in \autoref{fig:N2V_scenario_errors} is the best trained for the scenario.
-%This fold shows a difference between validation and test of 0.03 but at the lowest it has a RMSE at 1.08.
-%The RMSE for the TET predictions  as shown in \autopageref{fig:tet_scenario_errors} only has two folds were either validation or test has a RMSE of more than 1.
-%All other folds has a RMSE below one, but the predictions has some uncertainty between validation and test.
+From the $3$ figures including \autoref{fig:tet_scenario_errors} we can clearly see that the TET comparison and predictions.
+With a average RMSE for the ratings at around 0.79, close to 0.15 points better than the average for node2vec.
