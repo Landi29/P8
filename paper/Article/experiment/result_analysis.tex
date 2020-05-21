@@ -54,10 +54,17 @@ The RMSE scores for the TETs seen in \autoref{fig:tet_errors}, are at a glance n
 This shows potential in the framework and it might be better with more descriptive features. The advantage of recommendation with TETs, is that it can depend only on structural information.
 Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that look like the movie or product you try to predict a recommendation for.
 
-A scenario where the TETs structure should be better is with the addition of new items in the database.
-We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set.
+A scenario where the TETs structure should be better is with the addition of new items in the database where you have an item cold start problem. The cold start problem is a well known problem for recommenders\cite{Ricci2015}\cite{saveski2014item}.
+The problem occurs when a data set is inadequate, leading to recommendation problems.
+There are a few different versions of the cold start problem, and the item cold start problem is one of these. 
+Item cold start is a problem that occurs with new data sets or when new items are added to the data set.
+When new data is added to the data set, there are no relations between users and newly added items.
+This fact makes it near impossible to make reliable recommendations.
+The TETs' predictions can work around the item cold start problem by finding structurally similar items and using their ratings in the prediction calculation.
+
+We set up this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set.
 As a consequence, we do not have their input to the prediction.
-We ran the scenario on the TETs and Node2vec.
+We ran this scenario on the TETs and node2vec.
 
 \begin{figure}[H]
 	\centering
