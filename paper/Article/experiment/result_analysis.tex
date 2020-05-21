@@ -49,7 +49,8 @@ The discrepancy between validation and test in fold 7 seems to indicate that thi
 \end{figure}
 
 
-The RMSE scores for the TETs seen in \autoref{fig:tet_errors}, are at a glance not impressive, but the RMSE scores are still better than the baseline. 
+The RMSE scores for the TETs seen in \autoref{fig:tet_errors}, are at a glance not impressive, but the RMSE scores are still better than the baseline.
+
 This shows potential in the framework and it might be better with more descriptive features. The advantage of recommendation with TETs, is that it can depend only on structural information.
 Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that look like the movie or product you try to predict a recommendation for.
 
@@ -79,8 +80,7 @@ We abstracted the ratings to this form for the baseline as seen in \autoref{fig:
 	\label{fig:N2V_scenario_errors}
 \end{figure}
 
-As seen in \autoref{fig:N2V_errors}, \ref{fig:brute_errors} and \ref{fig:tet_errors} the best of the comparison models with the best RMSE scores is node2vec. 
-The predictions default to the users average rating since there are no other users that have rated the movies. when the predictions are calculated they are abstracted similarly to the baseline the RMSE can be seen in \autoref{fig:N2V_scenario_errors}. these predictions are still better than baseline because they consider the users average rating rather than the datasets average rating.
+The predictions from node2vec default to the users average rating since there are no other users that have rated the movies. when the predictions are calculated they are abstracted similarly to the baseline the RMSE can be seen in \autoref{fig:N2V_scenario_errors}. these predictions are still better than baseline because they consider the users average rating rather than the datasets average rating.
 
 \begin{figure}[H]
 	\centering
@@ -93,3 +93,5 @@ The predictions default to the users average rating since there are no other use
 
 From the $3$ figures including \autoref{fig:tet_scenario_errors} we can clearly see that the TET comparison and predictions.
 With a average RMSE for the ratings at around 0.79, close to 0.15 points better than the average for node2vec.
+
+As seen in \autoref{fig:N2V_errors}, \ref{fig:brute_errors} and \ref{fig:tet_errors} the best of the comparison models with the best RMSE scores is node2vec. 
