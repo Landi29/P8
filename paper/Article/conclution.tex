@@ -4,7 +4,7 @@ Node2vec performs better when there is information on the particular product tha
 This method uses products and users nearness in a network, but will have problems recommending outside the proximity and context of the user.
 TETs on the other hand recommends best with the total power of the data set and does not need the nearness of a product to make a recommendation.
 Under normal circumstances node2vec were able to make recommendations with an average RMSE over the dataset at about 0.95 in a 1 to 5 rating system, compared to the TETs' at about 1 RMSE.
-These results were both better than the baseline thereby fulfilling the hypotheses.
+These results were both better than the baseline, thereby fulfilling the hypotheses.
 In an item cold start scenario the TETs fared better with an average RMSE of 0.80 in a 1 to 3 rating system where node2vec ended with an average RMSE at 0.95.
 In this scenario, we were again able to get better RMSEs than the baseline.
 With all the models we tested predicting edges for all products in the validation and test sets to their respective user in under 10 second shows that the implementations we used are usable.
