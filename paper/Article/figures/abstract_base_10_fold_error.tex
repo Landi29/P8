@@ -1,0 +1,58 @@
+\begin{tikzpicture}
+  \centering
+  \begin{axis}[
+        ybar, axis on top,
+        title={TET Scenario Error},
+        height=8cm, width=20cm,
+        bar width=0.7cm,
+        ymajorgrids, tick align=inside,
+        major grid style={draw=white},
+        enlarge y limits={value=.1,upper},
+        ymin=0, ymax=1.4,
+        axis x line*=bottom,
+        y axis line style={opacity=0},
+        tickwidth=0pt,
+        enlarge x limits=true,
+        legend style={
+            at={(0.5,-0.2)},
+            anchor=north,
+            legend columns=-1,
+            /tikz/every even column/.append style={column sep=0.5cm}
+        },
+        ylabel={RMSE},
+        symbolic x coords={
+           Fold 1,Fold 2,
+           Fold 3,Fold 4,
+           Fold 5,Fold 6,
+           Fold 7,Fold 8,
+           Fold 9,Fold 10},
+       xtick=data,
+       nodes near coords={
+        \pgfmathprintnumber[precision=2]{\pgfplotspointmeta}
+       }
+    ]
+    \addplot [draw=none, fill=blue!30] coordinates {
+      (Fold 1, 0.98)
+      (Fold 2, 0.99)
+      (Fold 3, 1.00)
+      (Fold 4, 0.98)
+      (Fold 5, 1.00)
+      (Fold 6, 0.99)
+      (Fold 7, 0.97)
+      (Fold 8, 0.98)
+      (Fold 9, 0.98)
+      (Fold 10, 0.97)};
+   \addplot [draw=none,fill=red!30] coordinates {
+      (Fold 1, 0.99)
+      (Fold 2, 1.00)
+      (Fold 3, 0.98)
+      (Fold 4, 1.00)
+      (Fold 5, 0.99)
+      (Fold 6, 0.97)
+      (Fold 7, 0.98)
+      (Fold 8, 0.98)
+      (Fold 9, 0.97)
+      (Fold 10, 0.98)};
+    \legend{validation error 100k, test error 100k}
+  \end{axis}
+\end{tikzpicture}

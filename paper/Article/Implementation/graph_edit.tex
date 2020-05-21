@@ -1,8 +1,0 @@
-\subsection{Graph Edit Distance}\label{Subsec:GED}
-Instead of using taxicab geometry and histograms to find the distance between the TETs you can use Graph Edit Distance. This algorithm can find the distance between two graphs dependent on the fewest number edits is needed to get the graphs to be the same. A form of this algorithm can be seen in \autoref{Eq:ged}.
-
-\begin{equation}\label{Eq:ged}
- GED(g,g') = \min_{(e_1,e_2 \dots e_k) \in P(g, g') } \sum_{i=1}^k c(e_i)
-\end{equation}
-
-In \autoref{Eq:ged} P(g,g') is the set of paths being edited and c is the cost of an edit. 

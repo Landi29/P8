@@ -1,5 +1,6 @@
 \subsection{Graph Embedding}
 \label{Subsec:Graph_embedding}
+An important factor when working with graphs is creating a representation of the graphs that can be worked on efficiently. Once such method is graph embedding which transforms graphs into vectors such that they can more effectively be worked on. In this section we will describe the underlying theory of graph embedding.
 In \cite{8294302} HongYun Cai et al. discuss the different ways of graph embedding. They define a taxonomy for the embedding strategies input and output.
 
 The input taxonomy has four definitions, consisting of four different graph types. The taxonomy for output has four definitions as well, describing the different embedding strategies. The first kind of embedded output is \textit{Node Embedding}. Here the nodes in the graph are represented as a vector. When doing Node Embedding, two nodes that were similar in the graph should have similar vectors and therefore be able to be identified\cite{8294302}. The second kind of embedding, is \textit{Edge Embedding}. Given a relation between two nodes, a triplet $<h,r,t>$ is created,  where $h$ and $t$ are the head and tail node, and $r$ is the relation. Using Edge Embedding, it is possible, given two of the three components, to predict what the last component should be\cite{8294302}.
@@ -21,3 +22,4 @@ To embed a graph there are several different techniques and each of them has dif
 All these embedding strategies all have applications and can be used for a lot of different classification, clustering and recommendation methods. \textit{Node Embedding} can be used for node classifications for SVM and KNN, node clustering in graphs and node recommendations by finding associations in the graph\cite{8294302}.
 
 \textit{Edge Embedding} is used for triplet classifications. As an example we can find if a relation $a-b$ goes through relation $r$ and finding which kind of link appears between two nodes in a graph. \textit{Hybrid and Whole Graph Embedding} will make it possible to classify graphs in a lower dimension than they originally where and this embedding method is better for visualization of the graph for human consumption\cite{8294302}.
+
