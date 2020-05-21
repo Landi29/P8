@@ -37,7 +37,7 @@ We will in the validation and test reconstruct or predict the ratings in the set
 
 These split will then be used for building the TETs and embedding nodes.
 
-When these models have been build and trained we will use them to find k-nearest user neighbors according  to each model.
+When these models have been build and trained we will use them to find k-nearest user neighbors according to each model.
 With these neighbors we are able to make a prediction on the rating between movies and a user.
 For the predictions we will use each training sets edge list by using the rating we know to calculate potential edges. 
 We use \autoref{eq:pred} to calculate a predicted rating for the missing ratings in the adjacency matrix.
