@@ -1,18 +1,18 @@
 \subsection{SimRank}
 \label{Subsec:SimRank}
 A popular algorithm for computing the similarity between substructures in graphs is SimRank, created by Jeh et al.\cite{10.1145/775047.775126}.
-The intuition behind the SimRank algorithm is as the author states in the paper \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}.
-The algorithm assigns a similarity score between 0 and 1 based on how similar two objects are.
+The intuition behind the SimRank algorithm is as the author states in the paper \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}. The algorithm assigns a similarity score between 0 and 1 based on how similar two objects are.
 
-We looked into using SimRank as a way to find the similarity of nodes in a graph network, using the data described in \autoref{Subsec:setup}. Where we have an undirected graph with users movie ratings as a way to find structual equivalence between the users in the graph and be able to recommend movies based on the similarity, like is done with the other methods explained in \autoref{Subsec:setup}.
 
-We compute SimRank for a graph $G = (V,E)$ via iterating to fixed-point.
+We looked into using SimRank as a way to find the similarity of nodes in a graph network, using the data described in \autoref{Subsec:setup}, where we have an undirected graph with users movie ratings. The idea was to use SimRank as a way to find structual equivalence between the users in the graph, based on the similarity and to recommend movies to them, like is done with the other methods explained in \autoref{Subsec:setup}.
+
+The way SimRank works is that we compute SimRank for a graph $G = (V,E)$ via iterating to a fixed-point. 
 Let $n = |V|$ be the number of nodes within graph $G$, for each iteration $k$ we keep $n^2$ entries $R_k(*,*)$ of length $n^2$.
 $R_k(a,b)$ where $\{a,b\} \in V$, gives the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}.
 We compute $R_{k+1}(a,b)$ based on prior iteration $R_k(a,b)$.
 First we compute $R_0(a,b)$ which is the lower bound of the similarity score.
 
-\begin{definition}[Simrank]\label{def:simrank} Given two objects $a$ and $b$ as input, we compute the similarity $R_k+1(a,b) \in [0,1]$ based on the prior similarities $R_k(*,*)$.
+\begin{definition}[SimRank]\label{def:simrank} Given two objects $a$ and $b$ as input, we compute the similarity $R_k+1(a,b) \in [0,1]$ based on the prior similarities $R_k(*,*)$.
 
 For iteration $R_0$ the similarity scores are initialized by the equation:
 \begin{equation}\label{eq:lowerbound_sim_score}
@@ -28,10 +28,14 @@ To compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation:
 R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
 \end{equation}
 
+$C$ is the confidence level or decay factor which is a constant between $0$ and $1$, $I(n)$ is the in-neighbors for a node $n \in V$.
+
 \end{definition}
 
-What \autoref{eq:simrank_computation} states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$ we update for $(a,b)$ on each iteration $k+1$ using the similarity of the neighbors of $(a,b)$ from the previous iteration $k$. The values $R_k(*,*)$ are nondecreasing as $k$ increases.
-
-In \autoref{def:simrank}, $C$ is the confidence level or decay factor which is a constant between $0$ and $1$, $I(n)$ is the in-neighbours for a node $n \in V$.
+What \autoref{eq:simrank_computation} states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$, we update the similarity score $(a,b)$ on each iteration $k+1$ using the similarity of the in-neighbors of $(a,b)$ from the previous iteration $k$. The values of $R_k(*,*)$ are non-decreasing as $k$ increases.
 We compute the similarity $R_k(a,b)$ by iterating through all neighbor pairs between $a$ and $b$, summing up all the similarities of each pair and then dividing it by the total number of neighbors to normalize the value.
 This means that the similarity between two nodes $a$ and $b$ is found by taking the average similarity of neighbors of these points. An object is always fully similar with itself so $s(a,a) = 1$.
+
+Using this method we tested SimRank on our graph network from \autoref{Subsec:setup}, using NetworkX, which implements this method. The NetworkX implementation includes an option to choose the number of iterations as well as a tolerance threshold. That checks for each similarity score if the change in similarity between the new iteration $R_{k+1}$ and the prior iteration $R_k$ is below the threshold and if so, stops the algorithm accordingly.
+
+Using this method on our graph, the algorithm would continue to run for a very long time, making it unfeasible to use for our case. The method was also tested on a few different graphs created using $NetworkX.cycle_graph(n)$ of various sizes, up to $2500$ number nodes, creating a graph with cyclic connections. All were able to run and terminate within ten minutes. The difference in time between our graph network and the ones created with NetworkX could be due to the vast difference in number of neighbors that each node have, as in our dataset each node have in average $225,64$ neighbors making the graph more connected. This means that the number of in-neighbors and number of similarity scores to calculate is much higher.
