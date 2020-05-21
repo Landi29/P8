@@ -49,15 +49,40 @@ The discrepancy between validation and test in fold 7 seems to indicate that thi
 \end{figure}
 
 
-The RMSE scores for the TETs seen in \autoref{fig:tet_errors}, are at a glance not impressive, but the RMSE scores are still better than the baseline. 
+The RMSE scores for the TETs seen in \autoref{fig:tet_errors}, are at a glance not impressive, but the RMSE scores are still better than the baseline.
+
 This shows potential in the framework and it might be better with more descriptive features. The advantage of recommendation with TETs, is that it can depend only on structural information.
 Where the other methods we have discussed are dependent on the nearest neighbors having rated a product or movie to make a recommendation, the TETs only need movies or products that look like the movie or product you try to predict a recommendation for.
 
 A scenario where the TETs structure should be better is with the addition of new items in the database.
-We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set, and making the predictions for a single person.
-The error scores will because of this be far more fluctuating.
+We made this scenario by removing any relation to all the movies in the verification and test sets from all users in the traning set.
+As a consequence, we do not have their input to the prediction.
 We ran the scenario on the TETs and Node2vec.
-The Node2vec's predictions should default to the users average rating since there are no other users that have rated the movies. As a consequence, we do not have their input to the prediction.
+
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/abstract_base_10_fold_error.tex}
+	\end{adjustbox}
+	\caption{abstract baseline error from 100k dataset}
+	\label{fig:abstract_baseline_errors}
+\end{figure}
+
+Because the TET rating set is split in 3 instead of 5, when making recommendation based on subTETs we are able to recommend within this set.
+We abstracted the ratings to this form for the baseline as seen in \autoref{fig:abstract_baseline_errors}.
+
+\begin{figure}[H]
+	\centering
+	\begin{adjustbox}{width=0.5\textwidth}
+		\input{Article/figures/abstract_N2V_scenario_10_fold_error.tex}
+	\end{adjustbox}
+	\caption{Node2vec scenario error from 100k dataset}
+	\label{fig:N2V_scenario_errors}
+\end{figure}
+
+The predictions from node2vec default to the users' average rating since there are no other users that have rated the movies.
+When the predictions are calculated they are abstracted similarly to the baseline the RMSE can be seen in \autoref{fig:N2V_scenario_errors}. 
+These predictions are still better than baseline because they consider the user's average rating rather than the datasets' average rating.
 
 \begin{figure}[H]
 	\centering
@@ -68,21 +93,8 @@ The Node2vec's predictions should default to the users average rating since ther
 	\label{fig:tet_scenario_errors}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\begin{adjustbox}{width=0.5\textwidth}
-		\input{Article/figures/N2V_scenario_10_fold_error.tex}
-	\end{adjustbox}
-	\caption{Node2vec scenario error from 100k dataset}
-	\label{fig:N2V_scenario_errors}
-\end{figure}
-
-From this scenario we can clearly see that the TET comparison and predictions (\autoref{fig:tet_scenario_errors}), are better than the predictions made by Node2Vec (\autoref{fig:N2V_scenario_errors}).
-Fold 4 for the in \autoref{fig:N2V_scenario_errors} is the best trained for the scenario.
-This fold shows a difference between validation and test of 0.03 but at the lowest it has a RMSE at 1.08.
-The RMSE for the TET predictions  as shown in \autopageref{fig:tet_scenario_errors} only has two folds were either validation or test has a RMSE of more than 1.
-All other folds has a RMSE below one, but the predictions has some uncertainty between validation and test.
-
+From the $3$ figures including \autoref{fig:tet_scenario_errors} we can clearly see that the TET comparison and predictions.
+With a average RMSE for the ratings at around 0.79, close to 0.15 points better than the average for node2vec.
 
 Looking at the runtime of the different methods during the tests, we found the average time it takes to run pr. person.
 Bruteforce had an average runtime of 0.18 seconds.
@@ -92,3 +104,5 @@ The TET comparisons had an average of 5.02 seconds.
 Looking at the different runtimes we see that node2vec is fastest at making recommendations and that the TETs takes around 1000 times as long to make a recommendation.
 A reason for this difference is that the node2vec model is trained and stored in memory, making it faster and easier to look up the vectors and compute the similarities.
 The TET runtime could potentially be improved by pre-computing the values, implementing a matrix containing the similarities, so that you can look up the result instead of calculating them for each user in runtime.
+
+As seen in \autoref{fig:N2V_errors}, \ref{fig:brute_errors} and \ref{fig:tet_errors} the best of the comparison models with the best RMSE scores is node2vec.
