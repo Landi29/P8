@@ -1,9 +1,6 @@
 \subsection{SimGNN}\label{AP:SimGNN}
 One of the methods that we tried to use was Similarity Computation via Graph Neural Networks or SimGNN which is an algorithm used for calculating the similarity between two graphs created by Bai et al. \cite{Bai2018}. The algorithm was intended to be utilized to compare two users from the Movielens dataset but was found to be too complex when it comes to finding Graph Edit Distance (GED). This was discovered upon running through the test set after SimGNN\footnote{The original code we used for computing SimGNN can be found here: https://github.com/benedekrozemberczki/SimGNN} had been trained where the mean squared error results turned out to be 0.023. While these result are in themselves are very good it made us suspicion that the result might be too good. After further investigation we concluded that our graphs which SimGNN trains on are supposed to predict are very simple and that SimGNN therefore isn't suited for our use case. Combine this with the fact that SimGNN take about 2 days to train on our dataset and that the GED for two graphs from our dataset can be computed with a simpler and faster implementation only reinforces this notion. The remainder of this section is a explanation on how SimGNN works.
 
-
-
-
 The algorithm works by using two different strategies. The first primary strategy is to compute the similarity between two graphs based on interaction between their graph level embeddings. The second auxiliary strategy computes similarity based on two sets of node-level embeddings. The second strategy is optional and only helps to give a more accurate prediction at the cost of runtime\cite{Bai2018}.
 
 Both strategies in SimGNN require that the graphs get embedded at the node level. To perform this embedding Bai et. al. uses a Graph Convolutional Network (GCN)\cite{Bai2018} which is created by Kipf et. al. \cite{Kipf2016}. The main operation behind GCN in SimGNN is shown in \autoref{Eq:GCN}.
@@ -15,7 +12,7 @@ conv(u_n)=f_1(\sum_{m \in N(n)} \frac{1}{\sqrt{d_nd_m}}u_mW_1^{(l)}+b_1^{(l)})
 
 In \autoref{Eq:GCN} $u_n$ is a representation of a node. $N(n)$ is the set of first-order neighbors of a node $n$ plus $n$ itself, $d_n$ is the degree of node $n$ plus 1, $w_1^{(l)}$ is a weight matrix associated l-th GCN layer, $b_1^{(l)}$ is the bias and $f_1()$ is an activation function. The idea of \autoref{Eq:GCN} is that it aggregates features from the first-order neighbor of a node $n$\cite{Bai2018}.
 
-What is happening inside GCN is the following. Given a graph the GCN takes as input a feature matrix and adjacency matrix which represents the given graph f(X, A) where X is the feature matrix and A is the adjacency matrix. Inside each hidden layer in the GCN the following propagation takes place\cite{Kipf2016}:
+What is happening inside GCN is the following. Given a graph $G$ the GCN f(X,A) takes as input a feature matrix $X$ and an adjacency matrix $A$ representing G. Inside each hidden layer in the GCN the following propagation takes place\cite{Kipf2016}:
 
 
 \begin{equation}
