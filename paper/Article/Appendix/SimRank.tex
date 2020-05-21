@@ -6,8 +6,8 @@ The intuition behind the SimRank algorithm is that \emph{"two objects are simila
 
 The idea was to use SimRank as a way to find structual equivalence between the users in a graph, based on the similarity score, and to recommend movies to them like it is done with the other methods explained in \autoref{Subsec:setup}.
 
-The way SimRank works is that we compute SimRank for a graph $G = (V,E)$ via iterating to a fixed-point. 
-Let $n = |V|$ be the number of nodes within graph $G$, for each iteration $k$ we keep $n^2$ entries $R_k(*,*)$ of length $n^2$.
+The way SimRank works is that we compute the similarities for a graph $G = (V,E)$ via iterating to a fixed-point. 
+Let $n = |V|$ be the number of nodes within graph $G$, for each iteration $k$ we keep $n^2$ entries $R_k(*,*)$.
 $R_k(a,b)$ where $\{a,b\} \in V$, gives the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}.
 We compute $R_{k+1}(a,b)$ based on prior iteration $R_k(a,b)$.
 First we compute $R_0(a,b)$ which is the lower bound of the similarity score.
