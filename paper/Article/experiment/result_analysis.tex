@@ -82,3 +82,11 @@ Fold 4 for the in \autoref{fig:N2V_scenario_errors} is the best trained for the 
 This fold shows a difference between validation and test of 0.03 but at the lowest it has a RMSE at 1.08.
 The RMSE for the TET predictions  as shown in \autopageref{fig:tet_scenario_errors} only has two folds were either validation or test has a RMSE of more than 1.
 All other folds has a RMSE below one, but the predictions has some uncertainty between validation and test.
+
+
+The tests all had a decent runtime pr. person.
+Bruteforce had an average runtime of 0.18 seconds.
+The node2vec had an average runtime of 0.005 seconds.
+The TET comparisons had an average of 5.02 seconds.
+
+we can se that the node2vec is the fastest recommender and that the TETs takes 1000 times longer to make a recommendation this could potentially be improved by implementing a matrix containing the simulates, instead of calculating them for each user in runtime.
