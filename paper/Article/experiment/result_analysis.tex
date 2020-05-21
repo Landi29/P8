@@ -104,5 +104,3 @@ The TET comparisons had an average of 5.02 seconds.
 Looking at the different runtimes we see that node2vec is fastest at making recommendations and that the TETs takes around 1000 times as long to make a recommendation.
 A reason for this difference is that the node2vec model is trained and stored in memory, making it faster and easier to look up the vectors and compute the similarities.
 The TET runtime could potentially be improved by pre-computing the values, implementing a matrix containing the similarities, so that you can look up the result instead of calculating them for each user in runtime.
-
-As seen in \autoref{fig:N2V_errors}, \ref{fig:brute_errors} and \ref{fig:tet_errors} the best of the comparison models with the best RMSE scores is node2vec.
