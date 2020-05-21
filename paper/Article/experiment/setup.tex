@@ -18,7 +18,7 @@ The data was generated between September 19th, 1997 and April 22nd, 1998. For th
 We create a weighted graph from the data, represented as an edgelist.
 Each edge is of the form (MovieId, UserId, Rating) where the rating acts as a weight.
 Each node in the network is either a User or a Movie represented by their Id with the addition of a $U$ on userid and $M$ on movieid respectively, to differentiate them.
-The movie node will contain the additional data of genre internally.
+The movie node will internally contain additional genre data.
 A simple example of the graph can be seen in \autoref{fig:graph_representation}.
 
 The data will be split in 10 folds as shown on \autoref{fig:tenfold} using a $80\%/20\%$ split into training- and test set \cite{Ricci2015}.
