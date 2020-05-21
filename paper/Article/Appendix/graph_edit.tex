@@ -1,10 +1,10 @@
 \subsection{Graph Edit Distance}\label{Subsec:GED}
 As the Graph Edit Distance metric is used in the SimGNN algorithm mentioned in \autoref{AP:SimGNN}, we give a quick explanation of here before continuing with the rest of the appendix.
 
-Graph Edit Distance (GED) is a metric for comparing graphs. The GED of two graphs $a$ and $b$ is a numeric distance value between the graphs. As seen in \autoref{Eq:ged}, the GED is calculated as the fewest number of edits needed in order to transform one graph into the other.
+Graph Edit Distance (GED) is a metric for comparing graphs. The GED of two graphs $a$ and $b$ is a numeric distance value between the graphs. As seen in \autoref{Eq:ged}, the GED is calculated as the fewest number of edits needed in order to transform one graph into the other\cite{Riesen2015}.
 
 \begin{equation}\label{Eq:ged}
  GED(g,g') = \min_{(e_1,e_2 \dots e_k) \in P(g, g') } \sum_{i=1}^k c(e_i)
 \end{equation}
 
-In \autoref{Eq:ged} $P(g,g')$ is the set of paths being edited and $c$ is the cost of an edit.
+In \autoref{Eq:ged} $P(g,g')$ is the set of paths being edited and $c$ is the cost function, measuring the strength of a node edit operation $e_i$\cite{Riesen2015}.
