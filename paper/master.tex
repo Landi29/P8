@@ -190,15 +190,19 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{amsmath}
 \usepackage{todonotes}
 \usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{pgfplots}
 \usetikzlibrary{calc,positioning,shapes.geometric,shapes.symbols,shapes.misc,trees}
-\usepackage{amsmath}
+\newtheorem{hypothesis}{Hypothesis}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}[section]
 \def\definitionautorefname{Definition}
+\def\hypothesisautorefname{Hypothesis}
 %\usepackage{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics.
@@ -427,7 +431,7 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{S. R. Petersen, L. Svane, A. D. Nielsen, K. K. Malowanczyk, A. M. Landi% <-this % stops a space
+\author{A. D. Nielsen, A. M. Landi,  K. K. Malowanczyk,  L. S. Jensen, S. R. Petersen% <-this % stops a space
 }
 
 % note the % following the last \IEEEmembership and also \thanks -
@@ -489,7 +493,11 @@
 %\end{abstract}
 
 \begin{abstract}
-	The abstract should be placed here.
+	Graph similarity and recommenders is a combination which has had little exploration.
+In this paper we try discover how well these subjects can work together, and if it is possible to get better recommendations using graph similarities and if this is a viable way of recommending.
+We use different methods like node2vec and Type Extension Trees and other algorithms to be used as a comparision for these methods, like a bruteforce algorithm.
+We compare the methods to each other, look at a baseline, and conclude how well they did which can give us an idea of how useful graph similarity is for recommendations.
+	%Recommender systems is becoming a larger and larger part of our every day life, from shopping to entertainment. But the amount of data that exists for recommender systems are a ever increasing amount. We look at trying to implement methods that use a graph similarity based setup to find better recommendations within a reasonable time frame. We look at several methods to find which one works the best for this purpose, and compare each of them with a baseline to see if the prediction hold up.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -675,6 +683,7 @@
 \bibliography{bib}
 
 
+\input{Article/Appendix}
 
 
 

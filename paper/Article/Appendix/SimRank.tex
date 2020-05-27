@@ -1,0 +1,46 @@
+\subsection{SimRank}
+\label{Subsec:SimRank}
+We looked into using SimRank as a way to find the similarity of nodes in a graph network, using the data described in \autoref{Subsec:setup}, where we have an undirected graph with users' movie ratings.
+SimRank is a popular algorithm for computing the similarity between substructures in graphs, and is created by Jeh et al.\cite{10.1145/775047.775126}.
+The intuition behind the SimRank algorithm is that \emph{"two objects are similar if they are referenced by similar objects"}\cite{10.1145/775047.775126}. The algorithm assigns a similarity score between 0 and 1 based on how similar two objects are.
+
+The idea was to use SimRank as a way to find structual equivalence between the users in a graph, based on the similarity score, and to recommend movies to them like it is done with the other methods explained in \autoref{Subsec:setup}.
+
+The way SimRank works is by computing the similarities for all nodes in a graph $G = (V,E)$ by iterating to a fixed-point.
+Let $n = |V|$ be the number of nodes within graph $G$, for each iteration $k$ we keep $n^2$ entries $R_k(*,*)$.
+$R_k(a,b)$ where $\{a,b\} \in V$, gives the similarity score between $a$ and $b$ on iteration $k$\cite{10.1145/775047.775126}.
+We compute $R_{k+1}(a,b)$ based on prior iteration $R_k(a,b)$.
+First we compute $R_0(a,b)$ which is the lower bound of the similarity score.
+
+\begin{definition}[SimRank]\label{def:simrank} Given two objects $a$ and $b$ as input, we compute the similarity $R_{k+1}(a,b) \in [0,1]$ based on the prior similarities $R_k(*,*)$.
+
+For iteration $R_0$ the similarity scores are initialized by the equation:
+\begin{equation}\label{eq:lowerbound_sim_score}
+R_0(a,b)= \begin{cases}
+0, & (\text{if } a \neq b) \\
+
+1 ,& (\text{if } a = b)
+\end{cases}
+\end{equation}
+
+To compute $R_{k+1}(a,b)$ from $R_k(*,*)$ we use the equation:
+\begin{equation}\label{eq:simrank_computation}
+R_{k+1}(a,b)= \frac{C}{|I(a)||I(b)|}\sum^{|I(a)|}_{i=1}\sum^{|I(b)|}_{j=1}s(I_i(a),I_j(b))
+\end{equation}
+
+$C$ is the confidence level or decay factor which is a constant between $0$ and $1$, $I(n)$ is the in-neighbors for a node $n \in V$.
+
+\end{definition}
+
+What \autoref{eq:simrank_computation} states is that for $a \neq b$ and $R_{k+1}(a,b) = 1$ for $a = b$, we update the similarity score $(a,b)$ on each iteration $k+1$ using the similarity of the in-neighbors of $(a,b)$ from the previous iteration $k$. The values of $R_k(*,*)$ are non-decreasing as $k$ increases.
+We compute the similarity $R_k(a,b)$ by iterating through all neighbor pairs between $a$ and $b$, summing up all the similarities of each pair and then dividing it by the total number of neighbors to normalize the value.
+This means that the similarity between two nodes $a$ and $b$ is found by taking the average similarity of neighbors of these points. An object is always fully similar with itself so $s(a,a) = 1$.
+
+Using this method we tested SimRank on our graph network from \autoref{Subsec:setup}. This was done using NetworkX, which implements this method. The NetworkX implementation includes an option to choose the number of iterations as well as a tolerance threshold. That checks for each similarity score if the change in similarity between the new iteration $R_{k+1}$ and the prior iteration $R_k$ is below the threshold and if so, stops the algorithm accordingly.
+
+Using the implementation on our graph, the algorithm would continue to run for a very long time, making it unfeasible to use for our case.
+The method was also tested on a few different graphs created using $NetworkX.cycle_graph(n)$ of various sizes, up to $2500$ number nodes, creating a graph with cyclic connections. All were able to run and terminate within ten minutes.
+The difference in time between our graph network and the ones created with NetworkX could be due to the vast difference in the number of neighbors that each node has.
+In the Movielens dataset with 100 thousand ratings, each node has an average of $225,64$ neighbors. 
+This makes the graph more connected which means that the number of in-neighbors and number of similarity scores to calculate for each call is much higher.
+Given the results we concluded that the current implementation is not feasible for the type of graph network we are using and a change in the network structure or SimRank implementation is needed.
