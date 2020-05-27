@@ -29,7 +29,7 @@ def moviedict(movie_nodes_path):
     with open(movie_nodes_path, 'r', encoding="utf-8") as movie_nodes_file:
         for movie in csv.reader(movie_nodes_file):
             movie[3] = movie[3].split('|')
-            movie_dict['M:'+movie[0]] = movie
+            movie_dict['M:'+ movie[0]] = movie
     return movie_dict
 
 def userdict(user_nodes_path):
@@ -44,7 +44,7 @@ def userdict(user_nodes_path):
         user_nodes = user_nodes_file.readlines()
         for user in user_nodes:
             user = user.strip().split(',')
-            user_dict['U:'+ user[0]] = True
+            user_dict[user[0]] = True
     return user_dict
 
 def tet_find_tree(user, tets):
@@ -69,15 +69,21 @@ def construct_child(movieid, rating, vmoviedict):
     '''
     movie = vmoviedict[movieid]
     genres = []
+    
     for genre in movie[3]:
         genres.append(tet.TETChild(genre))
-    if float(rating) < 2.5:
-        child = tet.TETChild("low", children=genres)
-    elif float(rating) > 3.5:
-        child = tet.TETChild("high", children=genres)
-    else:
-        child = tet.TETChild("mid", children=genres)
-    return child
+    
+    try:
+        if float(rating) < 2.5:
+            child = tet.TETChild("low", children=genres)
+        elif float(rating) > 3.5:
+            child = tet.TETChild("high", children=genres)
+        else:
+            child = tet.TETChild("mid", children=genres)
+        return child
+    except:
+        return tet.TETChild("none", children=genres)
+    
 
 def build_tets(edges, vmoviedict, user_nodes_path):
     '''
@@ -88,9 +94,10 @@ def build_tets(edges, vmoviedict, user_nodes_path):
     '''
     tets = {}
     user_dict = userdict(user_nodes_path)
-    print("Starting to built TETs")
-    for edge in tqdm(edges):
-        edge = edge.strip().split(',')
+    for edge in edges:
+        if isinstance(edge, str): 
+            edge = edge.strip().split(',')
+            edge[1] = edge[1].replace('U:', '')
         if user_dict.get(edge[1], False):
             temp_tet = tet_find_tree(edge[1], tets)
             temp_tet.addchild(construct_child(edge[0], edge[2], vmoviedict))

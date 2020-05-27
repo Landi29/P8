@@ -21,11 +21,22 @@ class TET:
             return True
         return False
 
+    def isleaf(self):
+        return self._children is None
+    
+    def isoverleaf(self):
+        return self._children[0].isleaf()
+
     def getchildren(self):
         '''
         gets a list of children to the root
         '''
         return self._children
+    
+    def getchildrenwithkey(self,key):
+        for child in self._children:
+            if child.tostring() == key:
+                return child
 
     def addchild(self, child):
         '''
@@ -53,6 +64,31 @@ class TET:
             string += ']'
         string += ']'
         return string
+
+    def haschild(self, tree):
+        haschild = False
+        for child in self._children:
+            if child.isleaf():
+                treegenres = list(map(lambda x: x.getroot(), tree.getchildren()))
+                selfgenres = list(map(lambda x: x.getroot(), self.getchildren()))
+                if selfgenres == treegenres:
+                    haschild = True
+                break
+            else:
+                if child.haschild(tree):
+                    haschild = True
+                    break             
+        return haschild
+    
+    def getchildrenlike(self, movie):
+        children = []
+        for child in self._children:
+            treegenres = list(map(lambda x: x.getroot(), movie.getchildren()))
+            selfgenres = list(map(lambda x: x.getroot(), child.getchildren()))
+            if selfgenres == treegenres:
+                children.append(child)
+        return children
+                
 
     def count_children(self):
         '''

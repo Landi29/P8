@@ -1,9 +1,9 @@
 import random
 import pickle
-from compare_tet import graph_edit_distance as dist
+from compare_tet import distance_v3 as dist
 from build_tet import load_tets
 import Paths
-
+from tqdm import tqdm
 
 def mt_build(dmax, nmax, depth, data):
     '''
@@ -14,26 +14,27 @@ def mt_build(dmax, nmax, depth, data):
     '''
     node = MTnode()
     if depth == dmax or len(data) <= nmax:
-        node.bucket = data
+        node.bucket = {i.getroot() : i for i in data}
         return node
     node.split_point1, node.split_point2 = get_random_pair(data)
     data1, data2 = split_data(data, node.split_point1, node.split_point2)
     node.left = mt_build(dmax, nmax, depth+1, data1)
     node.right = mt_build(dmax, nmax, depth+1, data2)
+    return node
 
-def mt_search(node, searched, k):
+def mt_search(node, searched):
     '''
     description: This function searches an mt
-    parameters: node is an mt or submt searched is the element you wish to find entities like
+    parameters: node is an mt or submt, searched is the element you wish to find entities like
     and k is the number of entities you wish to find
-    return: the return is k estimated nearest neighbors
+    return: the return is the estimated nearest bucket
     '''
     if node.isleaf():
-        return sorted(node.bucket, key=lambda x: dist(x, searched))[:k]
-    if dist(searched, node.z1) <= dist(searched, node.z2):
-        return mt_search(node.left, searched, k)
+        return node.bucket
+    if dist(searched, node.split_point1) <= dist(searched, node.split_point2):
+        return mt_search(node.left, searched)
     else:
-        return mt_search(node.right, searched, k)
+        return mt_search(node.right, searched)
 
 def get_random_pair(data):
     '''
@@ -41,11 +42,11 @@ def get_random_pair(data):
     parameters: data is the entities you want to find two random of
     return: the return is two entities from data
     '''
-    random1 = random.randint(0, len(data))
-    random2 = random.randint(0, len(data))
+    random1 = random.randint(0, len(data)-1)
+    random2 = random.randint(0, len(data)-1)
     while random1 == random2:
-        random1 = random.randint(0, len(data))
-        random2 = random.randint(0, len(data))
+        random1 = random.randint(0, len(data)-1)
+        random2 = random.randint(0, len(data)-1)
     return data[random1], data[random2]
 
 def split_data(masterdata, splitpoint1, splitpoint2):
