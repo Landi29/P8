@@ -1,0 +1,31 @@
+\subsection{SimGNN Dataset}
+When we were working on the SimGNN algorithm, we had to do some changes to the Movielens dataset \cite{Grouplensdata}. The SimGNN algorithm requires a json file containing an edgelist for each of the two graphs, a list of labels for each of the graphs and the graph edit distance between them. SimGNN also has no implementation of edge labels so the score could not be added directly to the edges. We therefore added the three new nodes "High", "Medium" and "Low" with the same representation as in the TETs, and then changed the edgelist to include these as nodes between the user and the movies. 
+An example of the changes made to the dataset can be seen on \autoref{lst:Before_Change}, the two graphs are edge lists with movie nodes id, user id and a weighted edge nodes. 
+\begin{figure}[H]
+\begin{lstlisting}
+Graph 1			 Graph 2
+M:296,U:1,5.0		 M:1,U:2,3.5
+M:306,U:1,3.5		 M:110,U:2,5.0
+M:307,U:1,5.0		 M:260,U:2,5.0
+M:2011,U:1,2.5 		 M:261,U:2,0.5
+M:7318,U:1,2.0		 M:653,U:2,3.0
+\end{lstlisting}
+\caption{Before Change}
+\label{lst:Before_Change}
+\end{figure}
+On \autoref{lst:After_Change} we see how the data would be presented to the SimGNN algorithm. We have the two edgelists, which contains the edges in the graph, and we see that the values used in the edgelist are related to the node index which is located in the list of labels. For example if we look at graph\textunderscore1 we have an edge [0, 1] which means there is an edge between index 0 in $label\_1$ with value $U:1$ and index 1 in $label\_1$ with the value  $High$.
+\begin{figure}[H]
+\begin{lstlisting}
+graph_1:[[0, 1], [0, 2], [0, 3], [1, 4], 
+[1, 5], [1, 6], [2, 7], [3, 8]]
+labels_1:["U:1", "High", "Medium", "Low", "M:296", 
+"M:306", "M:307", "M:2011", "M:7318"]
+graph_2:[[0, 1], [0, 2], [0, 3], [1, 4], 
+[1, 5], [1, 6], [3, 7], [2, 8]]
+labels_2:["U:1", "High", "Medium", "Low", "M:1",
+"M:110", "M:260", "M:261", "M:653"]
+ged:10
+\end{lstlisting}
+\caption{After Change}
+\label{lst:After_Change}
+\end{figure}
