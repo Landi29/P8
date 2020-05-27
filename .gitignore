@@ -422,6 +422,8 @@ dmypy.json
 
 /Implementation/n2v_models/*
 /Implementation/Experiment_data/*
+/Implementation/*.csv
+/Implementation/n2v_models/*.pkl
 
 # Ignore all the files in the Movielens_data folder:
 /Implementation/Movielens_data/*
