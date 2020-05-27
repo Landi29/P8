@@ -461,7 +461,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'], test_tets['U:1']), 0)
+        self.assertEqual(compare_tet.manhatten_distance(test_tets['1'], test_tets['1']), 0)
 
     def test_manhatten_distance2(self):
         '''
@@ -480,7 +480,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'], test_tets['U:2']), 2)
+        self.assertEqual(compare_tet.manhatten_distance(test_tets['1'], test_tets['2']), 2)
 
     def test_manhatten_distance3(self):
         '''
@@ -499,7 +499,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.manhatten_distance(test_tets['U:1'], test_tets['U:3']), 1)
+        self.assertEqual(compare_tet.manhatten_distance(test_tets['1'], test_tets['3']), 1)
 
     def test_graph_edit_distance1(self):
         '''
@@ -518,7 +518,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'], test_tets['U:1']), 0)
+        self.assertEqual(compare_tet.graph_edit_distance(test_tets['1'], test_tets['1']), 0)
 
     def test_graph_edit_distance2(self):
         '''
@@ -537,7 +537,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'], test_tets['U:2']), 2)
+        self.assertEqual(compare_tet.graph_edit_distance(test_tets['1'], test_tets['2']), 2)
 
     def test_graph_edit_distance3(self):
         '''
@@ -556,7 +556,7 @@ class testcompare_tet(unittest.TestCase):
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        self.assertEqual(compare_tet.graph_edit_distance(test_tets['U:1'], test_tets['U:3']), 1.5)
+        self.assertEqual(compare_tet.graph_edit_distance(test_tets['1'], test_tets['3']), 1.5)
 
     def test_cost(self):
         '''
@@ -582,12 +582,12 @@ class testcompare_tet(unittest.TestCase):
                                 ['Adventure', 'Children', 'Fantasy']],
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 5.0, 'M:5678': 3.5},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        userdatabase = {'1': {'M:1234': 5.0, 'M:5678': 3.5},
+                        '2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        '3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
 
-        preds =  experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+        preds =  experiment.knn('1', list(userdatabase), ['M:3456'], compare_model="manhatten_tet",
                                 extradata=test_tets, user_database=userdatabase)
         self.assertEqual(preds, {'M:3456': 4.75})
 
@@ -607,11 +607,11 @@ class testcompare_tet(unittest.TestCase):
                                 ['Adventure', 'Children', 'Fantasy']],
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 4.25},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        userdatabase = {'1': {'M:1234': 4.25},
+                        '2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        '3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+        preds = experiment.knn('1', list(userdatabase), ['M:3456'], compare_model="manhatten_tet",
                                 extradata=test_tets,user_database=userdatabase)
         self.assertEqual(preds, {'M:3456': 4.75})
 
@@ -631,111 +631,13 @@ class testcompare_tet(unittest.TestCase):
                                 ['Adventure', 'Children', 'Fantasy']],
                      'M:3456': ['3456', 'Jumanji (1995)', '1995',
                                 ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 4.25},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
+        userdatabase = {'1': {'M:1234': 4.25},
+                        '2': {'M:3456': 2.0, 'M:5678': 1.0},
+                        '3': {'M:1234': 4.5, 'M:5678': 4.0}}
         test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        preds = experiment.knn('U:1', list(userdatabase), compare_model="manhatten_tet",
+        preds = experiment.knn('1', list(userdatabase),['M:5678', 'M:3456'], compare_model="manhatten_tet",
                                 extradata=test_tets,user_database=userdatabase, filterv=3)
-        self.assertEqual(preds, {'M:5678': 3.92, 'M:3456': 4.75})
-
-
-    def test_pred1(self):
-        '''
-        test pred one film not seen by user no filter
-        '''
-        edges = ['M:1234,U:1,5.0\n',
-                 'M:5678,U:1,3.5\n',
-                 'M:3456,U:2,2.0\n',
-                 'M:5678,U:2,1.0\n',
-                 'M:1234,U:3,4.5\n',
-                 'M:5678,U:3,4.0\n']
-        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
-                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
-                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']],
-                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 5.0, 'M:5678': 3.5},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
-        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase), {'M:3456': 4.75})
-
-    def test_pred2(self):
-        '''
-        test pred two film not seen by user no filter
-        '''
-        edges = ['M:1234,U:1,5.0\n',
-                 'M:5678,U:1,3.5\n',
-                 'M:3456,U:2,2.0\n',
-                 'M:5678,U:2,1.0\n',
-                 'M:1234,U:3,4.5\n',
-                 'M:5678,U:3,4.0\n']
-        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
-                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
-                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']],
-                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 4.25},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
-        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase),
-                         {'M:3456': 4.75, 'M:5678': 3.86})
-
-    def test_pred3(self):
-        '''
-        test pred two film not seen by user filter 4
-        '''
-        edges = ['M:1234,U:1,5.0\n',
-                 'M:5678,U:1,3.5\n',
-                 'M:3456,U:2,2.0\n',
-                 'M:5678,U:2,1.0\n',
-                 'M:1234,U:3,4.5\n',
-                 'M:5678,U:3,4.0\n']
-        moviedict = {'M:1234': ['1234', 'Toy Story (1995)', '1995',
-                                ['Adventure', 'Animation', 'Children', 'Comedy', 'Fantasy']],
-                     'M:5678': ['5678', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']],
-                     'M:3456': ['3456', 'Jumanji (1995)', '1995',
-                                ['Adventure', 'Children', 'Fantasy']]}
-        userdatabase = {'U:1': {'M:1234': 4.25},
-                        'U:2': {'M:3456': 2.0, 'M:5678': 1.0},
-                        'U:3': {'M:1234': 4.5, 'M:5678': 4.0}}
-        test_tets = build_tet.build_tets(edges, moviedict, Paths.USER_NODES_PATH)
-        best = [[test_tets['U:2'], 54], [test_tets['U:3'], 67]]
-        self.assertEqual(experiment.pred(test_tets['U:1'], best, userdatabase, 4),
-                         {'M:3456': 4.75})
-
-    def test_reasing_sims1(self):
-        '''
-        test reasing_sims on uneven number of items in list
-        '''
-        sims = [['sam', 10],
-                ['ams', 5],
-                ['bob', 1]]
-        res = [['sam', 1],
-               ['ams', 5],
-               ['bob', 10]]
-        self.assertEqual(experiment.reasing_sims(sims), res)
-
-    def test_reasing_sims2(self):
-        '''
-        test reasing_sims on even number of items in list
-        '''
-        sims = [['sam', 10],
-                ['ams', 5],
-                ['msa', 3],
-                ['bob', 1]]
-        res = [['sam', 1],
-               ['ams', 3],
-               ['msa', 5],
-               ['bob', 10]]
-        self.assertEqual(experiment.reasing_sims(sims), res)
+        self.assertEqual(preds, {'M:5678': 3.9, 'M:3456': 4.75})
 
     '''
     this can not run on git because of the missing graph.csv file

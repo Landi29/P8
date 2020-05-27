@@ -1,5 +1,4 @@
 import csv
-
 import json
 import math
 import pickle
@@ -412,7 +411,7 @@ def abstract_base_experiment():
     '''
     description: runs 10fold experimant on base results
     '''
-    with open("base_experiment.csv", "w", newline='', encoding='utf-8') as write:
+    with open("abstract_base_experiment.csv", "w", newline='', encoding='utf-8') as write:
         file_writer = csv.writer(write)
         folds = ['fold0', 'fold1', 'fold2', 'fold3', 'fold4', 'fold5',
                  'fold6', 'fold7', 'fold8', 'fold9']
@@ -748,7 +747,8 @@ def node2vec_senario_experiment():
                 result_predictions[person] = knn(person, list(training_data), wish_to_predict,
                                                  comparison_method, n2v_model, training_data, k=10)
             finished = datetime.now()
-
+            
+            result_predictions = ratingstoabstract(result_predictions)
             RMSE = root_mean_squre_error(result_predictions, test_expected_predictions)
             MAE = mean_average_error(result_predictions, test_expected_predictions)
 
@@ -763,6 +763,7 @@ def node2vec_senario_experiment():
                                   RMSE, MAE, finished - start])
             pickle.dump(result_predictions, open('fold' + str(i) + '-' + str(num2) + '-100k-res-n2v_scenario.p', 'wb'))
             num2 += 1
+
 def abstract_node2vec_senario_experiment():
     '''
     description: runs 10fold experimant with the Node2vec method
@@ -799,7 +800,8 @@ def abstract_node2vec_senario_experiment():
                 result_predictions[person] = knn(person, list(training_data), wish_to_predict,
                                                  comparison_method, n2v_model, training_data, k=10)
             finished = datetime.now()
-
+            
+            result_predictions = ratingstoabstract(result_predictions)
             RMSE = root_mean_squre_error(result_predictions, test_expected_predictions)
             MAE = mean_average_error(result_predictions, test_expected_predictions)
 
